@@ -1,0 +1,93 @@
+name: YT Long Video Schedule
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 07:00 WIB (00:00 UTC)
+    - cron: '0 4 * * *'  # 11:00 WIB (04:00 UTC)
+    - cron: '0 8 * * *'  # 15:00 WIB (08:00 UTC)
+    - cron: '0 12 * * *' # 19:00 WIB (12:00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-tarsier-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Random Delay (skip on manual trigger)
+        if: github.event_name == 'schedule'
+        run: |
+          delay=$((RANDOM % 3600))
+          echo "Scheduled run - sleeping for $delay seconds (max 1 hour)..."
+          sleep $delay
+
+      - name: Restore YouTube OAuth Tokens
+        run: |
+          mkdir -p data/tokens
+          echo '${{ secrets.YT_SCIENTIFIC_TOKEN }}' > data/tokens/yt_scientific_token.json
+          echo '${{ secrets.YT_FUNNY_TOKEN }}' > data/tokens/yt_funny_token.json
+          echo '${{ secrets.YT_ANTHRO_TOKEN }}' > data/tokens/yt_anthro_token.json
+          echo '${{ secrets.YT_POV_TOKEN }}' > data/tokens/yt_pov_token.json
+          echo '${{ secrets.YT_DRAMA_TOKEN }}' > data/tokens/yt_drama_token.json
+
+      - name: Run Pipeline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          HF_API_KEY_1: ${{ secrets.HF_API_KEY_1 }}
+          HF_API_KEY_2: ${{ secrets.HF_API_KEY_2 }}
+          HF_API_KEY_3: ${{ secrets.HF_API_KEY_3 }}
+          HF_API_KEY_4: ${{ secrets.HF_API_KEY_4 }}
+          HF_API_KEY_5: ${{ secrets.HF_API_KEY_5 }}
+          HF_API_KEY_6: ${{ secrets.HF_API_KEY_6 }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          FB_ADMIN_EMAIL: ${{ secrets.FB_ADMIN_EMAIL }}
+          YT_1_JASON: ${{ secrets.YT_1_JASON }}
+          YT_2_JASON: ${{ secrets.YT_2_JASON }}
+          YT_3_JASON: ${{ secrets.YT_3_JASON }}
+          YT_4_JASON: ${{ secrets.YT_4_JASON }}
+          YT_5_JASON: ${{ secrets.YT_5_JASON }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+        run: |
+          python src/main.py
+
+      - name: Commit and Push Database Update
+        run: |
+          git config --global user.name "Tarsier Bot"
+          git config --global user.email "bot@tarsier.local"
+          git add data/topics.json || true
+          git add data/pipeline_log.json || true
+          git diff-index --quiet HEAD && exit 0
+          git commit -m "chore: auto-update database"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            echo "Rebase conflict on attempt $i. Resolving..."
+            git rebase --abort 2>/dev/null || true
+            git pull origin main -X ours || true
+            git add data/topics.json data/pipeline_log.json || true
+            git diff-index --quiet HEAD || git commit -m "chore: auto-update database (resolved)"
+            git push && exit 0
+          done
+          echo "Push failed after 3 attempts. Skipping."

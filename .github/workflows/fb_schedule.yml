@@ -1,0 +1,71 @@
+name: FB Fanspage Schedule
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # 08:00 WIB (01:00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-fb-tarsier-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Random Delay (skip on manual trigger)
+        if: github.event_name == 'schedule'
+        run: |
+          delay=$((RANDOM % 21600))
+          echo "Scheduled run - sleeping for $delay seconds (max 6 hours)..."
+          sleep $delay
+
+      - name: Run Pipeline (FB Only)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          HF_API_KEY_6: ${{ secrets.HF_API_KEY_6 }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          FB_ADMIN_EMAIL: ${{ secrets.FB_ADMIN_EMAIL }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+          FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+        run: |
+          python src/main.py --target fb_fanspage
+
+      - name: Commit and Push Database Update
+        run: |
+          git config --global user.name "Tarsier Bot"
+          git config --global user.email "bot@tarsier.local"
+          git add data/topics.json || true
+          git add data/pipeline_log.json || true
+          git diff-index --quiet HEAD && exit 0
+          git commit -m "chore: auto-update database (FB)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            echo "Rebase conflict on attempt $i. Resolving..."
+            git rebase --abort 2>/dev/null || true
+            git pull origin main -X ours || true
+            git add data/topics.json data/pipeline_log.json || true
+            git diff-index --quiet HEAD || git commit -m "chore: auto-update database (FB resolved)"
+            git push && exit 0
+          done
+          echo "Push failed after 3 attempts. Skipping."

@@ -1,0 +1,1022 @@
+[
+    {
+        "timestamp": "2026-03-03T22:27:03.326481",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-03T22:27:04.405875",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:27:04.406247",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:30:02.093594",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:30:07.094103",
+        "level": "WARN",
+        "account": "yt_scientific",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:30:07.094489",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:33:02.048904",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:33:07.049431",
+        "level": "WARN",
+        "account": "yt_scientific",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:33:07.049841",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:36:02.042912",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:36:07.043480",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-03T22:36:08.138397",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:39:02.044274",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:39:07.044806",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:39:07.045285",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:42:02.039299",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:42:07.039820",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:42:07.040256",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:45:02.042259",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:45:07.042807",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-03T22:45:08.082996",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:48:02.043973",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:48:07.044490",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:48:07.044906",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:51:02.049253",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:51:07.050112",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:51:07.050604",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:54:02.048098",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:54:07.048624",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-03T22:54:08.151245",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T22:57:02.042501",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T22:57:07.043018",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-03T22:57:07.043516",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:00:02.043057",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:00:07.043658",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-03T23:00:07.044080",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:03:02.047980",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:03:07.048540",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-03T23:03:08.069817",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:06:02.047288",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:06:07.047849",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-03T23:06:07.048350",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:09:02.049491",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:09:07.050046",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-03T23:09:07.050529",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:12:02.049679",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:12:07.050597",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-03T23:12:08.066421",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:15:02.049158",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:15:07.049750",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-03T23:15:07.050238",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:18:02.040801",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:18:07.041382",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-03T23:18:07.041849",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-03T23:21:02.043472",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-03T23:21:07.044018",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-03T23:21:08.649524",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-04T05:33:01.852662",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-04T05:33:02.976918",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T05:33:02.977254",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T05:33:12.185498",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T05:33:17.550667",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Metadata generated: Tarsier: Tiny Primate with Giant Eyes | Endangered Species"
+    },
+    {
+        "timestamp": "2026-03-04T05:43:21.218092",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T05:43:40.967321",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T05:43:41.054683",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T05:43:49.550118",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T05:43:49.550670",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T05:43:56.400093",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T05:44:01.874222",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier: Big-Eyed Primate Marvel Facing Extinction"
+    },
+    {
+        "timestamp": "2026-03-04T05:54:41.034663",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T05:55:00.555215",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T05:55:00.585986",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T05:55:07.937766",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T05:55:07.938129",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T05:55:17.111469",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T05:55:43.528752",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier: The Primate with Giant Unmoving Eyes (Critically Endangered)"
+    },
+    {
+        "timestamp": "2026-03-04T06:06:58.333126",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T06:07:17.700392",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T06:07:17.716931",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T06:07:25.351849",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T06:07:25.352064",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:08:27.064778",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:08:32.065194",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-04T06:08:32.065581",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:09:33.502335",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:09:38.502887",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-04T06:09:38.503279",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:10:40.053159",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:10:45.053778",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-04T06:10:46.608524",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:11:48.099425",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:11:53.099861",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-04T06:11:53.100229",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:12:54.799492",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:12:59.799946",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-04T06:12:59.800325",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:14:01.246535",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:14:06.246962",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-04T06:14:07.365747",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:15:08.833330",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:15:13.833844",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-04T06:15:13.834240",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:16:15.175932",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:16:20.176495",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-04T06:16:20.176883",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Physical characteristics"
+    },
+    {
+        "timestamp": "2026-03-04T06:17:21.579826",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-04T06:17:26.580461",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-04T06:17:27.656893",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-04T10:23:11.039181",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-04T10:23:12.463944",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T10:23:12.464412",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T10:23:20.330898",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:23:25.088579",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Metadata generated: Tarsiers: Ancient Primates Facing Extinction | Conservation"
+    },
+    {
+        "timestamp": "2026-03-04T10:36:02.012587",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:36:20.131523",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T10:36:20.159280",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T10:36:20.994927",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Pipeline Error: Upload failed. Video queued for next retry."
+    },
+    {
+        "timestamp": "2026-03-04T10:36:25.995499",
+        "level": "WARN",
+        "account": "yt_scientific",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-04T10:36:25.996036",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T10:36:34.979241",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:36:37.690919",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Metadata generated: Tarsier: The Primate with Colossal Eyes & Critical Future"
+    },
+    {
+        "timestamp": "2026-03-04T10:49:20.608251",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:49:39.729327",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T10:49:39.737436",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T10:49:40.327840",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Pipeline Error: Upload failed. Video queued for next retry."
+    },
+    {
+        "timestamp": "2026-03-04T10:49:45.328383",
+        "level": "WARN",
+        "account": "yt_scientific",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-04T10:49:45.328889",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T10:49:56.343759",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:50:02.483899",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Metadata generated: Tarsiers: Giant Eyes, Head Swivel & Extinction Threat"
+    },
+    {
+        "timestamp": "2026-03-04T10:58:06.210900",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:58:18.684776",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T10:58:18.693193",
+        "level": "INFO",
+        "account": "yt_scientific",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T10:58:19.252828",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Pipeline Error: Upload failed. Video queued for next retry."
+    },
+    {
+        "timestamp": "2026-03-04T10:58:24.253423",
+        "level": "ERROR",
+        "account": "yt_scientific",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-04T10:58:25.814940",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T10:58:33.827125",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T10:58:37.832956",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier: Tiny Primate, Giant Eyes & Urgent Conservation Needs"
+    },
+    {
+        "timestamp": "2026-03-04T11:08:40.542899",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:08:59.008180",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T11:08:59.050683",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T11:09:05.887683",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T11:09:05.888628",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T11:09:19.599981",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:09:25.170853",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Meet the Tarsier: World's Most Unique & Vulnerable Primate"
+    },
+    {
+        "timestamp": "2026-03-04T11:19:27.960558",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:19:47.415554",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T11:19:47.462683",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T11:19:55.445991",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T11:19:55.446992",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T11:20:02.327322",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:20:07.140551",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier: Ancient Primate, Giant Eyes & Their Fight to Survive"
+    },
+    {
+        "timestamp": "2026-03-04T11:35:14.531693",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:35:44.184759",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T11:35:44.224627",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T11:35:51.287651",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T11:35:51.288590",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T11:35:56.535577",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:36:01.503317",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsiers: Eyes Bigger Than Brain, Critically Endangered Primate"
+    },
+    {
+        "timestamp": "2026-03-04T11:45:43.189617",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:46:02.030611",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T11:46:02.073659",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T11:46:10.158290",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T11:46:10.159832",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Species comparison"
+    },
+    {
+        "timestamp": "2026-03-04T11:46:17.313708",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:46:23.464551",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsiers: Giant Eyes, Tiny Primate | Facing Extinction"
+    },
+    {
+        "timestamp": "2026-03-04T11:55:41.583111",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-04T11:55:59.858430",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-04T11:55:59.930292",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-04T11:56:01.970862",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-04T11:56:01.971677",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    }
+]

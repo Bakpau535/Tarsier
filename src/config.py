@@ -1,0 +1,189 @@
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file for local development
+load_dotenv()
+
+# --- API Keys ---
+# Gemini 2.5 Flash — 5 key rotasi untuk kapasitas 100 RPD
+_gemini_keys_raw = [
+    os.environ.get("GEMINI_API_KEY", ""),
+    os.environ.get("GEMINI_API_KEY_2", ""),
+    os.environ.get("GEMINI_API_KEY_3", ""),
+    os.environ.get("GEMINI_API_KEY_4", ""),
+    os.environ.get("GEMINI_API_KEY_5", ""),
+]
+GEMINI_API_KEYS = [k for k in _gemini_keys_raw if k]
+GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
+
+# Freesound API Key for background music
+FREESOUND_API_KEY = os.environ.get("FREESOUND_API_KEY", "")
+# 6 HF Inference API Keys for each parallel account
+HF_API_KEYS = {
+    "yt_documenter": os.environ.get("HF_API_KEY_1", ""),
+    "yt_funny": os.environ.get("HF_API_KEY_2", ""),
+    "yt_anthro": os.environ.get("HF_API_KEY_3", ""),
+    "yt_pov": os.environ.get("HF_API_KEY_4", ""),
+    "yt_drama": os.environ.get("HF_API_KEY_5", ""),
+    "fb_fanspage": os.environ.get("HF_API_KEY_6", "")
+}
+
+# --- Account Configurations ---
+ACCOUNTS = {
+    "yt_documenter": {
+        "platform": "YT",
+        "name": "Tarsier Nusantara",
+        "concept": "BBC/NatGeo Documentary",
+        "description": "Scientific documentary channel. Authoritative, calm, data-driven narration like David Attenborough. Each video: hook + 3 facts + IUCN data + conservation CTA.",
+        "bio": "Exploring the science behind Tarsiers — one of the world's smallest primates. Biology, habitat, conservation status, and research updates. 🔬🐒 #Tarsier #Wildlife #Conservation",
+        "audience": "Nature documentary lovers, students, educators, wildlife researchers",
+        "music_style": "Cinematic instrumental, 55-70 BPM",
+        "tone": "Authoritative, scientific, formal — like a BBC documentary narrator",
+        "color_theme": ["#1B2838", "#2196F3", "#4CAF50"],
+        "thumbnail_style": "Background gelap, font tegas, warna biru/hijau, kesan ilmiah",
+        "flux_allowed": False,
+    },
+    "yt_funny": {
+        "platform": "YT",
+        "name": "Tarsier Funny",
+        "concept": "Viral Wildlife Comedy",
+        "description": "Meme-style comedy channel. Punchy captions, fast cuts, reaction shots, slow-mo replays. Every caption lands like a punchline.",
+        "bio": "The funniest tarsier moments on the internet! Cute, hilarious, and guaranteed to make your day. 😂🐵 #FunnyAnimals #Tarsier #Cute",
+        "audience": "Casual viewers, animal lovers, meme community, young audience",
+        "music_style": "Upbeat comedy, 115-130 BPM",
+        "tone": "Meme-literate, punchy, internet-native humor",
+        "color_theme": ["#FF6B35", "#FFD166", "#06D6A0"],
+        "thumbnail_style": "Warna cerah, font bulat lucu, ekspresi tarsier menggemaskan",
+        "flux_allowed": False,
+    },
+    "yt_anthro": {
+        "platform": "YT",
+        "name": "Tarsier Humans",
+        "concept": "Sitcom Sketch Comedy",
+        "description": "Sketch comedy — tarsier living human life. Deadpan narrator, scene cards, escalation to punchline. Never acknowledge tarsier is an animal.",
+        "bio": "What if tarsiers lived like humans? Daily life, drama, comedy — all from a tarsier's perspective! 🐒💼 #Anthropomorphic #Tarsier #Viral",
+        "audience": "Animation fans, comedy lovers, viral content chasers, teens",
+        "music_style": "Quirky jazz, light comedy, 85-100 BPM",
+        "tone": "Deadpan conversational, sketch comedy writer",
+        "color_theme": ["#E8871E", "#FFB84D", "#F5E6CC"],
+        "thumbnail_style": "Tarsier dengan atribut manusia, warna warm",
+        "flux_allowed": True,  # For human world backgrounds only
+    },
+    "yt_pov": {
+        "platform": "YT",
+        "name": "I Am Tarsier",
+        "concept": "First-Person Diary (Kiko)",
+        "description": "Serialized diary from tarsier Kiko's perspective. Intimate, poetic, sensory. Each entry = one night. Conservation through confusion, not lecture.",
+        "bio": "See the world through my eyes. I'm a tarsier — and this is my story. 🌿👁️ #TarsierPOV #Conservation #Storytelling",
+        "audience": "Storytelling fans, conservation-minded viewers, emotional content seekers",
+        "music_style": "Ambient minimal, 45-60 BPM",
+        "tone": "Intimate whisper, first-person diary, reflective and poetic",
+        "color_theme": ["#2D3436", "#636E72", "#00B894"],
+        "thumbnail_style": "Sudut pandang mata tarsier, tone sinematik",
+        "flux_allowed": True,  # For atmospheric forest scenes only
+    },
+    "yt_drama": {
+        "platform": "YT",
+        "name": "Tarsier Tales",
+        "concept": "Episodic Conservation Drama",
+        "description": "Serialized drama with characters: Satu (protagonist), Dara (partner), Kecil (juvenile), THE SOUND (antagonist). Real conservation issues through character-driven storytelling.",
+        "bio": "Dramatic stories of tarsier survival, loss, and hope. Each episode is a new chapter. 🎭🐒 #TarsierTales #WildlifeDrama #Series",
+        "audience": "Series lovers, emotional content fans, conservation supporters",
+        "music_style": "Orchestral cinematic, 65-90 BPM variable",
+        "tone": "Dramatic narrator, emotional weight, tension builds across episodes",
+        "color_theme": ["#2C3E50", "#E74C3C", "#F39C12"],
+        "thumbnail_style": "Poster style, tone dramatis, warna kontras",
+        "flux_allowed": True,  # For dramatic environment scenes only
+    },
+    "fb_fanspage": {
+        "platform": "FB",
+        "name": "Tarsier World",
+        "concept": "Shareable Fact Aggregator",
+        "description": "Bold facts, high contrast visuals, text on every shot. Must be watchable WITHOUT audio. Repurpose best clips from YT channels with new text overlay.",
+        "bio": "🌍 Tarsier World — shocking facts, stunning footage, and why these tiny primates matter. Share if you care! 🐒🌿",
+        "audience": "Facebook wildlife community, casual scrollers, sharers",
+        "music_style": "Upbeat informational, 90-110 BPM",
+        "tone": "Energetic, conversational, shareable hooks",
+        "color_theme": ["#1B5E20", "#FF6F00", "#FFFFFF"],
+        "thumbnail_style": "Bold text overlay, high contrast, attention-grabbing",
+        "flux_allowed": False,
+    }
+}
+
+# --- Pipeline Constants ---
+MINIMUM_QC_SCORE = 80
+MAX_RETRIES = 3
+VIDEO_RESOLUTION = "1080p"
+CLIP_DURATION_SEC = 6
+SHORT_DURATIONS_SEC = (15, 30)
+
+# --- YouTube OAuth2 Credentials (per akun) ---
+# Mapping akun YT ke credential JSON dari .env
+YT_OAUTH_CREDENTIALS = {
+    "yt_documenter": os.environ.get("YT_1_JASON", ""),
+    "yt_funny": os.environ.get("YT_2_JASON", ""),
+    "yt_anthro": os.environ.get("YT_3_JASON", ""),
+    "yt_pov": os.environ.get("YT_4_JASON", ""),
+    "yt_drama": os.environ.get("YT_5_JASON", ""),
+}
+
+# --- GitHub Repository URL ---
+GITHUB_URL = os.environ.get("GITHUB_URL", "")
+
+# Directories
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+TMP_DIR = os.path.join(BASE_DIR, "tmp")
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+TOPICS_FILE = os.path.join(DATA_DIR, "topics.json")
+
+# Ensure required directories exist
+for d in [DATA_DIR, TMP_DIR, TEMPLATES_DIR]:
+    os.makedirs(d, exist_ok=True)
+
+# --- Prompts ---
+# Script generation now uses persona briefs from persona_prompts.py
+# This is the wrapper prompt that includes the channel's persona brief
+SCRIPT_GENERATION_PROMPT = """
+{persona_brief}
+
+TOPIC/FACTS TO USE:
+{topic}
+
+IMPORTANT RULES:
+- Write ENTIRELY IN ENGLISH
+- Target: approximately 10-12 sentences (~60 seconds when spoken)
+- Follow the STRUCTURE defined above EXACTLY
+- Provide ONLY the narration script — no formatting labels, no scene directions, no markdown
+- Every script must be UNIQUE — do not use generic templates
+"""
+
+METADATA_GENERATION_PROMPT = """
+Based on the following narration script:
+"{script}"
+
+{title_formula}
+
+Generate YouTube metadata with these requirements:
+1. Title (SEO optimized, English, max 60 characters). Follow the title formula above.
+2. Detailed video description in English. Minimum 100 words.
+3. 5 relevant hashtags that are UNIQUE to this channel's style.
+4. 10 keyword tags — at least 60% must be different from other channels covering the same topic.
+5. Most relevant YouTube category (e.g. "Education", "Pets & Animals", "Science & Technology", or "Entertainment").
+6. Language must be "en" (English).
+
+DIFFERENTIATION RULES:
+- Title must NOT share the same first 3 words with any other channel's title.
+- Description must be unique to this channel's voice and style.
+
+Output PURE JSON without markdown backticks:
+{{
+  "title": "Title Here",
+  "description": "Description here...",
+  "hashtags": ["#tag1", "#tag2"],
+  "tags": ["keyword1", "keyword2"],
+  "category": "Education",
+  "language": "en"
+}}
+"""
+

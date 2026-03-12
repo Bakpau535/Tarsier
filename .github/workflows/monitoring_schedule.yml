@@ -1,0 +1,66 @@
+name: Maintenance & Monitoring Schedule
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # 14:00 WIB (07:00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-tarsier-monitoring:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Monitoring Protocol
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          FB_ADMIN_EMAIL: ${{ secrets.FB_ADMIN_EMAIL }}
+          HF_API_KEY_1: ${{ secrets.HF_API_KEY_1 }}
+          HF_API_KEY_2: ${{ secrets.HF_API_KEY_2 }}
+          HF_API_KEY_3: ${{ secrets.HF_API_KEY_3 }}
+          HF_API_KEY_4: ${{ secrets.HF_API_KEY_4 }}
+          HF_API_KEY_5: ${{ secrets.HF_API_KEY_5 }}
+          HF_API_KEY_6: ${{ secrets.HF_API_KEY_6 }}
+        run: |
+          python src/monitoring.py
+
+      - name: Commit and Push Database Update
+        run: |
+          git config --global user.name "Tarsier Bot"
+          git config --global user.email "bot@tarsier.local"
+          git add data/topics.json || true
+          git add data/pipeline_log.json || true
+          git diff-index --quiet HEAD && exit 0
+          git commit -m "chore: maintenance auto-optimizations"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            echo "Rebase conflict on attempt $i. Resolving..."
+            git rebase --abort 2>/dev/null || true
+            git pull origin main -X ours || true
+            git add data/topics.json data/pipeline_log.json || true
+            git diff-index --quiet HEAD || git commit -m "chore: maintenance (resolved)"
+            git push && exit 0
+          done
+          echo "Push failed after 3 attempts. Skipping."
