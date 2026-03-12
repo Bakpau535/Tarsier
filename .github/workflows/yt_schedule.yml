@@ -38,7 +38,7 @@ jobs:
       - name: Restore YouTube OAuth Tokens
         run: |
           mkdir -p data/tokens
-          echo '${{ secrets.YT_SCIENTIFIC_TOKEN }}' > data/tokens/yt_scientific_token.json
+          echo '${{ secrets.YT_DOCUMENTER_TOKEN }}' > data/tokens/yt_documenter_token.json
           echo '${{ secrets.YT_FUNNY_TOKEN }}' > data/tokens/yt_funny_token.json
           echo '${{ secrets.YT_ANTHRO_TOKEN }}' > data/tokens/yt_anthro_token.json
           echo '${{ secrets.YT_POV_TOKEN }}' > data/tokens/yt_pov_token.json
@@ -46,6 +46,9 @@ jobs:
 
       - name: Run Pipeline
         env:
+          # PREVIEW_MODE: set to "true" to save videos as artifacts instead of uploading to YouTube
+          # Change to "false" when ready for auto-posting
+          PREVIEW_MODE: "true"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
@@ -73,6 +76,16 @@ jobs:
         run: |
           python src/main.py
 
+      # Upload generated videos as downloadable artifacts (PREVIEW_MODE)
+      - name: Upload Preview Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarsier-preview-${{ github.run_number }}
+          path: output/
+          retention-days: 3
+          if-no-files-found: ignore
+
       - name: Commit and Push Database Update
         run: |
           git config --global user.name "Tarsier Bot"
@@ -91,3 +104,4 @@ jobs:
             git push && exit 0
           done
           echo "Push failed after 3 attempts. Skipping."
+

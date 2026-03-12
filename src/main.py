@@ -14,6 +14,9 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import ACCOUNTS, MAX_RETRIES, TMP_DIR, TOPICS_FILE, CLIP_DURATION_SEC
 from src.database import DatabaseManager
+
+# PREVIEW_MODE: skip YouTube upload, save videos to output/ for review
+PREVIEW_MODE = os.environ.get("PREVIEW_MODE", "false").lower() == "true"
 from src.research import ResearchEngine
 from src.script_engine import ScriptEngine
 from src.media_gen import MediaGenerator
@@ -199,6 +202,42 @@ class Pipeline:
             self._log("INFO", account_key, "Thumbnail generated.")
 
             # 12. Upload/Kirim -> YT via API otomatis, FB dikemas rapi kirim ke email (Bagian 4 Step 12)
+            if PREVIEW_MODE:
+                # PREVIEW MODE: skip upload, copy files to output/ for artifact download
+                import shutil
+                output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "output", account_key)
+                os.makedirs(output_dir, exist_ok=True)
+                
+                # Copy video
+                if final_video and os.path.exists(final_video):
+                    shutil.copy2(final_video, os.path.join(output_dir, f"{topic_name}_video.mp4"))
+                # Copy short
+                if short_video and os.path.exists(short_video):
+                    shutil.copy2(short_video, os.path.join(output_dir, f"{topic_name}_short.mp4"))
+                # Copy thumbnail
+                if thumbnail_img and os.path.exists(thumbnail_img):
+                    shutil.copy2(thumbnail_img, os.path.join(output_dir, f"{topic_name}_thumb.png"))
+                # Save metadata JSON
+                with open(os.path.join(output_dir, f"{topic_name}_metadata.json"), 'w', encoding='utf-8') as f:
+                    json.dump(metadata, f, indent=2, ensure_ascii=False)
+                # Save script
+                with open(os.path.join(output_dir, f"{topic_name}_script.txt"), 'w', encoding='utf-8') as f:
+                    f.write(script)
+                
+                self._log("INFO", account_key, f"PREVIEW MODE: Files saved to output/{account_key}/")
+                self.db.mark_completed(topic_name, account_key)
+                self.upload_results.append({
+                    "account": account_key,
+                    "channel": ACCOUNTS[account_key]["name"],
+                    "title": metadata.get("title", "N/A"),
+                    "topic": topic_name,
+                    "video_url": f"output/{account_key}/{topic_name}_video.mp4",
+                    "short_url": f"output/{account_key}/{topic_name}_short.mp4",
+                    "status": "PREVIEW (not uploaded)",
+                    "platform": ACCOUNTS[account_key]["platform"],
+                })
+                return True
+            
             upload_result = self.uploader.publish(account_key, final_video, short_video, thumbnail_img, metadata)
             
             if upload_result["success"]:
