@@ -40,9 +40,9 @@ class MetadataGenerator:
         Bagian 6: Judul, Deskripsi, Hashtag, Tags, Kategori, Bahasa.
         """
         print(f"[{account_key}] Generating metadata...")
-        # Inject per-channel title formula
+        # Inject per-channel title formula — use .replace() instead of .format() for safety
         title_formula = METADATA_TITLE_PROMPTS.get(account_key, "")
-        prompt = METADATA_GENERATION_PROMPT.format(script=script, title_formula=title_formula)
+        prompt = METADATA_GENERATION_PROMPT.replace("{script}", script).replace("{title_formula}", title_formula)
         
         keys_tried = 0
         total_keys = len(self.clients)

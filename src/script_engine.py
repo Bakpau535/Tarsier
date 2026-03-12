@@ -75,14 +75,14 @@ class ScriptEngine:
             print(f"[{account_key}] WARNING: No persona brief found, using generic prompt")
             persona_brief = f"Write a script about Tarsiers in the style: {ACCOUNTS[account_key]['concept']}"
 
-        prompt = SCRIPT_GENERATION_PROMPT.format(
-            persona_brief=persona_brief,
-            topic=topic_info
-        )
+        # Use .replace() instead of .format() to avoid crashes from curly braces in persona text
+        prompt = SCRIPT_GENERATION_PROMPT.replace("{persona_brief}", persona_brief).replace("{topic}", topic_info)
 
         result = self._call_gemini(prompt, account_key)
         if result:
             print(f"[{account_key}] Script generated ({len(result)} chars).")
+        else:
+            print(f"[{account_key}] ERROR: Script generation returned empty. Check Gemini API keys.")
         return result
 
     def generate_all_styles(self, raw_facts: str) -> dict:

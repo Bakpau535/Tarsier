@@ -177,13 +177,13 @@ DIFFERENTIATION RULES:
 - Description must be unique to this channel's voice and style.
 
 Output PURE JSON without markdown backticks:
-{{
+{
   "title": "Title Here",
   "description": "Description here...",
   "hashtags": ["#tag1", "#tag2"],
   "tags": ["keyword1", "keyword2"],
   "category": "Education",
   "language": "en"
-}}
+}
 """
 
