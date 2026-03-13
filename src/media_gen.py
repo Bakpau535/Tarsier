@@ -277,17 +277,16 @@ class MediaGenerator:
         return downloaded
 
     def download_stock_clips(self, account_key: str, topic: str, num_clips: int = 7) -> List[str]:
-        """Download ONLY never-before-used stock clips. Footage log is NEVER trimmed."""
+        """Download tarsier stock clips. No dedup — tarsier clips CAN be reused (loop engine makes unique)."""
         pexels = self._download_pexels_clips(account_key, topic, num_clips)
         pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
         all_clips = pexels + pixabay
         random.shuffle(all_clips)
         
         if len(all_clips) == 0:
-            print(f"[{account_key}] Stock clips EXHAUSTED — all clips in Pexels/Pixabay already used ({len(self._used_footage)} in log).")
-            print(f"[{account_key}] Pipeline will auto-switch to AI image generation for unique visuals.")
+            print(f"[{account_key}] WARNING: Zero stock clips from Pexels/Pixabay. Check API keys!")
         else:
-            print(f"[{account_key}] Stock clips: {len(all_clips)} NEW unique clips (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
+            print(f"[{account_key}] Stock clips: {len(all_clips)} clips (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
         
         return all_clips[:num_clips]
 
@@ -374,18 +373,32 @@ class MediaGenerator:
         TARGET_CLIPS = 12
         
         if visual_source == "stock_only":
-            # DOCUMENTARY/INFORMATIVE channels: ONLY real stock footage, ZERO AI
-            # Tarsier clips CAN be reused (dedup removed) — loop engine makes them unique
-            print(f"[{account_key}] Visual source: STOCK ONLY (real footage, ZERO AI images)")
+            # DOCUMENTARY/INFORMATIVE channels: prefer real stock footage
+            # But if stock = 0, use AI TARSIER images as emergency fallback
+            # (video without tarsier is worse than using AI tarsier)
+            print(f"[{account_key}] Visual source: STOCK ONLY (prefer real footage)")
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
             all_media = [("video", clip) for clip in stock_clips]
             
-            # Loop engine in assemble.py will create unique variations (slowmo, zoom, flip)
-            # from these stock clips — so even few clips = enough for a full video
-            if len(all_media) < 3:
-                print(f"[{account_key}] WARNING: Only {len(all_media)} stock clips. Loop engine will expand via variations.")
+            # EMERGENCY FALLBACK: if zero stock clips, generate AI TARSIER images
+            # This ensures the video ALWAYS has tarsier content
+            if len(all_media) == 0:
+                print(f"[{account_key}] EMERGENCY: Zero stock clips! Generating AI TARSIER images as fallback...")
+                for i in range(TARGET_CLIPS):
+                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                    if img:
+                        all_media.append(("image", img))
+                print(f"[{account_key}] Emergency AI tarsier images: {len(all_media)}")
+            elif len(all_media) < 3:
+                # Very few stock clips — supplement with AI TARSIER only
+                ai_needed = 3 - len(all_media)
+                print(f"[{account_key}] Low stock ({len(all_media)}). Adding {ai_needed} AI TARSIER images...")
+                for i in range(ai_needed):
+                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                    if img:
+                        all_media.append(("image", img))
             
-            print(f"[{account_key}] Final: {len(all_media)} REAL stock clips (zero AI)")
+            print(f"[{account_key}] Final: {len(all_media)} media items")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
