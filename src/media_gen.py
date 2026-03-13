@@ -39,8 +39,18 @@ class MediaGenerator:
             "tarsier staring", "sulawesi tarsier", "tarsius",
         ]
         
-        # Per-account AI prompts — TARSIER DOMINANT for all channels
-        # Tarsier images = 70%+ of all AI images, environment = supplement only
+        # Support/environment search terms — for downloading habitat B-roll
+        # These clips are tracked in used_footage.json and NEVER reused
+        self.support_search_terms = [
+            "tropical rainforest", "jungle night", "sulawesi forest",
+            "indonesia jungle", "tropical canopy", "forest stream",
+            "jungle waterfall", "tropical birds", "fireflies night",
+            "mossy tree branch", "tropical flowers", "forest mist",
+            "jungle dawn", "rainforest floor", "tropical sunset",
+        ]
+        
+        # Per-account AI prompts
+        # 50:50 ratio: tarsier prompts + environment prompts
         # AI PROMPTS: VISUAL DESCRIPTION-FIRST (FLUX/SDXL don't know "tarsier")
         # IMPORTANT: This is about INDONESIAN tarsier (Sulawesi), NOT Philippine!
         # Every prompt MUST lead with visual description of the animal:
@@ -287,18 +297,78 @@ class MediaGenerator:
         return downloaded
 
     def download_stock_clips(self, account_key: str, topic: str, num_clips: int = 7) -> List[str]:
-        """Download tarsier stock clips. No dedup — tarsier clips CAN be reused (loop engine makes unique)."""
+        """Download TARSIER stock clips. No dedup — tarsier clips CAN be reused (loop engine makes unique)."""
         pexels = self._download_pexels_clips(account_key, topic, num_clips)
         pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
         all_clips = pexels + pixabay
         random.shuffle(all_clips)
         
         if len(all_clips) == 0:
-            print(f"[{account_key}] WARNING: Zero stock clips from Pexels/Pixabay. Check API keys!")
+            print(f"[{account_key}] WARNING: Zero tarsier stock clips. Check API keys!")
         else:
-            print(f"[{account_key}] Stock clips: {len(all_clips)} clips (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
+            print(f"[{account_key}] Tarsier stock clips: {len(all_clips)} (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
         
         return all_clips[:num_clips]
+
+    def _download_support_pexels(self, account_key: str, num_clips: int) -> List[str]:
+        """Download SUPPORT/environment clips from Pexels WITH dedup — NEVER reuse."""
+        if not self.pexels_key:
+            return []
+        print(f"[{account_key}] Searching Pexels for SUPPORT/environment clips...")
+        headers = {"Authorization": self.pexels_key}
+        downloaded = []
+        terms = self.support_search_terms.copy()
+        random.shuffle(terms)
+        for term in terms:
+            if len(downloaded) >= num_clips:
+                break
+            try:
+                r = requests.get("https://api.pexels.com/videos/search", headers=headers,
+                    params={"query": term, "per_page": 10, "size": "medium", "orientation": "landscape"}, timeout=15)
+                if r.status_code != 200:
+                    continue
+                videos = r.json().get("videos", [])
+                random.shuffle(videos)
+                for video in videos:
+                    vid_id = f"pexels_{video['id']}"
+                    if len(downloaded) >= num_clips:
+                        break
+                    # STRICT DEDUP: support clips NEVER reused
+                    if self._is_footage_used(vid_id):
+                        continue
+                    best_file = None
+                    for vf in video.get("video_files", []):
+                        if vf.get("width", 0) >= 720 and vf.get("file_type") == "video/mp4":
+                            if best_file is None or vf.get("width", 0) <= 1920:
+                                best_file = vf
+                    if not best_file:
+                        continue
+                    try:
+                        dl = requests.get(best_file["link"], timeout=30)
+                        if dl.status_code == 200 and len(dl.content) > 10000:
+                            safe = self._safe_topic(term)
+                            fp = os.path.join(TMP_DIR, f"{account_key}_support_pexels_{vid_id}_{len(downloaded)+1}.mp4")
+                            with open(fp, "wb") as f:
+                                f.write(dl.content)
+                            downloaded.append(fp)
+                            # Mark as PERMANENTLY used — never download again
+                            self._mark_footage_used(vid_id)
+                            print(f"[{account_key}] Support clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
+                            time.sleep(0.5)
+                    except Exception as e:
+                        print(f"[{account_key}] Support download error: {e}")
+            except Exception as e:
+                print(f"[{account_key}] Support Pexels error: {e}")
+        return downloaded
+
+    def download_support_clips(self, account_key: str, num_clips: int = 6) -> List[str]:
+        """Download SUPPORT clips with STRICT dedup — these are NEVER reused."""
+        clips = self._download_support_pexels(account_key, num_clips)
+        if len(clips) == 0:
+            print(f"[{account_key}] WARNING: Zero NEW support clips available (all already used).")
+        else:
+            print(f"[{account_key}] Support clips: {len(clips)} NEW unique clips")
+        return clips[:num_clips]
 
     # ==========================================
     # AI TARSIER IMAGES — Per-account themed
@@ -383,100 +453,134 @@ class MediaGenerator:
         TARGET_CLIPS = 12
         
         if visual_source == "stock_only":
-            # DOCUMENTARY/INFORMATIVE channels: prefer real stock footage
-            # But if stock = 0, use AI TARSIER images as emergency fallback
-            # (video without tarsier is worse than using AI tarsier)
-            print(f"[{account_key}] Visual source: STOCK ONLY (prefer real footage)")
-            stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
-            all_media = [("video", clip) for clip in stock_clips]
+            # ==========================================
+            # FORMAL CHANNELS: 50:50 tarsier:support
+            # Tarsier clips: CAN reuse (loop engine makes unique variations)
+            # Support clips: NEVER reuse (tracked in used_footage.json)
+            # ==========================================
+            HALF = TARGET_CLIPS // 2  # 6 tarsier + 6 support
             
-            # EMERGENCY FALLBACK: if zero stock clips, generate AI TARSIER images
-            # This ensures the video ALWAYS has tarsier content
-            if len(all_media) == 0:
-                print(f"[{account_key}] EMERGENCY: Zero stock clips! Generating AI TARSIER images as fallback...")
-                for i in range(TARGET_CLIPS):
-                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
-                    if img:
-                        all_media.append(("image", img))
-                print(f"[{account_key}] Emergency AI tarsier images: {len(all_media)}")
-            elif len(all_media) < 3:
-                # Very few stock clips — supplement with AI TARSIER only
-                ai_needed = 3 - len(all_media)
-                print(f"[{account_key}] Low stock ({len(all_media)}). Adding {ai_needed} AI TARSIER images...")
+            print(f"[{account_key}] Visual source: STOCK 50:50 ({HALF} tarsier + {HALF} support)")
+            
+            # --- 50% TARSIER clips (reusable with loop variations) ---
+            tarsier_clips = self.download_stock_clips(account_key, topic, num_clips=HALF)
+            tarsier_media = [("video", clip, "tarsier") for clip in tarsier_clips]
+            
+            # If not enough tarsier stock, supplement with AI tarsier
+            if len(tarsier_media) < HALF:
+                ai_needed = HALF - len(tarsier_media)
+                print(f"[{account_key}] Tarsier stock low ({len(tarsier_media)}). Adding {ai_needed} AI tarsier...")
                 for i in range(ai_needed):
                     img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                     if img:
-                        all_media.append(("image", img))
+                        tarsier_media.append(("image", img, "tarsier"))
             
-            print(f"[{account_key}] Final: {len(all_media)} media items")
+            # --- 50% SUPPORT clips (NEVER reused, tracked in used_footage.json) ---
+            support_clips = self.download_support_clips(account_key, num_clips=HALF)
+            support_media = [("video", clip, "support") for clip in support_clips]
+            
+            # If not enough support stock, supplement with AI environment
+            if len(support_media) < HALF:
+                ai_needed = HALF - len(support_media)
+                print(f"[{account_key}] Support stock low ({len(support_media)}). Adding {ai_needed} AI environment...")
+                for i in range(ai_needed):
+                    img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
+                    if img:
+                        support_media.append(("image", img, "support"))
+            
+            # Interleave: tarsier, support, tarsier, support...
+            all_media = []
+            for i in range(max(len(tarsier_media), len(support_media))):
+                if i < len(tarsier_media):
+                    t, path, _ = tarsier_media[i]
+                    all_media.append((t, path))
+                if i < len(support_media):
+                    t, path, _ = support_media[i]
+                    all_media.append((t, path))
+            
+            t_count = len(tarsier_media)
+            s_count = len(support_media)
+            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} support) — ratio {t_count}:{s_count}")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
-            # HYBRID: Stock tarsier clips + AI images (50:50 tarsier:environment)
-            MAX_STOCK = 7
-            MIN_AI = 5
+            # ==========================================
+            # SEMI-FORMAL: Stock tarsier + AI 50:50
+            # Same 50:50 rule applies
+            # ==========================================
+            HALF = TARGET_CLIPS // 2
             
-            print(f"[{account_key}] Visual source: Stock tarsier + AI (50:50 tarsier:environment)")
-            stock_clips = self.download_stock_clips(account_key, topic, num_clips=MAX_STOCK)
-            all_media = [("video", clip) for clip in stock_clips]
+            print(f"[{account_key}] Visual source: Stock+AI 50:50 ({HALF} tarsier + {HALF} environment)")
             
-            # AI images: 50% TARSIER + 50% environment (minimum ratio rule)
-            ai_needed = max(TARGET_CLIPS - len(stock_clips), MIN_AI)
-            tarsier_ai = max(ai_needed // 2, 1)  # MIN 50% tarsier
-            support_ai = ai_needed - tarsier_ai
+            # --- 50% TARSIER ---
+            tarsier_clips = self.download_stock_clips(account_key, topic, num_clips=HALF)
+            tarsier_media = [("video", clip) for clip in tarsier_clips]
+            if len(tarsier_media) < HALF:
+                for i in range(HALF - len(tarsier_media)):
+                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                    if img:
+                        tarsier_media.append(("image", img))
+                    time.sleep(1)
             
-            print(f"[{account_key}] Generating {ai_needed} AI images ({tarsier_ai} tarsier + {support_ai} environment)")
-            
-            ai_failed = 0
-            # Generate TARSIER images first (guaranteed)
-            for i in range(tarsier_ai):
-                img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+            # --- 50% ENVIRONMENT (AI generated, always new) ---
+            support_media = []
+            for i in range(HALF):
+                img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
                 if img:
-                    all_media.append(("image", img))
-                else:
-                    ai_failed += 1
-                time.sleep(2)
+                    support_media.append(("image", img))
+                time.sleep(1)
             
-            # Then environment images
-            for i in range(support_ai):
-                img = self.generate_tarsier_image(account_key, tarsier_ai + i, topic, force_tarsier=False)
-                if img:
-                    all_media.append(("image", img))
-                else:
-                    ai_failed += 1
-                time.sleep(2)
+            # Interleave
+            all_media = []
+            for i in range(max(len(tarsier_media), len(support_media))):
+                if i < len(tarsier_media):
+                    all_media.append(tarsier_media[i])
+                if i < len(support_media):
+                    all_media.append(support_media[i])
             
-            if ai_failed == ai_needed:
-                print(f"[{account_key}] WARNING: All AI images failed (HF credits?). Continuing with stock-only + loop variations.")
-            
-            random.shuffle(all_media)
-            stock_n = sum(1 for t, _ in all_media if t == "video")
-            ai_n = sum(1 for t, _ in all_media if t == "image")
-            print(f"[{account_key}] Final: {len(all_media)} clips ({stock_n} stock + {ai_n} AI)")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({len(tarsier_media)} tarsier + {len(support_media)} environment)")
             return all_media
         
         elif visual_source == "ai_only":
-            # 100% AI tarsier images (e.g. yt_funny channel)
-            print(f"[{account_key}] Visual source: AI ONLY (100% AI tarsier images)")
+            # ==========================================
+            # NON-FORMAL: 50:50 AI tarsier + AI environment
+            # ALL images are freshly generated (never reused)
+            # ==========================================
+            HALF = TARGET_CLIPS // 2
+            
+            print(f"[{account_key}] Visual source: AI 50:50 ({HALF} tarsier + {HALF} environment, all new)")
+            
             all_media = []
-            for i in range(TARGET_CLIPS):
+            # Generate tarsier and environment in interleaved order
+            for i in range(HALF):
+                # Tarsier image
                 img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                 if img:
                     all_media.append(("image", img))
                 time.sleep(1)
-            print(f"[{account_key}] Final: {len(all_media)} AI tarsier images")
+                # Environment image
+                img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
+                if img:
+                    all_media.append(("image", img))
+                time.sleep(1)
+            
+            t_count = sum(1 for _ in range(min(HALF, len(all_media))))
+            print(f"[{account_key}] Final: {len(all_media)} AI images (50:50 tarsier:environment, all freshly generated)")
             return all_media
         
         else:
-            # Fallback: try stock, then AI tarsier
-            print(f"[{account_key}] Unknown visual_source '{visual_source}', trying stock then AI")
-            stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
-            all_media = [("video", clip) for clip in stock_clips]
-            if len(all_media) == 0:
-                for i in range(TARGET_CLIPS):
-                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
-                    if img:
-                        all_media.append(("image", img))
+            # Fallback: 50:50
+            print(f"[{account_key}] Unknown visual_source '{visual_source}', using 50:50 fallback")
+            HALF = TARGET_CLIPS // 2
+            all_media = []
+            for i in range(HALF):
+                img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                if img:
+                    all_media.append(("image", img))
+            for i in range(HALF):
+                img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
+                if img:
+                    all_media.append(("image", img))
             return all_media
 
     # ==========================================
