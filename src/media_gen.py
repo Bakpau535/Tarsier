@@ -42,55 +42,58 @@ class MediaGenerator:
         # Per-account AI prompts — TARSIER DOMINANT for all channels
         # Tarsier images = 70%+ of all AI images, environment = supplement only
         # AI PROMPTS: VISUAL DESCRIPTION-FIRST (FLUX/SDXL don't know "tarsier")
+        # IMPORTANT: This is about INDONESIAN tarsier (Sulawesi), NOT Philippine!
         # Every prompt MUST lead with visual description of the animal:
-        # - Tiny furry primate, fits in human palm
-        # - ENORMOUS round glowing eyes (bigger than its brain)
-        # - Long thin fingers with round pads gripping branches
-        # - Small round head, large ears
-        # - Brown/grey fur, nocturnal
+        # - Tiny furry primate, fits in human palm, weight only 80-160 grams
+        # - ENORMOUS round glowing eyes (each eye bigger than its brain!)
+        # - Long thin bony fingers with round disk pads gripping branches
+        # - Small round head, large thin bat-like ears
+        # - Dark grey-brown fur (Sulawesi species), nocturnal
+        # - Very long thin tail (rat-like, mostly naked)
+        # - Habitat: Sulawesi tropical rainforest, Indonesia
         self.tarsier_prompts = [
-            "tiny furry primate with enormous round glowing golden eyes sitting on a tree branch at night, the eyes are bigger than its brain, small round head, brown fur, macro photography, 4k, shallow depth of field",
-            "extreme close up portrait of a small nocturnal primate with gigantic perfectly round eyes reflecting moonlight, tiny nose, soft brown fur, detailed texture, wildlife photography masterpiece",
-            "adorable tiny monkey-like creature with huge round saucer eyes gripping a thin branch with long slender fingers that have round sticky pads, tropical forest background, national geographic style",
-            "baby primate the size of a human fist with oversized round luminous eyes, clinging to its mother on a branch, heartwarming wildlife moment, soft warm lighting, cute animal photography",
-            "small furry nocturnal animal with the largest eyes relative to body size of any mammal, perched on a mossy branch, staring directly at camera, dark jungle background, macro lens",
-            "tiny big-eyed primate hunting an insect at night, caught mid-leap between branches, motion blur, dynamic wildlife action shot, infrared night vision style photography",
-            "portrait of a miniature primate with round head and enormous owl-like eyes, ears slightly folded, sitting quietly on a branch, cinematic forest bokeh background, 4k photography",
-            "two small nocturnal primates with huge glowing eyes sitting together on a branch at night, social bonding behavior, dual portrait, wildlife documentary photography",
-            "sleeping tiny primate with its enormous eyes closed, curled up on a tree branch, peaceful nighttime scene, soft moonlight, cute animal sleeping photography",
-            "small primate with head rotated nearly 180 degrees looking backwards showing enormous round eyes, eerie and fascinating anatomy, dark background, macro photography",
-            "extreme macro of tiny primate hands with long thin fingers and round suction-cup-like finger pads gripping a branch, detailed biology photography, shallow depth of field",
-            "miniature primate silhouette with enormous round eyes against full moon, dramatic nocturnal wildlife scene, cinematic style, dark blue sky",
-            "wide-eyed tiny furry primate with surprised expression, comically huge round eyes, adorable funny animal portrait, bright colorful background, viral photography style",
-            "nocturnal primate with giant eyes eating a cricket insect, close-up of hunting behavior at night, wildlife research documentation photography",
-            "stunning portrait of tiny primate with galaxy-like reflections in its enormous perfectly round eyes, artistic wildlife photography, vibrant colors, viral social media worthy",
+            "tiny furry primate with enormous round glowing golden eyes sitting on a tree branch at night in Indonesian tropical forest, the eyes are each bigger than its brain, small round head, dark grey-brown fur, large thin bat-like ears, macro photography, 4k, shallow depth of field",
+            "extreme close up portrait of a small nocturnal primate with gigantic perfectly round amber eyes reflecting moonlight, tiny nose, dark grey-brown soft fur, thin bat ears, Sulawesi rainforest background, detailed texture, wildlife photography masterpiece",
+            "adorable tiny monkey-like creature with huge round saucer eyes gripping a thin branch with long slender bony fingers that have round disk-shaped sticky pads, dark brown fur, dense Indonesian tropical forest background, national geographic style",
+            "baby primate the size of a human fist with oversized round luminous amber eyes, dark fur, clinging to its mother on a mossy branch in Sulawesi Indonesia jungle, heartwarming wildlife moment, soft warm lighting, cute animal photography",
+            "small furry nocturnal animal with the largest eyes relative to body size of any mammal, dark grey-brown fur, large thin ears, perched on a mossy branch in Indonesian rainforest, staring directly at camera with enormous round eyes, macro lens",
+            "tiny big-eyed primate with dark fur hunting a grasshopper insect at night in Indonesian jungle, caught mid-leap between branches, motion blur, dynamic wildlife action shot, night vision style photography",
+            "portrait of a miniature primate with round head and enormous owl-like golden eyes, thin bat-like ears slightly folded, dark brown fur, sitting quietly on a branch in Sulawesi forest, cinematic bokeh background, 4k photography",
+            "two small nocturnal primates with huge glowing amber eyes and dark fur sitting together on a branch at night in Indonesian tropical forest, social bonding behavior, dual portrait, wildlife documentary photography",
+            "sleeping tiny primate with dark grey-brown fur and its enormous eyes closed, curled up on a tree branch with its long thin naked tail hanging down, peaceful nighttime scene in Indonesian forest, soft moonlight",
+            "small wide-eyed primate with head rotated nearly 180 degrees looking backwards showing enormous perfectly round amber eyes, dark fur, thin ears, eerie and fascinating anatomy, dark jungle background, macro photography",
+            "extreme macro of tiny primate hands with very long thin bony fingers and round suction-cup-like disk pads gripping a mossy branch, dark fur on wrists, Indonesian rainforest, detailed biology photography",
+            "miniature dark-furred primate silhouette with enormous round glowing eyes against full moon, tropical tree branches, dramatic nocturnal Indonesian wildlife scene, cinematic style",
+            "wide-eyed tiny furry primate with surprised expression and comically huge round glowing eyes, dark grey-brown fur, thin ears pointing up, adorable funny animal portrait, bright tropical background, viral photography style",
+            "nocturnal primate with giant round amber eyes and dark fur eating a cricket insect while perched on branch in Indonesian Sulawesi jungle at night, close-up of hunting behavior, wildlife research documentation",
+            "stunning portrait of tiny primate with galaxy-like reflections in its enormous perfectly round golden eyes, dark grey-brown fur, thin bat ears, Indonesian rainforest background, artistic wildlife photography, vibrant colors",
         ]
         
-        # Environment/support prompts — used for 30% supplement only
+        # Environment/support prompts — Sulawesi/Indonesia themed
         self.support_prompts = {
             "yt_documenter": [
-                "tropical rainforest canopy at dawn, scientific expedition atmosphere, national geographic style",
-                "bohol tarsier sanctuary signage and forest path, conservation site documentation",
+                "dense tropical rainforest canopy of Sulawesi Indonesia at dawn, misty mountains, scientific expedition atmosphere, national geographic style",
+                "Indonesian wildlife sanctuary entrance with tropical trees and conservation signs, Sulawesi jungle path",
             ],
             "yt_funny": [
-                "colorful tropical jungle with funny tiny props, whimsical playful atmosphere",
-                "bright cheerful forest clearing with miniature furniture, comedy set design",
+                "colorful tropical jungle with funny tiny props, whimsical playful atmosphere, Indonesian forest",
+                "bright cheerful forest clearing with miniature furniture, comedy set design, tropical setting",
             ],
             "yt_anthro": [
                 "miniature office desk with tiny furniture, coffee cup, warm cozy lighting, whimsical scene",
                 "tiny kitchen scene with miniature cooking utensils, warm homey atmosphere, storybook",
             ],
             "yt_pov": [
-                "dark hollow tree interior looking out at moonlit jungle, atmospheric night, no animals",
-                "dense jungle canopy at night with glowing insects, cinematic night photography",
+                "dark hollow tree interior looking out at moonlit Indonesian jungle, atmospheric night, no animals",
+                "dense Sulawesi jungle canopy at night with glowing fireflies, cinematic night photography",
             ],
             "yt_drama": [
-                "dead tree branch at sunset, dramatic golden hour lighting, cinematic wide shot",
-                "misty forest path disappearing into darkness, emotional cinematic atmosphere",
+                "dead tree branch at sunset in Indonesian forest, dramatic golden hour lighting, cinematic wide shot",
+                "misty Sulawesi forest path disappearing into darkness, emotional cinematic atmosphere",
             ],
             "fb_fanspage": [
-                "lush green tropical forest of bohol philippines, vibrant nature, shareable scenic photo",
-                "conservation sanctuary entrance with green trees, hopeful atmosphere",
+                "lush green tropical rainforest of Sulawesi Indonesia, vibrant nature, shareable scenic photo",
+                "Indonesian wildlife conservation center entrance with tropical trees, hopeful atmosphere",
             ],
         }
 
