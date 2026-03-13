@@ -6,17 +6,26 @@ from typing import Optional, List
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import HF_API_KEYS, ACCOUNTS, TMP_DIR, MAX_RETRIES, CLIP_DURATION_SEC, FREESOUND_API_KEY, VIDEO_PROFILES
+from src.config import HF_API_KEYS, ACCOUNTS, TMP_DIR, MAX_RETRIES, CLIP_DURATION_SEC, FREESOUND_API_KEY, VIDEO_PROFILES, DATA_DIR
 from src.ssml_builder import build_ssml, get_edge_tts_params
 
 class MediaGenerator:
+    # Path to persistent footage log — tracks EVERY clip/image ever used
+    FOOTAGE_LOG_PATH = os.path.join(DATA_DIR, "used_footage.json")
+
     def __init__(self):
+        import json as _json
+        self._json = _json
         HF_BASE = "https://router.huggingface.co/hf-inference/models"
         self.image_model_url = f"{HF_BASE}/black-forest-labs/FLUX.1-schnell"
         self.image_fallback_url = f"{HF_BASE}/stabilityai/stable-diffusion-xl-base-1.0"
         self.pexels_key = os.environ.get("PEXELS_API_KEY", "")
         self.pixabay_key = os.environ.get("PIXABAY_API_KEY", "")
         self._depleted_keys = set()  # Track HF keys that returned 402
+        
+        # Load persistent footage log — HARD RULE: no footage reused EVER
+        self._used_footage = self._load_footage_log()
+        print(f"[MediaGen] Footage log loaded: {len(self._used_footage)} items already used")
         
         # Tarsier-only stock search terms
         self.tarsier_search_terms = [
@@ -150,6 +159,40 @@ class MediaGenerator:
         return "".join(c for c in topic if c.isalnum() or c in (' ', '-', '_')).replace(' ', '_')[:50]
 
     # ==========================================
+    # FOOTAGE DEDUPLICATION — HARD RULE
+    # No footage/image may EVER be reused across
+    # any channel, any run, any time.
+    # ==========================================
+
+    def _load_footage_log(self) -> set:
+        """Load persistent set of all ever-used footage IDs."""
+        try:
+            if os.path.exists(self.FOOTAGE_LOG_PATH):
+                with open(self.FOOTAGE_LOG_PATH, "r") as f:
+                    data = self._json.load(f)
+                return set(data)
+        except Exception as e:
+            print(f"[MediaGen] Warning: Could not load footage log: {e}")
+        return set()
+
+    def _save_footage_log(self):
+        """Save updated footage log to disk."""
+        try:
+            with open(self.FOOTAGE_LOG_PATH, "w") as f:
+                self._json.dump(sorted(list(self._used_footage)), f, indent=2)
+        except Exception as e:
+            print(f"[MediaGen] Warning: Could not save footage log: {e}")
+
+    def _is_footage_used(self, footage_id: str) -> bool:
+        """Check if this footage has EVER been used before."""
+        return footage_id in self._used_footage
+
+    def _mark_footage_used(self, footage_id: str):
+        """Mark footage as used permanently and save to disk."""
+        self._used_footage.add(footage_id)
+        self._save_footage_log()
+
+    # ==========================================
     # STOCK VIDEO — Tarsier only
     # ==========================================
 
@@ -159,7 +202,6 @@ class MediaGenerator:
         print(f"[{account_key}] Searching Pexels for TARSIER clips...")
         headers = {"Authorization": self.pexels_key}
         downloaded = []
-        used_ids = set()
         for term in self.tarsier_search_terms:
             if len(downloaded) >= num_clips:
                 break
@@ -171,7 +213,11 @@ class MediaGenerator:
                 videos = r.json().get("videos", [])
                 random.shuffle(videos)
                 for video in videos:
-                    if len(downloaded) >= num_clips or video["id"] in used_ids:
+                    vid_id = f"pexels_{video['id']}"
+                    if len(downloaded) >= num_clips:
+                        break
+                    # HARD RULE: skip if EVER used before (any channel, any run)
+                    if self._is_footage_used(vid_id):
                         continue
                     best_file = None
                     for vf in video.get("video_files", []):
@@ -188,8 +234,8 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
-                            used_ids.add(video["id"])
-                            print(f"[{account_key}] Pexels clip {len(downloaded)} ({len(dl.content)//1024}KB)")
+                            self._mark_footage_used(vid_id)  # Permanently record
+                            print(f"[{account_key}] Pexels clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
                             time.sleep(0.5)
                     except Exception as e:
                         print(f"[{account_key}] Download error: {e}")
@@ -202,7 +248,6 @@ class MediaGenerator:
             return []
         print(f"[{account_key}] Searching Pixabay for TARSIER clips...")
         downloaded = []
-        used_ids = set()
         for term in self.tarsier_search_terms:
             if len(downloaded) >= num_clips:
                 break
@@ -215,7 +260,11 @@ class MediaGenerator:
                 hits = r.json().get("hits", [])
                 random.shuffle(hits)
                 for video in hits:
-                    if len(downloaded) >= num_clips or video["id"] in used_ids:
+                    vid_id = f"pixabay_{video['id']}"
+                    if len(downloaded) >= num_clips:
+                        break
+                    # HARD RULE: skip if EVER used before
+                    if self._is_footage_used(vid_id):
                         continue
                     vid_url = None
                     for q in ["medium", "large", "small"]:
@@ -233,8 +282,8 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
-                            used_ids.add(video["id"])
-                            print(f"[{account_key}] Pixabay clip {len(downloaded)} ({len(dl.content)//1024}KB)")
+                            self._mark_footage_used(vid_id)  # Permanently record
+                            print(f"[{account_key}] Pixabay clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
                             time.sleep(0.5)
                     except Exception as e:
                         print(f"[{account_key}] Download error: {e}")
