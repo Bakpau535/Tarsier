@@ -468,20 +468,6 @@ class MediaGenerator:
     # AI TARSIER IMAGES — Per-account themed
     # ==========================================
     
-    def _get_key_pool(self, account_key: str) -> list:
-        """Returns list of HF API keys to try: own key first, then other channels' keys as backup.
-        Excludes depleted keys (402 exhausted)."""
-        pool = []
-        # Own key first
-        own_key = HF_API_KEYS.get(account_key, "")
-        if own_key and own_key not in self._depleted_keys:
-            pool.append(own_key)
-        # Then all other channels' keys as backup
-        for channel, key in HF_API_KEYS.items():
-            if channel != account_key and key and key not in self._depleted_keys and key not in pool:
-                pool.append(key)
-        return pool
-
     def generate_tarsier_image(self, account_key: str, index: int, topic: str,
                                force_tarsier: bool = False) -> Optional[str]:
         """Generates AI image.
