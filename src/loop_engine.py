@@ -273,48 +273,54 @@ def generate_clip_variations(clip_path: str, account_key: str,
     - reaction: silent stare loops with crop variation (yt_anthro)
     """
     import subprocess
+    from src.config import VIDEO_PROFILES
     
     if not os.path.exists(clip_path):
         return []
     
+    # Channel-aware output size
+    profile = VIDEO_PROFILES.get(account_key, {})
+    aspect = profile.get("aspect_ratio", "16:9")
+    if aspect == "1:1":
+        out_size = "1080x1080"
+        scale_size = "1080:1080"
+    else:
+        out_size = "1920x1080"
+        scale_size = "1920:1080"
+    
     variations = []
     base_name = os.path.splitext(os.path.basename(clip_path))[0]
     
-    # Define variations per loop_style
+    # Define variations per loop_style — using channel-aware output size
     if loop_style == "standard":
-        # Correction plan: normal, slow-mo 0.5x, ken burns zoom in, zoom out, flip, crop-eyes
         var_specs = [
-            ("slowmo", f'-vf "setpts=2.0*PTS" -an'),  # 0.5x speed
-            ("zoomin", f'-vf "zoompan=z=\'min(zoom+0.002,1.2)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
-            ("flip", f'-vf "hflip" -an'),
+            ("slowmo", f'-vf "setpts=2.0*PTS,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
+            ("zoomin", f'-vf "zoompan=z=\'min(zoom+0.002,1.2)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s={out_size}:fps=24" -an'),
+            ("flip", f'-vf "hflip,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
         ]
     elif loop_style == "replay":
-        # yt_funny: normal → slow-mo 0.4x → zoom punch 1.3x
         var_specs = [
-            ("slowmo", f'-vf "setpts=2.5*PTS" -an'),  # 0.4x speed
-            ("zoom_punch", f'-vf "zoompan=z=\'min(zoom+0.005,1.3)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
+            ("slowmo", f'-vf "setpts=2.5*PTS,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
+            ("zoom_punch", f'-vf "zoompan=z=\'min(zoom+0.005,1.3)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s={out_size}:fps=24" -an'),
         ]
     elif loop_style == "drift":
-        # yt_pov: very slow drift float (1-2% pan over 8s)
         var_specs = [
-            ("drift", f'-vf "zoompan=z=\'min(zoom+0.001,1.05)\':x=\'iw/2-(iw/zoom/2)+10*on/25\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
-            ("slowmo", f'-vf "setpts=1.5*PTS" -an'),  # gentle slow-mo
+            ("drift", f'-vf "zoompan=z=\'min(zoom+0.001,1.05)\':x=\'iw/2-(iw/zoom/2)+10*on/25\':y=\'ih/2-(ih/zoom/2)\':d=1:s={out_size}:fps=24" -an'),
+            ("slowmo", f'-vf "setpts=1.5*PTS,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
         ]
     elif loop_style == "emotional":
-        # yt_drama: very slow ken burns 2% zoom over 10s
         var_specs = [
-            ("slow_zoom", f'-vf "zoompan=z=\'min(zoom+0.0005,1.02)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
-            ("slowmo", f'-vf "setpts=2.0*PTS" -an'),
+            ("slow_zoom", f'-vf "zoompan=z=\'min(zoom+0.0005,1.02)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s={out_size}:fps=24" -an'),
+            ("slowmo", f'-vf "setpts=2.0*PTS,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
         ]
     elif loop_style == "reaction":
-        # yt_anthro: silent stare loops with different crop regions
         var_specs = [
-            ("crop_center", f'-vf "crop=iw*0.6:ih*0.6:iw*0.2:ih*0.1,scale=1920:1080" -an'),
-            ("flip", f'-vf "hflip" -an'),
+            ("crop_center", f'-vf "crop=iw*0.6:ih*0.6:iw*0.2:ih*0.1,scale={scale_size}" -an'),
+            ("flip", f'-vf "hflip,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
         ]
     else:
         var_specs = [
-            ("slowmo", f'-vf "setpts=2.0*PTS" -an'),
+            ("slowmo", f'-vf "setpts=2.0*PTS,scale={scale_size}:force_original_aspect_ratio=decrease,pad={out_size}:(ow-iw)/2:(oh-ih)/2" -an'),
         ]
     
     for var_name, ffmpeg_filter in var_specs:
@@ -331,9 +337,8 @@ def generate_clip_variations(clip_path: str, account_key: str,
             
             if result.returncode == 0 and os.path.exists(output_path) and os.path.getsize(output_path) > 1000:
                 variations.append(output_path)
-                print(f"[{account_key}] Loop variation: {var_name} from clip {clip_index}")
+                print(f"[{account_key}] Loop variation: {var_name} ({out_size}) from clip {clip_index}")
             else:
-                # If FFmpeg fails, still include original
                 if result.stderr:
                     print(f"[{account_key}] FFmpeg {var_name} error: {result.stderr.decode()[:100]}")
         except Exception as e:
@@ -342,3 +347,4 @@ def generate_clip_variations(clip_path: str, account_key: str,
     # Always include original clip as first option
     variations.insert(0, clip_path)
     return variations
+
