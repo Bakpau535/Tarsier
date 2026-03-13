@@ -299,29 +299,18 @@ class MediaGenerator:
         return downloaded
 
     def download_stock_clips(self, account_key: str, topic: str, num_clips: int = 7) -> List[str]:
-        """Download stock clips with exhaustion recovery."""
+        """Download ONLY never-before-used stock clips. Footage log is NEVER trimmed."""
         pexels = self._download_pexels_clips(account_key, topic, num_clips)
         pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
         all_clips = pexels + pixabay
         random.shuffle(all_clips)
         
-        # EXHAUSTION RECOVERY: if dedup blocked everything, reset oldest entries and retry
-        if len(all_clips) == 0 and len(self._used_footage) > 0:
-            used_count = len(self._used_footage)
-            print(f"[{account_key}] ⚠ ALL {used_count} stock clips already used! Resetting oldest 50% for reuse with variations...")
-            # Keep only the newest half — oldest clips can be reused
-            used_list = sorted(list(self._used_footage))
-            keep_count = len(used_list) // 2
-            self._used_footage = set(used_list[keep_count:])  # Keep newest half
-            self._save_footage_log()
-            print(f"[{account_key}] Footage log trimmed: {used_count} → {len(self._used_footage)} items. Retrying downloads...")
-            
-            pexels = self._download_pexels_clips(account_key, topic, num_clips)
-            pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
-            all_clips = pexels + pixabay
-            random.shuffle(all_clips)
+        if len(all_clips) == 0:
+            print(f"[{account_key}] Stock clips EXHAUSTED — all clips in Pexels/Pixabay already used ({len(self._used_footage)} in log).")
+            print(f"[{account_key}] Pipeline will auto-switch to AI image generation for unique visuals.")
+        else:
+            print(f"[{account_key}] Stock clips: {len(all_clips)} NEW unique clips (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
         
-        print(f"[{account_key}] Stock clips: {len(all_clips)} (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
         return all_clips[:num_clips]
 
     # ==========================================
@@ -392,31 +381,36 @@ class MediaGenerator:
         Per-channel visual source rules from VIDEO_PROFILES:
         - stock_only: Pexels + Pixabay real tarsier footage ONLY. ZERO AI images.
         - stock_plus_flux_env: Stock tarsier + FLUX environment-only images.
+        
+        HARD RULE: No footage/image is EVER reused. When stock clips are exhausted
+        (finite pool), ALL channels auto-switch to AI image generation which
+        produces INFINITE unique images — each prompt includes topic, index, and
+        timestamp so no two images are ever the same.
         """
         profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
         visual_source = profile.get("visual_source", "stock_only")
         TARGET_CLIPS = 12
         
         if visual_source == "stock_only":
-            # STOCK ONLY: download as many tarsier clips as possible, ZERO AI
-            print(f"[{account_key}] Visual source: STOCK ONLY (Pexels+Pixabay real footage, ZERO FLUX)")
+            # Try stock first — only NEVER-BEFORE-USED clips
+            print(f"[{account_key}] Visual source: STOCK PREFERRED (trying Pexels+Pixabay first)")
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
             all_media = [("video", clip) for clip in stock_clips]
             
-            # ABSOLUTE LAST RESORT: if stock is truly empty even after exhaustion recovery,
-            # generate AI tarsier images so the pipeline doesn't crash
-            if len(all_media) == 0:
-                print(f"[{account_key}] ⚠ ZERO stock clips available! Generating AI images as emergency fallback...")
-                for i in range(min(6, TARGET_CLIPS)):
+            # Stock exhausted? → AI images produce INFINITE unique visuals
+            if len(all_media) < TARGET_CLIPS:
+                ai_needed = TARGET_CLIPS - len(all_media)
+                if len(all_media) == 0:
+                    print(f"[{account_key}] Stock pool EXHAUSTED → switching to AI images (100% unique per generation)")
+                else:
+                    print(f"[{account_key}] Only {len(all_media)} new stock clips → supplementing with {ai_needed} AI images")
+                
+                for i in range(ai_needed):
                     img = self.generate_tarsier_image(account_key, i, topic)
                     if img:
                         all_media.append(("image", img))
-                print(f"[{account_key}] Emergency AI images: {len(all_media)}")
-            elif len(all_media) < 3:
-                print(f"[{account_key}] WARNING: Only {len(all_media)} stock clips found. Loop engine will expand.")
             
-            stock_n = len(all_media)
-            print(f"[{account_key}] Final: {stock_n} media items")
+            print(f"[{account_key}] Final: {len(all_media)} media items (stock:{len(stock_clips)} + AI:{len(all_media)-len(stock_clips)})")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
