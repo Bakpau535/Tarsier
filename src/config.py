@@ -144,7 +144,7 @@ VIDEO_PROFILES = {
         "letterbox": False,
         "tarsier_min_pct": 85,          # tarsier dominant
         "has_voiceover": False,         # ZERO voiceover — captions + sound effects only
-        "visual_source": "stock_only",  # Real footage ONLY, ZERO FLUX
+        "visual_source": "ai_only",      # 100% AI tarsier images for funny channel
         "color_grade": "comedy",        # saturasi +15%, warm orange, bright
         "loop_style": "replay",         # each moment: normal → slow-mo → zoom (3x replay)
         "loop_habitat_interval": 0,     # no habitat B-roll for funny

@@ -445,11 +445,29 @@ class MediaGenerator:
             print(f"[{account_key}] Final: {len(all_media)} clips ({stock_n} stock + {ai_n} AI)")
             return all_media
         
+        elif visual_source == "ai_only":
+            # 100% AI tarsier images (e.g. yt_funny channel)
+            print(f"[{account_key}] Visual source: AI ONLY (100% AI tarsier images)")
+            all_media = []
+            for i in range(TARGET_CLIPS):
+                img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                if img:
+                    all_media.append(("image", img))
+                time.sleep(1)
+            print(f"[{account_key}] Final: {len(all_media)} AI tarsier images")
+            return all_media
+        
         else:
-            # Fallback: stock only
-            print(f"[{account_key}] Unknown visual_source '{visual_source}', defaulting to stock_only")
+            # Fallback: try stock, then AI tarsier
+            print(f"[{account_key}] Unknown visual_source '{visual_source}', trying stock then AI")
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
-            return [("video", clip) for clip in stock_clips]
+            all_media = [("video", clip) for clip in stock_clips]
+            if len(all_media) == 0:
+                for i in range(TARGET_CLIPS):
+                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                    if img:
+                        all_media.append(("image", img))
+            return all_media
 
     # ==========================================
     # AUDIO — Per-account voice styles via edge-tts
