@@ -27,18 +27,28 @@ class ScriptEngine:
         """Gemini API call with key rotation and retry logic."""
         keys_tried = 0
         total_keys = len(self.clients)
+        last_error = ""
 
         for attempt in range(MAX_RETRIES * total_keys):
             client = self.clients[self.current_key_index]
             try:
+                print(f"[{account_key}] Calling Gemini (key #{self.current_key_index + 1}, attempt {attempt + 1})...")
                 response = client.models.generate_content(
                     model=self.model,
                     contents=prompt,
                 )
-                return response.text.strip()
+                if response and response.text:
+                    return response.text.strip()
+                else:
+                    print(f"[{account_key}] Gemini returned empty response (key #{self.current_key_index + 1})")
+                    last_error = "Empty response from Gemini"
+                    self._rotate_key()
+                    continue
 
             except Exception as e:
                 error_msg = str(e)
+                last_error = error_msg
+                print(f"[{account_key}] Gemini error (key #{self.current_key_index + 1}): {error_msg[:200]}")
 
                 if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                     keys_tried += 1
@@ -55,10 +65,12 @@ class ScriptEngine:
                         self._rotate_key()
                         continue
                 else:
-                    print(f"[{account_key}] Gemini error: {e}")
+                    print(f"[{account_key}] Non-rate-limit error: {error_msg[:300]}")
                     if attempt < MAX_RETRIES - 1:
                         time.sleep(5)
                     continue
+
+        print(f"[{account_key}] FINAL FAILURE: All {MAX_RETRIES * total_keys} attempts failed. Last error: {last_error[:300]}")
         return ""
 
     def generate_script(self, topic_info: str, account_key: str) -> str:
