@@ -194,8 +194,9 @@ class Pipeline:
             self._log("INFO", account_key, "Video assembled successfully.")
 
             # 8. QC Check → scoring system per bagian, minimal skor 80/100 (Bagian 4 Step 8, Bagian 5)
-            target_duration = 72 # 12 clips × 6s = ~72 seconds
-            if not self.qc.evaluate(final_video, metadata, target_duration):
+            # Duration target based on channel profile clip count
+            target_duration = len(script_segments) * profile.get("cut_duration", 6)
+            if not self.qc.evaluate(final_video, metadata, target_duration, account_key):
                 raise ValueError("Quality Control failed. Score below 80/100.")
 
             # 9. Extract Shorts → auto-detect hook terbaik (Bagian 4 Step 9)
