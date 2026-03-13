@@ -374,33 +374,18 @@ class MediaGenerator:
         TARGET_CLIPS = 12
         
         if visual_source == "stock_only":
-            # TARSIER DOMINANT: stock tarsier clips always available (loop engine makes unique)
-            # Dedup only applies to support/environment clips
-            print(f"[{account_key}] Visual source: STOCK TARSIER DOMINANT")
+            # DOCUMENTARY/INFORMATIVE channels: ONLY real stock footage, ZERO AI
+            # Tarsier clips CAN be reused (dedup removed) — loop engine makes them unique
+            print(f"[{account_key}] Visual source: STOCK ONLY (real footage, ZERO AI images)")
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
             all_media = [("video", clip) for clip in stock_clips]
             
-            # Supplement with AI TARSIER images to reach target
-            if len(all_media) < TARGET_CLIPS:
-                ai_needed = TARGET_CLIPS - len(all_media)
-                tarsier_ai = max(ai_needed // 2, 1)  # MIN 50% tarsier (user rule: 50:50 minimum)
-                support_ai = ai_needed - tarsier_ai
-                
-                print(f"[{account_key}] Generating {ai_needed} AI images ({tarsier_ai} tarsier + {support_ai} environment)")
-                
-                # Generate tarsier images first (dominant)
-                for i in range(tarsier_ai):
-                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
-                    if img:
-                        all_media.append(("image", img))
-                
-                # Then support images
-                for i in range(support_ai):
-                    img = self.generate_tarsier_image(account_key, tarsier_ai + i, topic, force_tarsier=False)
-                    if img:
-                        all_media.append(("image", img))
+            # Loop engine in assemble.py will create unique variations (slowmo, zoom, flip)
+            # from these stock clips — so even few clips = enough for a full video
+            if len(all_media) < 3:
+                print(f"[{account_key}] WARNING: Only {len(all_media)} stock clips. Loop engine will expand via variations.")
             
-            print(f"[{account_key}] Final: {len(all_media)} media items (stock:{len(stock_clips)} + AI:{len(all_media)-len(stock_clips)})")
+            print(f"[{account_key}] Final: {len(all_media)} REAL stock clips (zero AI)")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
