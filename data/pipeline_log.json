@@ -1306,5 +1306,131 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-13T01:58:22.161444",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-13T01:58:23.125147",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-03-13T01:58:23.125596",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-03-13T01:58:23.504851",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-13T01:58:23.868933",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-13T02:08:06.430297",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-13T02:08:06.686146",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-03-13T02:08:11.686688",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-13T02:08:11.687245",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-03-13T02:08:11.687311",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-13T02:08:11.687333",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-13T02:17:46.413052",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-13T02:17:46.636941",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-03-13T02:17:51.637491",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-13T02:17:51.638094",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-03-13T02:17:51.638161",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-13T02:17:51.638186",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-13T02:26:18.240714",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-13T02:26:18.570784",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-03-13T02:26:23.571453",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-13T02:26:24.934569",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
