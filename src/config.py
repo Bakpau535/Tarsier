@@ -16,6 +16,17 @@ _gemini_keys_raw = [
 GEMINI_API_KEYS = [k for k in _gemini_keys_raw if k]
 GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
 
+# Per-channel Gemini key assignment — each channel gets its own primary key
+# to prevent one channel from exhausting another's quota
+GEMINI_KEY_MAP = {
+    "yt_documenter": os.environ.get("GEMINI_API_KEY", ""),
+    "yt_funny":      os.environ.get("GEMINI_API_KEY_2", ""),
+    "yt_anthro":     os.environ.get("GEMINI_API_KEY_3", ""),
+    "yt_pov":        os.environ.get("GEMINI_API_KEY_4", ""),
+    "yt_drama":      os.environ.get("GEMINI_API_KEY_5", ""),
+    "fb_fanspage":   os.environ.get("GEMINI_API_KEY", ""),  # shares key 1 as primary, others as backup
+}
+
 # Freesound API Key for background music
 FREESOUND_API_KEY = os.environ.get("FREESOUND_API_KEY", "")
 # 6 HF Inference API Keys for each parallel account
