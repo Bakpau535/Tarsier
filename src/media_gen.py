@@ -27,7 +27,8 @@ class MediaGenerator:
         self._used_footage = self._load_footage_log()
         print(f"[MediaGen] Footage log loaded: {len(self._used_footage)} items already used")
         
-        # Tarsier-only stock search terms — EXPANDED pool for dedup survival
+        # Tarsier-ONLY stock search terms — every term MUST contain 'tarsier' or 'tarsius'
+        # to guarantee only real tarsier footage is downloaded (no random primates)
         self.tarsier_search_terms = [
             "tarsier", "philippine tarsier", "bohol tarsier",
             "tarsier primate", "tarsier animal", "tarsier eyes",
@@ -35,10 +36,7 @@ class MediaGenerator:
             "tarsier nocturnal", "tarsier jungle", "tarsier forest",
             "tarsier tree", "tarsier branch", "tarsier baby",
             "tarsier face", "tarsier hunting", "tarsier insect",
-            "tarsier staring", "primate nocturnal", "tiny primate",
-            "small primate big eyes", "nocturnal primate jungle",
-            "bohol wildlife sanctuary", "sulawesi tarsier",
-            "tarsius", "primate conservation", "endangered primate",
+            "tarsier staring", "sulawesi tarsier", "tarsius",
         ]
         
         # Per-account AI prompts — TARSIER DOMINANT for all channels
@@ -406,34 +404,47 @@ class MediaGenerator:
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
-            # HYBRID: Stock tarsier clips + FLUX environment-only images
+            # HYBRID: Stock tarsier clips + AI images (50:50 tarsier:environment)
             MAX_STOCK = 7
-            MIN_ENV_AI = 5
+            MIN_AI = 5
             
-            print(f"[{account_key}] Visual source: Stock tarsier + FLUX environment-only")
+            print(f"[{account_key}] Visual source: Stock tarsier + AI (50:50 tarsier:environment)")
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=MAX_STOCK)
             all_media = [("video", clip) for clip in stock_clips]
             
-            # AI environment images — NEVER tarsier, only backgrounds/atmosphere
-            ai_needed = max(TARGET_CLIPS - len(stock_clips), MIN_ENV_AI)
-            print(f"[{account_key}] Generating {ai_needed} ENVIRONMENT-ONLY AI images (ZERO tarsier)...")
+            # AI images: 50% TARSIER + 50% environment (minimum ratio rule)
+            ai_needed = max(TARGET_CLIPS - len(stock_clips), MIN_AI)
+            tarsier_ai = max(ai_needed // 2, 1)  # MIN 50% tarsier
+            support_ai = ai_needed - tarsier_ai
+            
+            print(f"[{account_key}] Generating {ai_needed} AI images ({tarsier_ai} tarsier + {support_ai} environment)")
+            
             ai_failed = 0
-            for i in range(ai_needed):
-                img = self.generate_tarsier_image(account_key, i, topic)
+            # Generate TARSIER images first (guaranteed)
+            for i in range(tarsier_ai):
+                img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                 if img:
                     all_media.append(("image", img))
                 else:
                     ai_failed += 1
                 time.sleep(2)
             
-            # If ALL AI images failed (e.g. HF credits depleted), continue with stock only
+            # Then environment images
+            for i in range(support_ai):
+                img = self.generate_tarsier_image(account_key, tarsier_ai + i, topic, force_tarsier=False)
+                if img:
+                    all_media.append(("image", img))
+                else:
+                    ai_failed += 1
+                time.sleep(2)
+            
             if ai_failed == ai_needed:
                 print(f"[{account_key}] WARNING: All AI images failed (HF credits?). Continuing with stock-only + loop variations.")
             
             random.shuffle(all_media)
             stock_n = sum(1 for t, _ in all_media if t == "video")
             ai_n = sum(1 for t, _ in all_media if t == "image")
-            print(f"[{account_key}] Final: {len(all_media)} clips ({stock_n} stock tarsier + {ai_n} AI environment)")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({stock_n} stock + {ai_n} AI)")
             return all_media
         
         else:
