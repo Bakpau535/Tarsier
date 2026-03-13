@@ -549,13 +549,14 @@ class MediaGenerator:
         if visual_source == "stock_only":
             # ==========================================
             # FORMAL CHANNELS: 50:50 tarsier:support
-            # *** ZERO AI IMAGES ***
+            # Priority: stock video → stock photo → AI tarsier FALLBACK (only if stock = 0)
             # Tarsier: stock video + stock PHOTOS (CAN reuse, loop engine makes unique)
             # Support: stock video (NEVER reuse, tracked in used_footage.json)
+            # AI fallback: ONLY when stock returns ZERO results
             # ==========================================
             HALF = TARGET_CLIPS // 2  # 6 tarsier + 6 support
             
-            print(f"[{account_key}] Visual source: STOCK ONLY — ZERO AI ({HALF} tarsier + {HALF} support)")
+            print(f"[{account_key}] Visual source: STOCK ONLY ({HALF} tarsier + {HALF} support)")
             
             # --- 50% TARSIER: stock videos + stock photos (reusable with loop) ---
             tarsier_videos = self.download_stock_clips(account_key, topic, num_clips=HALF)
@@ -570,10 +571,14 @@ class MediaGenerator:
             # Cap at HALF, prefer videos first then photos
             tarsier_media = tarsier_media[:HALF]
             
+            # FALLBACK: if ZERO tarsier stock, use AI tarsier images
             if len(tarsier_media) == 0:
-                print(f"[{account_key}] CRITICAL: Zero tarsier content from Pexels+Pixabay! Check API keys!")
-            elif len(tarsier_media) < HALF:
-                print(f"[{account_key}] Tarsier stock: {len(tarsier_media)}/{HALF}. Loop engine will create variations.")
+                print(f"[{account_key}] FALLBACK: Zero tarsier stock! Using AI tarsier images...")
+                for i in range(HALF):
+                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                    if img:
+                        tarsier_media.append(("image", img))
+                print(f"[{account_key}] AI tarsier fallback: {len(tarsier_media)} images")
             else:
                 print(f"[{account_key}] Tarsier stock: {len(tarsier_media)}/{HALF} (videos:{len(tarsier_videos)} photos:{len(tarsier_photos)})")
             
@@ -581,7 +586,15 @@ class MediaGenerator:
             support_clips = self.download_support_clips(account_key, num_clips=HALF)
             support_media = [("video", clip) for clip in support_clips]
             
-            if len(support_media) < HALF:
+            # FALLBACK: if ZERO support stock, use AI environment
+            if len(support_media) == 0:
+                print(f"[{account_key}] FALLBACK: Zero support stock! Using AI environment images...")
+                for i in range(HALF):
+                    img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
+                    if img:
+                        support_media.append(("image", img))
+                print(f"[{account_key}] AI environment fallback: {len(support_media)} images")
+            elif len(support_media) < HALF:
                 print(f"[{account_key}] Support stock: {len(support_media)}/{HALF}. Loop engine will expand.")
             
             # Interleave: tarsier, support, tarsier, support...
@@ -594,7 +607,7 @@ class MediaGenerator:
             
             t_count = len(tarsier_media)
             s_count = len(support_media)
-            print(f"[{account_key}] Final: {len(all_media)} REAL clips ({t_count} tarsier + {s_count} support) — ZERO AI — ratio {t_count}:{s_count}")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} support) — ratio {t_count}:{s_count}")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
