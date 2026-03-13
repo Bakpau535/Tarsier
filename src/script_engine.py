@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, ACCOUNTS, SCRIPT_GENERATION_PROMPT, MAX_RETRIES
 from src.persona_prompts import PERSONA_BRIEFS
 from src.similarity_checker import check_script_similarity, get_most_similar_channel
+from src.fallback_scripts import get_fallback_script
 
 class ScriptEngine:
     def __init__(self):
@@ -89,7 +90,8 @@ class ScriptEngine:
     def generate_script(self, topic_info: str, account_key: str) -> str:
         """
         Generates a narration script using the channel's UNIQUE persona brief.
-        Each channel gets a completely different structure, tone, and style.
+        RESILIENCE: If ALL Gemini keys fail, uses pre-written fallback templates.
+        This method NEVER returns empty — pipeline is guaranteed to continue.
         """
         if account_key not in ACCOUNTS:
             raise ValueError(f"Account key '{account_key}' is invalid.")
@@ -105,10 +107,14 @@ class ScriptEngine:
 
         result = self._call_gemini(prompt, account_key)
         if result:
-            print(f"[{account_key}] Script generated ({len(result)} chars).")
-        else:
-            print(f"[{account_key}] ERROR: Script generation returned empty. Check Gemini API keys.")
-        return result
+            print(f"[{account_key}] Script generated via Gemini ({len(result)} chars).")
+            return result
+        
+        # FALLBACK: All Gemini keys exhausted → use pre-written template
+        print(f"[{account_key}] Gemini unavailable — using FALLBACK SCRIPT TEMPLATE")
+        fallback = get_fallback_script(account_key, topic_info)
+        print(f"[{account_key}] Fallback script loaded ({len(fallback)} chars).")
+        return fallback
 
     def generate_all_styles(self, raw_facts: str) -> dict:
         """
