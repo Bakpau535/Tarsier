@@ -41,22 +41,29 @@ class MediaGenerator:
         
         # Per-account AI prompts — TARSIER DOMINANT for all channels
         # Tarsier images = 70%+ of all AI images, environment = supplement only
+        # AI PROMPTS: VISUAL DESCRIPTION-FIRST (FLUX/SDXL don't know "tarsier")
+        # Every prompt MUST lead with visual description of the animal:
+        # - Tiny furry primate, fits in human palm
+        # - ENORMOUS round glowing eyes (bigger than its brain)
+        # - Long thin fingers with round pads gripping branches
+        # - Small round head, large ears
+        # - Brown/grey fur, nocturnal
         self.tarsier_prompts = [
-            "4k macro photography of a Philippine tarsier, huge round eyes, scientific documentary style, shallow depth of field",
-            "extreme close up of tarsier face with enormous eyes reflecting light, detailed fur texture, nocturnal wildlife photography",
-            "tarsier gripping a thin branch with elongated finger bones, detailed paws, biology style photo",
-            "side profile of a tarsier showing ear rotation mid-hunt, national geographic photography",
-            "tarsier hunting an insect at night, infrared camera style, wildlife research documentation",
-            "adorable baby tarsier clinging to mother, huge round eyes, heartwarming wildlife moment",
-            "tarsier perched on a branch in bohol philippines, lush green jungle background, conservation photo",
-            "tarsier leaping mid-air between branches, motion blur, dynamic action wildlife shot",
-            "tarsier with head rotated 180 degrees looking backwards, eerie fascinating anatomy, macro shot",
-            "two tarsiers on same branch at night, social behavior documentation, dual portrait",
-            "tarsier eating a cricket, night hunting behavior, close-up macro wildlife photography",
-            "tarsier baby with eyes closed sleeping on branch, peaceful tiny primate, soft lighting",
-            "stunning portrait of a tarsier with galaxy-like reflected eyes, viral photography style",
-            "tarsier fingers in extreme macro detail, showing suction-cup-like finger pads, biology photo",
-            "tarsier silhouette against full moon, dramatic nocturnal wildlife, cinematic style",
+            "tiny furry primate with enormous round glowing golden eyes sitting on a tree branch at night, the eyes are bigger than its brain, small round head, brown fur, macro photography, 4k, shallow depth of field",
+            "extreme close up portrait of a small nocturnal primate with gigantic perfectly round eyes reflecting moonlight, tiny nose, soft brown fur, detailed texture, wildlife photography masterpiece",
+            "adorable tiny monkey-like creature with huge round saucer eyes gripping a thin branch with long slender fingers that have round sticky pads, tropical forest background, national geographic style",
+            "baby primate the size of a human fist with oversized round luminous eyes, clinging to its mother on a branch, heartwarming wildlife moment, soft warm lighting, cute animal photography",
+            "small furry nocturnal animal with the largest eyes relative to body size of any mammal, perched on a mossy branch, staring directly at camera, dark jungle background, macro lens",
+            "tiny big-eyed primate hunting an insect at night, caught mid-leap between branches, motion blur, dynamic wildlife action shot, infrared night vision style photography",
+            "portrait of a miniature primate with round head and enormous owl-like eyes, ears slightly folded, sitting quietly on a branch, cinematic forest bokeh background, 4k photography",
+            "two small nocturnal primates with huge glowing eyes sitting together on a branch at night, social bonding behavior, dual portrait, wildlife documentary photography",
+            "sleeping tiny primate with its enormous eyes closed, curled up on a tree branch, peaceful nighttime scene, soft moonlight, cute animal sleeping photography",
+            "small primate with head rotated nearly 180 degrees looking backwards showing enormous round eyes, eerie and fascinating anatomy, dark background, macro photography",
+            "extreme macro of tiny primate hands with long thin fingers and round suction-cup-like finger pads gripping a branch, detailed biology photography, shallow depth of field",
+            "miniature primate silhouette with enormous round eyes against full moon, dramatic nocturnal wildlife scene, cinematic style, dark blue sky",
+            "wide-eyed tiny furry primate with surprised expression, comically huge round eyes, adorable funny animal portrait, bright colorful background, viral photography style",
+            "nocturnal primate with giant eyes eating a cricket insect, close-up of hunting behavior at night, wildlife research documentation photography",
+            "stunning portrait of tiny primate with galaxy-like reflections in its enormous perfectly round eyes, artistic wildlife photography, vibrant colors, viral social media worthy",
         ]
         
         # Environment/support prompts — used for 30% supplement only
