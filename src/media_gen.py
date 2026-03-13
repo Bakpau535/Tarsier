@@ -16,6 +16,7 @@ class MediaGenerator:
         self.image_fallback_url = f"{HF_BASE}/stabilityai/stable-diffusion-xl-base-1.0"
         self.pexels_key = os.environ.get("PEXELS_API_KEY", "")
         self.pixabay_key = os.environ.get("PIXABAY_API_KEY", "")
+        self._depleted_keys = set()  # Track HF keys that returned 402
         
         # Tarsier-only stock search terms
         self.tarsier_search_terms = [
@@ -96,6 +97,23 @@ class MediaGenerator:
             raise ValueError(f"HF API Key missing for {account_key}")
         return {"Authorization": f"Bearer {api_key}"}
 
+    def _get_key_pool(self, account_key: str) -> list:
+        """
+        Get ordered list of HF API keys to try: own key first, then backup keys.
+        Unused keys from stock_only channels serve as backup for FLUX channels.
+        """
+        all_keys = [(k, v) for k, v in HF_API_KEYS.items() if v]
+        # Own key first
+        own_key = HF_API_KEYS.get(account_key, "")
+        pool = []
+        if own_key and own_key not in self._depleted_keys:
+            pool.append(own_key)
+        # Then all other keys as backup (skip depleted ones)
+        for k, v in all_keys:
+            if k != account_key and v not in self._depleted_keys and v not in pool:
+                pool.append(v)
+        return pool
+
     def _make_api_request(self, url: str, headers: dict, payload: dict,
                           max_retries: int = MAX_RETRIES, timeout: int = 120) -> Optional[bytes]:
         for attempt in range(max_retries):
@@ -110,7 +128,12 @@ class MediaGenerator:
                         time.sleep(wait)
                         continue
                     if response.status_code in [402]:
-                        print(f"HF CREDITS DEPLETED (402) — falling back to stock-only mode")
+                        # Mark this specific key as depleted
+                        auth = headers.get("Authorization", "")
+                        key = auth.replace("Bearer ", "") if auth else ""
+                        if key:
+                            self._depleted_keys.add(key)
+                        print(f"HF KEY DEPLETED (402) — marked as exhausted, will try backup keys")
                         return None
                     if response.status_code in [410, 404]:
                         return None
@@ -232,23 +255,19 @@ class MediaGenerator:
     # ==========================================
     
     def generate_tarsier_image(self, account_key: str, index: int, topic: str) -> Optional[str]:
-        """Generates AI image using FLUX.
-        RULES from correction plan:
-        - flux_allowed=False channels: still generate tarsier images (stock footage preferred, AI as supplement)
-        - flux_allowed=True channels: generate ENVIRONMENT ONLY (no tarsier/animal)
+        """Generates AI image using FLUX with key pool fallback.
+        Tries own key first, then backup keys from stock_only channels.
         """
         account = ACCOUNTS.get(account_key, {})
         
         prompts = self.account_prompts.get(account_key, self.account_prompts["fb_fanspage"])
         base_prompt = prompts[index % len(prompts)]
         
-        # Add topic + random seed to make each image unique across runs
         seed = random.randint(1000, 9999)
         prompt = f"{base_prompt}, related to {topic}, seed:{seed}"
         
         # Enforce FLUX rules: if flux_allowed=True, ensure no animal keywords
         if account.get("flux_allowed", False):
-            # Double-check: strip any animal keywords that might have slipped in
             forbidden_words = ["tarsier", "animal", "primate", "creature", "monkey", "ape"]
             for word in forbidden_words:
                 prompt = prompt.replace(word, "scene")
@@ -257,20 +276,37 @@ class MediaGenerator:
             img_type = "tarsier"
         
         print(f"[{account_key}] AI {img_type} image {index}: {base_prompt[:50]}... (seed:{seed})")
-        headers = self._get_headers(account_key)
         payload = {"inputs": prompt}
         
-        content = self._make_api_request(self.image_model_url, headers, payload)
-        if content is None:
-            content = self._make_api_request(self.image_fallback_url, headers, payload)
+        # Try key pool: own key first, then backups from unused channels
+        key_pool = self._get_key_pool(account_key)
+        if not key_pool:
+            print(f"[{account_key}] ALL HF keys depleted! Cannot generate AI image.")
+            return None
         
-        if content:
-            safe = self._safe_topic(topic)
-            filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_ai_{index}.png")
-            with open(filename, "wb") as f:
-                f.write(content)
-            print(f"[{account_key}] AI {img_type} image {index} saved.")
-            return filename
+        for key in key_pool:
+            headers = {"Authorization": f"Bearer {key}"}
+            content = self._make_api_request(self.image_model_url, headers, payload)
+            if content is None and key not in self._depleted_keys:
+                # Try fallback model with same key
+                content = self._make_api_request(self.image_fallback_url, headers, payload)
+            
+            if content:
+                safe = self._safe_topic(topic)
+                filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_ai_{index}.png")
+                with open(filename, "wb") as f:
+                    f.write(content)
+                which_key = "own" if key == HF_API_KEYS.get(account_key) else "backup"
+                print(f"[{account_key}] AI {img_type} image {index} saved (using {which_key} key).")
+                return filename
+            
+            # If key was depleted (402), try next key in pool
+            if key in self._depleted_keys:
+                print(f"[{account_key}] Key depleted, trying backup...")
+                continue
+            else:
+                break  # Non-402 failure, don't try other keys
+        
         return None
 
     # ==========================================
