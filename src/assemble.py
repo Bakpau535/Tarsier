@@ -6,125 +6,215 @@ import numpy as np
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import TMP_DIR, CLIP_DURATION_SEC
-from src.loop_engine import apply_color_grade
+from src.config import TMP_DIR, CLIP_DURATION_SEC, VIDEO_PROFILES
+from src.loop_engine import apply_color_grade, generate_clip_variations
+
 
 class VideoAssembler:
+    """
+    Per-channel video assembly engine.
+    Reads VIDEO_PROFILES to build fundamentally different videos per channel:
+    - Different cut durations (1-3s for funny, 6-12s for POV)
+    - Different transitions (hard cut for funny, dissolve for documentary)
+    - Different aspect ratios (16:9 for YT, 1:1 for FB)
+    - Letterbox for drama channel (2.35:1 cinematic)
+    - Loop engine integration for stock clip expansion
+    """
     def __init__(self):
         self.fps = 24
-        self.width = 1920
-        self.height = 1080
 
-    def _unify_frame(self, frame: np.ndarray, account_key: str = "fb_fanspage") -> np.ndarray:
-        """
-        Per-channel color grading — each channel gets its own visual style.
-        Uses loop_engine.apply_color_grade for channel-specific processing.
-        """
-        return apply_color_grade(frame, account_key)
+    def _get_dimensions(self, account_key: str) -> Tuple[int, int]:
+        """Per-channel resolution based on aspect_ratio profile."""
+        profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
+        ratio = profile.get("aspect_ratio", "16:9")
+        if ratio == "1:1":
+            return 1080, 1080  # Square for Facebook
+        else:
+            return 1920, 1080  # Standard 16:9
 
-    def _ken_burns_frames(self, img_array: np.ndarray, duration: float) -> List[np.ndarray]:
+    def _apply_letterbox(self, frame: np.ndarray, account_key: str) -> np.ndarray:
+        """Apply cinematic letterbox (2.35:1) for drama channel."""
+        profile = VIDEO_PROFILES.get(account_key, {})
+        if not profile.get("letterbox", False):
+            return frame
+        h, w = frame.shape[:2]
+        # 2.35:1 letterbox — add black bars top and bottom
+        target_h = int(w / 2.35)
+        bar_h = (h - target_h) // 2
+        if bar_h > 0:
+            frame[:bar_h] = 0       # top bar
+            frame[-bar_h:] = 0      # bottom bar
+        return frame
+
+    def _apply_color_grade(self, frame: np.ndarray, account_key: str) -> np.ndarray:
+        """Per-channel color grading + letterbox."""
+        graded = apply_color_grade(frame, account_key)
+        return self._apply_letterbox(graded, account_key)
+
+    def _ken_burns_frames(self, img_array: np.ndarray, duration: float,
+                          width: int, height: int,
+                          effect: str = None) -> List[np.ndarray]:
         """Creates Ken Burns (zoom/pan) frames from a single image."""
         h, w = img_array.shape[:2]
-        effect = random.choice(["zoom_in", "zoom_out", "pan_left", "pan_right"])
+        if effect is None:
+            effect = random.choice(["zoom_in", "zoom_out", "pan_left", "pan_right"])
         total_frames = int(duration * self.fps)
         frames = []
-        
+
         for i in range(total_frames):
-            progress = i / total_frames
-            
+            progress = i / max(total_frames - 1, 1)
+
             if effect == "zoom_in":
                 scale = 1.0 - 0.2 * progress
             elif effect == "zoom_out":
                 scale = 0.8 + 0.2 * progress
-            elif effect == "pan_left":
+            elif effect in ("pan_left", "pan_right"):
                 scale = 0.85
-                cx = int(w * (0.55 - 0.1 * progress))
+                cx_offset = 0.1 * progress * (-1 if effect == "pan_left" else 1)
+                cx = int(w * (0.5 + cx_offset))
                 cy = h // 2
                 cw, ch = int(w * scale), int(h * scale)
-                x1, y1 = max(0, cx - cw//2), max(0, cy - ch//2)
-                cropped = img_array[y1:y1+ch, x1:x1+cw]
-                frames.append(np.array(Image.fromarray(cropped).resize((self.width, self.height), Image.LANCZOS)))
-                continue
-            elif effect == "pan_right":
-                scale = 0.85
-                cx = int(w * (0.45 + 0.1 * progress))
-                cy = h // 2
-                cw, ch = int(w * scale), int(h * scale)
-                x1, y1 = max(0, cx - cw//2), max(0, cy - ch//2)
-                cropped = img_array[y1:y1+ch, x1:x1+cw]
-                frames.append(np.array(Image.fromarray(cropped).resize((self.width, self.height), Image.LANCZOS)))
+                x1, y1 = max(0, cx - cw // 2), max(0, cy - ch // 2)
+                x2, y2 = min(w, x1 + cw), min(h, y1 + ch)
+                cropped = img_array[y1:y2, x1:x2]
+                if cropped.shape[0] > 0 and cropped.shape[1] > 0:
+                    frames.append(np.array(Image.fromarray(cropped).resize((width, height), Image.LANCZOS)))
                 continue
             else:
                 scale = 1.0
-            
+
             cw, ch = int(w * scale), int(h * scale)
             x1, y1 = (w - cw) // 2, (h - ch) // 2
-            cropped = img_array[y1:y1+ch, x1:x1+cw]
-            frames.append(np.array(Image.fromarray(cropped).resize((self.width, self.height), Image.LANCZOS)))
-        
+            x2, y2 = x1 + cw, y1 + ch
+            cropped = img_array[max(0, y1):min(h, y2), max(0, x1):min(w, x2)]
+            if cropped.shape[0] > 0 and cropped.shape[1] > 0:
+                frames.append(np.array(Image.fromarray(cropped).resize((width, height), Image.LANCZOS)))
+
         return frames
+
+    def _get_clip_duration(self, account_key: str) -> float:
+        """Get random clip duration within channel's range."""
+        profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
+        dur_range = profile.get("cut_duration", (4, 7))
+        return random.uniform(dur_range[0], dur_range[1])
+
+    def _get_transition(self, account_key: str) -> str:
+        """Get transition type for this channel."""
+        profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
+        return profile.get("transition", "dissolve")
 
     def assemble_final_video(self, account_key: str, topic: str,
                              media_items: list, voiceover_file: str,
                              music_file: str) -> Optional[str]:
         """
-        Creates final video from mixed media (video clips + images).
-        media_items: list of (type, path) tuples where type is "video" or "image"
-        Bagian 4 Step 7.
+        Per-channel video assembly using VIDEO_PROFILES.
+        Each channel gets fundamentally different:
+        - Cut durations
+        - Transitions (hard_cut vs dissolve)
+        - Aspect ratio (16:9 vs 1:1)
+        - Letterbox (drama channel 2.35:1)
+        - Loop variations for stock clips
         """
         if not media_items:
             print(f"[{account_key}] No media provided.")
             return None
 
+        profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
+        width, height = self._get_dimensions(account_key)
+        transition_type = self._get_transition(account_key)
+        loop_style = profile.get("loop_style", "standard")
+
         # Handle both old format (list of paths) and new format (list of tuples)
         if isinstance(media_items[0], str):
-            # Old format: list of file paths — detect type by extension
             media_items = [
-                ("video" if p.endswith(".mp4") else "image", p) 
+                ("video" if p.endswith(".mp4") else "image", p)
                 for p in media_items
             ]
 
         video_count = sum(1 for t, _ in media_items if t == "video")
         image_count = sum(1 for t, _ in media_items if t == "image")
-        print(f"[{account_key}] Assembling: {video_count} video clips + {image_count} AI images...")
+        print(f"[{account_key}] Assembly profile: cut={profile['cut_duration']}s, "
+              f"transition={transition_type}, ratio={profile['aspect_ratio']}, "
+              f"letterbox={profile['letterbox']}, loop={loop_style}")
+        print(f"[{account_key}] Assembling: {video_count} stock clips + {image_count} AI images...")
 
         try:
             from moviepy import (VideoFileClip, ImageSequenceClip, AudioFileClip,
                                  CompositeAudioClip, concatenate_videoclips)
 
             clips = []
-            clip_dur = CLIP_DURATION_SEC  # 6 seconds per scene
+            last_variation = None  # Track to prevent consecutive same variations
 
             for i, (media_type, media_path) in enumerate(media_items):
                 if not os.path.exists(media_path):
                     continue
 
+                # Per-channel clip duration
+                clip_dur = self._get_clip_duration(account_key)
+
                 try:
                     if media_type == "video":
-                        # Real stock video clip
+                        # --- STOCK VIDEO CLIP ---
                         vc = VideoFileClip(media_path)
+
+                        # Generate loop variations from this clip via loop_engine
+                        if loop_style in ("standard", "replay", "drift", "emotional", "reaction"):
+                            variations = generate_clip_variations(
+                                media_path, account_key, loop_style, TMP_DIR, i
+                            )
+                            # Use the first variation that differs from last
+                            used_var = False
+                            for var_path in variations:
+                                if var_path != last_variation and os.path.exists(var_path):
+                                    try:
+                                        var_clip = VideoFileClip(var_path)
+                                        if var_clip.duration > clip_dur:
+                                            max_s = max(0, var_clip.duration - clip_dur)
+                                            s = random.uniform(0, max_s)
+                                            var_clip = var_clip.subclipped(s, s + clip_dur)
+                                        var_clip = var_clip.resized((width, height))
+                                        var_clip = var_clip.image_transform(
+                                            lambda f, ak=account_key: self._apply_color_grade(f, ak)
+                                        )
+                                        clips.append(var_clip)
+                                        last_variation = var_path
+                                        used_var = True
+                                        print(f"[{account_key}] Added variation {i+1}: {os.path.basename(var_path)} ({var_clip.duration:.1f}s)")
+                                        break
+                                    except Exception as e:
+                                        print(f"[{account_key}] Variation error: {e}")
+                                        continue
+
+                            if used_var:
+                                vc.close()
+                                continue
+
+                        # Fallback: use original clip directly
                         if vc.duration > clip_dur:
                             max_start = max(0, vc.duration - clip_dur)
                             start = random.uniform(0, max_start)
                             vc = vc.subclipped(start, start + clip_dur)
-                        vc = vc.resized((self.width, self.height))
-                        # Same post-processing for ALL clips
-                        vc = vc.image_transform(lambda f: self._unify_frame(f, account_key))
+                        vc = vc.resized((width, height))
+                        vc = vc.image_transform(
+                            lambda f, ak=account_key: self._apply_color_grade(f, ak)
+                        )
                         clips.append(vc)
                         print(f"[{account_key}] Added stock clip {i+1} ({vc.duration:.1f}s)")
 
                     elif media_type == "image":
-                        # AI tarsier image → Ken Burns effect
+                        # --- AI ENVIRONMENT IMAGE → Ken Burns effect ---
                         img = Image.open(media_path).convert("RGB")
-                        if img.width < self.width or img.height < self.height:
-                            ratio = max(self.width / img.width, self.height / img.height) * 1.3
+                        # Ensure image is large enough for Ken Burns
+                        if img.width < width or img.height < height:
+                            ratio = max(width / img.width, height / img.height) * 1.3
                             img = img.resize((int(img.width * ratio), int(img.height * ratio)), Image.LANCZOS)
-                        frames = self._ken_burns_frames(np.array(img), clip_dur)
-                        # Apply same post-processing to every AI frame
-                        frames = [self._unify_frame(f, account_key) for f in frames]
-                        ic = ImageSequenceClip(frames, fps=self.fps)
-                        clips.append(ic)
-                        print(f"[{account_key}] Added AI tarsier {i+1} (Ken Burns {clip_dur}s)")
+                        frames = self._ken_burns_frames(np.array(img), clip_dur, width, height)
+                        # Apply per-channel color grade + letterbox to every frame
+                        frames = [self._apply_color_grade(f, account_key) for f in frames]
+                        if frames:
+                            ic = ImageSequenceClip(frames, fps=self.fps)
+                            clips.append(ic)
+                            print(f"[{account_key}] Added environment image {i+1} (Ken Burns {clip_dur:.1f}s)")
 
                 except Exception as e:
                     print(f"[{account_key}] Error processing media {i+1}: {e}")
@@ -134,9 +224,18 @@ class VideoAssembler:
                 print(f"[{account_key}] No valid clips assembled.")
                 return None
 
-            # Concatenate all clips
-            final_video = concatenate_videoclips(clips, method="compose")
-            print(f"[{account_key}] Video assembled: {final_video.duration:.1f}s total")
+            # Concatenate clips with per-channel transition
+            if transition_type == "dissolve" and len(clips) > 1:
+                # Cross-dissolve transition (0.5s overlap)
+                transition_dur = 0.5
+                final_video = concatenate_videoclips(clips, method="compose",
+                                                     padding=-transition_dur)
+            else:
+                # Hard cut — no transition (used by yt_funny)
+                final_video = concatenate_videoclips(clips, method="compose")
+
+            print(f"[{account_key}] Video assembled: {final_video.duration:.1f}s total "
+                  f"(transition={transition_type})")
 
             # Add Audio (Voiceover + Music) — with per-channel processing
             from src.audio_processor import process_audio
@@ -157,7 +256,7 @@ class VideoAssembler:
             if processed_music and os.path.exists(processed_music):
                 try:
                     music = AudioFileClip(processed_music)
-                    music = music.with_volume_scaled(0.5)  # Base level, already processed
+                    music = music.with_volume_scaled(0.5)
                     if music.duration < final_video.duration:
                         from moviepy import concatenate_audioclips
                         loops = int(final_video.duration / music.duration) + 1
@@ -199,6 +298,7 @@ class VideoAssembler:
             import traceback
             traceback.print_exc()
             return None
+
 
 if __name__ == "__main__":
     pass

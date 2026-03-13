@@ -12,7 +12,7 @@ from email.message import EmailMessage
 from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import ACCOUNTS, MAX_RETRIES, TMP_DIR, TOPICS_FILE, CLIP_DURATION_SEC
+from src.config import ACCOUNTS, MAX_RETRIES, TMP_DIR, TOPICS_FILE, CLIP_DURATION_SEC, VIDEO_PROFILES
 from src.database import DatabaseManager
 
 # PREVIEW_MODE: skip YouTube upload, save videos to output/ for review
@@ -169,12 +169,17 @@ class Pipeline:
                 self.db.mark_completed(topic_name, account_key)
                 return True
 
-            # 4. Generate Visual Media — Stock video + AI images (hybrid)
+            # 4. Generate Visual Media — per-channel source rules from VIDEO_PROFILES
             script_segments = self._split_script_to_segments(script)
             media_items = self.media_gen.generate_all_clips(script_segments, account_key, topic_name)
-                
-            # 5. Generate Narasi Suara (non-fatal: video works without it)
-            audio_path = self.media_gen.generate_voiceover(script, account_key, topic_name)
+            
+            # 5. Generate Narasi Suara — skip for channels with has_voiceover=False (e.g. yt_funny)
+            profile = VIDEO_PROFILES.get(account_key, {})
+            audio_path = None
+            if profile.get("has_voiceover", True):
+                audio_path = self.media_gen.generate_voiceover(script, account_key, topic_name)
+            else:
+                self._log("INFO", account_key, "SKIP voiceover (has_voiceover=False per correction plan)")
             
             # 6. Generate Musik (non-fatal: video works without it)
             music_path = self.media_gen.generate_music(account_key, topic_name)

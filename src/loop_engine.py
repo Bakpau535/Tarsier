@@ -256,3 +256,89 @@ def generate_variations(img_path: str, account_key: str, clip_duration: float = 
             continue
     
     return variations
+
+
+def generate_clip_variations(clip_path: str, account_key: str,
+                             loop_style: str, tmp_dir: str,
+                             clip_index: int = 0) -> List[str]:
+    """
+    Generate video clip variations using FFmpeg from a single stock clip.
+    Returns list of variation file paths.
+    
+    Per-channel loop_style (from VIDEO_PROFILES):
+    - standard: normal, slow-mo 0.5x, ken burns zoom, flip
+    - replay:   normal, slow-mo 0.4x, zoom punch (yt_funny)
+    - drift:    very slow float pan (yt_pov)
+    - emotional: very slow ken burns 2% zoom (yt_drama)
+    - reaction: silent stare loops with crop variation (yt_anthro)
+    """
+    import subprocess
+    
+    if not os.path.exists(clip_path):
+        return []
+    
+    variations = []
+    base_name = os.path.splitext(os.path.basename(clip_path))[0]
+    
+    # Define variations per loop_style
+    if loop_style == "standard":
+        # Correction plan: normal, slow-mo 0.5x, ken burns zoom in, zoom out, flip, crop-eyes
+        var_specs = [
+            ("slowmo", f'-vf "setpts=2.0*PTS" -an'),  # 0.5x speed
+            ("zoomin", f'-vf "zoompan=z=\'min(zoom+0.002,1.2)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
+            ("flip", f'-vf "hflip" -an'),
+        ]
+    elif loop_style == "replay":
+        # yt_funny: normal → slow-mo 0.4x → zoom punch 1.3x
+        var_specs = [
+            ("slowmo", f'-vf "setpts=2.5*PTS" -an'),  # 0.4x speed
+            ("zoom_punch", f'-vf "zoompan=z=\'min(zoom+0.005,1.3)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
+        ]
+    elif loop_style == "drift":
+        # yt_pov: very slow drift float (1-2% pan over 8s)
+        var_specs = [
+            ("drift", f'-vf "zoompan=z=\'min(zoom+0.001,1.05)\':x=\'iw/2-(iw/zoom/2)+10*on/25\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
+            ("slowmo", f'-vf "setpts=1.5*PTS" -an'),  # gentle slow-mo
+        ]
+    elif loop_style == "emotional":
+        # yt_drama: very slow ken burns 2% zoom over 10s
+        var_specs = [
+            ("slow_zoom", f'-vf "zoompan=z=\'min(zoom+0.0005,1.02)\':x=\'iw/2-(iw/zoom/2)\':y=\'ih/2-(ih/zoom/2)\':d=1:s=1920x1080:fps=24" -an'),
+            ("slowmo", f'-vf "setpts=2.0*PTS" -an'),
+        ]
+    elif loop_style == "reaction":
+        # yt_anthro: silent stare loops with different crop regions
+        var_specs = [
+            ("crop_center", f'-vf "crop=iw*0.6:ih*0.6:iw*0.2:ih*0.1,scale=1920:1080" -an'),
+            ("flip", f'-vf "hflip" -an'),
+        ]
+    else:
+        var_specs = [
+            ("slowmo", f'-vf "setpts=2.0*PTS" -an'),
+        ]
+    
+    for var_name, ffmpeg_filter in var_specs:
+        output_path = os.path.join(tmp_dir, f"{base_name}_{var_name}_{clip_index}.mp4")
+        
+        # Skip if already generated
+        if os.path.exists(output_path):
+            variations.append(output_path)
+            continue
+        
+        try:
+            cmd = f'ffmpeg -y -i "{clip_path}" {ffmpeg_filter} -c:v libx264 -preset ultrafast -crf 23 "{output_path}"'
+            result = subprocess.run(cmd, shell=True, capture_output=True, timeout=60)
+            
+            if result.returncode == 0 and os.path.exists(output_path) and os.path.getsize(output_path) > 1000:
+                variations.append(output_path)
+                print(f"[{account_key}] Loop variation: {var_name} from clip {clip_index}")
+            else:
+                # If FFmpeg fails, still include original
+                if result.stderr:
+                    print(f"[{account_key}] FFmpeg {var_name} error: {result.stderr.decode()[:100]}")
+        except Exception as e:
+            print(f"[{account_key}] Variation '{var_name}' failed: {e}")
+    
+    # Always include original clip as first option
+    variations.insert(0, clip_path)
+    return variations

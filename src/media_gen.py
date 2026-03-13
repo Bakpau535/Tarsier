@@ -6,7 +6,7 @@ from typing import Optional, List
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import HF_API_KEYS, ACCOUNTS, TMP_DIR, MAX_RETRIES, CLIP_DURATION_SEC, FREESOUND_API_KEY
+from src.config import HF_API_KEYS, ACCOUNTS, TMP_DIR, MAX_RETRIES, CLIP_DURATION_SEC, FREESOUND_API_KEY, VIDEO_PROFILES
 from src.ssml_builder import build_ssml, get_edge_tts_params
 
 class MediaGenerator:
@@ -276,33 +276,58 @@ class MediaGenerator:
     
     def generate_all_clips(self, script_segments: List[str], account_key: str, topic: str) -> list:
         """
-        Max 7 stock clips + minimum 5 AI tarsier images per account.
-        Each account uses its OWN HF API key and themed prompts.
+        Per-channel visual source rules from VIDEO_PROFILES:
+        - stock_only: Pexels + Pixabay real tarsier footage ONLY. ZERO AI images.
+        - stock_plus_flux_env: Stock tarsier + FLUX environment-only images.
         """
+        profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
+        visual_source = profile.get("visual_source", "stock_only")
         TARGET_CLIPS = 12
-        MIN_AI_TARSIER = 5
-        MAX_STOCK = TARGET_CLIPS - MIN_AI_TARSIER  # 7
         
-        # Step 1: Stock tarsier clips (max 7)
-        stock_clips = self.download_stock_clips(account_key, topic, num_clips=MAX_STOCK)
-        all_media = [("video", clip) for clip in stock_clips]
+        if visual_source == "stock_only":
+            # STOCK ONLY: download as many tarsier clips as possible, ZERO AI
+            print(f"[{account_key}] Visual source: STOCK ONLY (Pexels+Pixabay real footage, ZERO FLUX)")
+            stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
+            all_media = [("video", clip) for clip in stock_clips]
+            
+            # If stock is insufficient, the loop_engine will expand these via variations
+            # in assemble.py — we do NOT fall back to AI images
+            if len(all_media) < 3:
+                print(f"[{account_key}] WARNING: Only {len(all_media)} stock clips found. Loop engine will expand.")
+            
+            stock_n = len(all_media)
+            print(f"[{account_key}] Final: {stock_n} stock clips (ZERO AI - correction plan rule)")
+            return all_media
         
-        # Step 2: AI tarsier images — minimum 5, using account's themed prompts + API key
-        ai_needed = max(TARGET_CLIPS - len(stock_clips), MIN_AI_TARSIER)
+        elif visual_source == "stock_plus_flux_env":
+            # HYBRID: Stock tarsier clips + FLUX environment-only images
+            MAX_STOCK = 7
+            MIN_ENV_AI = 5
+            
+            print(f"[{account_key}] Visual source: Stock tarsier + FLUX environment-only")
+            stock_clips = self.download_stock_clips(account_key, topic, num_clips=MAX_STOCK)
+            all_media = [("video", clip) for clip in stock_clips]
+            
+            # AI environment images — NEVER tarsier, only backgrounds/atmosphere
+            ai_needed = max(TARGET_CLIPS - len(stock_clips), MIN_ENV_AI)
+            print(f"[{account_key}] Generating {ai_needed} ENVIRONMENT-ONLY AI images (ZERO tarsier)...")
+            for i in range(ai_needed):
+                img = self.generate_tarsier_image(account_key, i, topic)
+                if img:
+                    all_media.append(("image", img))
+                time.sleep(2)
+            
+            random.shuffle(all_media)
+            stock_n = sum(1 for t, _ in all_media if t == "video")
+            ai_n = sum(1 for t, _ in all_media if t == "image")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({stock_n} stock tarsier + {ai_n} AI environment)")
+            return all_media
         
-        print(f"[{account_key}] Generating {ai_needed} themed AI tarsier images...")
-        for i in range(ai_needed):
-            img = self.generate_tarsier_image(account_key, i, topic)
-            if img:
-                all_media.append(("image", img))
-            time.sleep(2)
-        
-        random.shuffle(all_media)
-        
-        stock_n = sum(1 for t, _ in all_media if t == "video")
-        ai_n = sum(1 for t, _ in all_media if t == "image")
-        print(f"[{account_key}] Final: {len(all_media)} clips ({stock_n} stock + {ai_n} AI tarsier)")
-        return all_media
+        else:
+            # Fallback: stock only
+            print(f"[{account_key}] Unknown visual_source '{visual_source}', defaulting to stock_only")
+            stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
+            return [("video", clip) for clip in stock_clips]
 
     # ==========================================
     # AUDIO — Per-account voice styles via edge-tts

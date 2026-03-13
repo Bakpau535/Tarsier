@@ -110,6 +110,89 @@ ACCOUNTS = {
     }
 }
 
+# --- Per-Channel Video Production Profiles (from correction-plan-tarsier.md) ---
+# This is the "Video DNA" — each channel builds its video differently.
+VIDEO_PROFILES = {
+    "yt_documenter": {
+        "cut_duration": (5, 9),        # seconds per shot — slow, documentary pace
+        "transition": "dissolve",       # dissolve 0.5s between shots
+        "aspect_ratio": "16:9",
+        "letterbox": False,
+        "tarsier_min_pct": 75,          # tarsier on-screen minimum 75%
+        "has_voiceover": True,
+        "visual_source": "stock_only",  # Pexels + Pixabay real footage ONLY, ZERO FLUX
+        "color_grade": "documentary",   # desaturate 20%, teal-green, shadow lift
+        "loop_style": "standard",       # normal, slow-mo, ken burns, flip, crop-eyes
+        "loop_habitat_interval": 4,     # insert habitat B-roll every 4 tarsier variations
+        "text_overlay": "data_only",    # text only for scientific data/numbers
+    },
+    "yt_funny": {
+        "cut_duration": (1, 3),         # fast energetic cuts
+        "transition": "hard_cut",       # NO dissolve — punchy hard cuts
+        "aspect_ratio": "16:9",
+        "letterbox": False,
+        "tarsier_min_pct": 85,          # tarsier dominant
+        "has_voiceover": False,         # ZERO voiceover — captions + sound effects only
+        "visual_source": "stock_only",  # Real footage ONLY, ZERO FLUX
+        "color_grade": "comedy",        # saturasi +15%, warm orange, bright
+        "loop_style": "replay",         # each moment: normal → slow-mo → zoom (3x replay)
+        "loop_habitat_interval": 0,     # no habitat B-roll for funny
+        "text_overlay": "meme_caption", # bold rounded font, colorful, meme-style
+    },
+    "yt_anthro": {
+        "cut_duration": (3, 5),         # medium pace
+        "transition": "dissolve",
+        "aspect_ratio": "16:9",
+        "letterbox": False,
+        "tarsier_min_pct": 70,
+        "has_voiceover": True,
+        "visual_source": "stock_plus_flux_env",  # stock tarsier + FLUX human-world backgrounds
+        "color_grade": "sitcom",        # warm tone, slight vignette
+        "loop_style": "reaction",       # silent reaction loops (tarsier stares, 2-3x crop)
+        "loop_habitat_interval": 0,
+        "text_overlay": "subtitle",     # bold subtitle with semi-transparent black bg
+    },
+    "yt_pov": {
+        "cut_duration": (6, 12),        # slowest — cinematic breathing room
+        "transition": "dissolve",       # dissolve or fade ONLY, NO hard cuts
+        "aspect_ratio": "16:9",
+        "letterbox": False,
+        "tarsier_min_pct": 80,
+        "has_voiceover": True,
+        "visual_source": "stock_plus_flux_env",  # stock tarsier + FLUX atmospheric forests
+        "color_grade": "night_vision",  # blue shadows, yellow highlights, film grain +25%
+        "loop_style": "drift",          # very slow float movement (1-2% pan over 8s)
+        "loop_habitat_interval": 0,
+        "text_overlay": "none",         # ZERO text except "Day [N]" title card
+    },
+    "yt_drama": {
+        "cut_duration": (2, 12),        # variable — 2s action, 8-12s emotional moments
+        "transition": "dissolve",
+        "aspect_ratio": "16:9",
+        "letterbox": True,              # black bars top+bottom for cinematic 2.35:1
+        "tarsier_min_pct": 65,          # lowest — intentional environment scenes
+        "has_voiceover": True,
+        "visual_source": "stock_plus_flux_env",  # stock tarsier + FLUX dramatic scenes
+        "color_grade": "drama",         # variable: warm green (safe), cold blue (danger)
+        "loop_style": "emotional",      # very slow ken burns 2% over 10s
+        "loop_habitat_interval": 0,
+        "text_overlay": "title_card",   # episode title card, font serif dramatis
+    },
+    "fb_fanspage": {
+        "cut_duration": (3, 6),
+        "transition": "dissolve",
+        "aspect_ratio": "1:1",          # SQUARE format for Facebook feed
+        "letterbox": False,
+        "tarsier_min_pct": 80,
+        "has_voiceover": True,
+        "visual_source": "stock_only",  # repurpose best clips, ZERO FLUX
+        "color_grade": "vivid",         # vivid, high contrast, stand out in feed
+        "loop_style": "standard",
+        "loop_habitat_interval": 0,
+        "text_overlay": "bold_overlay", # bold typography on EVERY shot
+    },
+}
+
 # --- Pipeline Constants ---
 MINIMUM_QC_SCORE = 80
 MAX_RETRIES = 3
