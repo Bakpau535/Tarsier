@@ -109,6 +109,9 @@ class MediaGenerator:
                         wait = min(response.json().get("estimated_time", 20), 60)
                         time.sleep(wait)
                         continue
+                    if response.status_code in [402]:
+                        print(f"HF CREDITS DEPLETED (402) — falling back to stock-only mode")
+                        return None
                     if response.status_code in [410, 404]:
                         return None
                     if response.status_code in [429, 500, 502, 503]:
@@ -311,11 +314,18 @@ class MediaGenerator:
             # AI environment images — NEVER tarsier, only backgrounds/atmosphere
             ai_needed = max(TARGET_CLIPS - len(stock_clips), MIN_ENV_AI)
             print(f"[{account_key}] Generating {ai_needed} ENVIRONMENT-ONLY AI images (ZERO tarsier)...")
+            ai_failed = 0
             for i in range(ai_needed):
                 img = self.generate_tarsier_image(account_key, i, topic)
                 if img:
                     all_media.append(("image", img))
+                else:
+                    ai_failed += 1
                 time.sleep(2)
+            
+            # If ALL AI images failed (e.g. HF credits depleted), continue with stock only
+            if ai_failed == ai_needed:
+                print(f"[{account_key}] WARNING: All AI images failed (HF credits?). Continuing with stock-only + loop variations.")
             
             random.shuffle(all_media)
             stock_n = sum(1 for t, _ in all_media if t == "video")
