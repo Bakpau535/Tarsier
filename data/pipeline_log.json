@@ -1162,5 +1162,77 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-13T01:01:19.525840",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-13T01:01:21.211796",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-03-13T01:01:21.212214",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-03-13T01:02:23.295552",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-13T01:02:28.296151",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-13T01:02:28.296599",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-03-13T01:03:30.369378",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-13T01:03:35.369995",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-13T01:03:35.370433",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-03-13T01:04:37.350496",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: Script generation failed."
+    },
+    {
+        "timestamp": "2026-03-13T01:04:42.351058",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-13T01:04:43.210519",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
