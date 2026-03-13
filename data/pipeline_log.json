@@ -2140,5 +2140,71 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-13T21:15:40.852886",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-13T21:15:41.637155",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Conservation status' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-13T21:15:42.268541",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-03-13T21:15:42.268989",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-03-13T21:15:42.800956",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-13T21:15:43.126594",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-13T21:25:23.010296",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-13T21:25:35.014340",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-13T21:25:35.036615",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-13T21:25:35.166549",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-03-13T21:25:35.166925",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
