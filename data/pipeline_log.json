@@ -2206,5 +2206,107 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-13T22:52:49.850569",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-13T22:52:51.505951",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Diet and hunting' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:52:52.837711",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Habitat and distribution' already completed for all accounts. Trying another... (2/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:52:54.245157",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Species comparison' already completed for all accounts. Trying another... (3/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:52:55.491925",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Unique sensory abilities' already completed for all accounts. Trying another... (4/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:52:56.752869",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Conservation status' already completed for all accounts. Trying another... (5/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:52:58.630848",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Diet and hunting' already completed for all accounts. Trying another... (6/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:53:00.026719",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Species comparison' already completed for all accounts. Trying another... (7/10)"
+    },
+    {
+        "timestamp": "2026-03-13T22:53:01.372408",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Nocturnal adaptations"
+    },
+    {
+        "timestamp": "2026-03-13T22:53:01.372881",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Nocturnal adaptations"
+    },
+    {
+        "timestamp": "2026-03-13T22:53:02.327102",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-13T22:53:02.949644",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-13T23:04:18.223597",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-13T23:04:31.641589",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-13T23:04:31.678821",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-13T23:04:31.824967",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-03-13T23:04:31.825367",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
