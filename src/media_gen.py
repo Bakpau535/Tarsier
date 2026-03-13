@@ -27,11 +27,18 @@ class MediaGenerator:
         self._used_footage = self._load_footage_log()
         print(f"[MediaGen] Footage log loaded: {len(self._used_footage)} items already used")
         
-        # Tarsier-only stock search terms
+        # Tarsier-only stock search terms — EXPANDED pool for dedup survival
         self.tarsier_search_terms = [
             "tarsier", "philippine tarsier", "bohol tarsier",
             "tarsier primate", "tarsier animal", "tarsier eyes",
-            "tarsier close up", "tarsier wildlife", "tarsier night"
+            "tarsier close up", "tarsier wildlife", "tarsier night",
+            "tarsier nocturnal", "tarsier jungle", "tarsier forest",
+            "tarsier tree", "tarsier branch", "tarsier baby",
+            "tarsier face", "tarsier hunting", "tarsier insect",
+            "tarsier staring", "primate nocturnal", "tiny primate",
+            "small primate big eyes", "nocturnal primate jungle",
+            "bohol wildlife sanctuary", "sulawesi tarsier",
+            "tarsius", "primate conservation", "endangered primate",
         ]
         
         # Per-account AI prompts — FLUX AI rules from correction plan:
@@ -292,10 +299,28 @@ class MediaGenerator:
         return downloaded
 
     def download_stock_clips(self, account_key: str, topic: str, num_clips: int = 7) -> List[str]:
+        """Download stock clips with exhaustion recovery."""
         pexels = self._download_pexels_clips(account_key, topic, num_clips)
         pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
         all_clips = pexels + pixabay
         random.shuffle(all_clips)
+        
+        # EXHAUSTION RECOVERY: if dedup blocked everything, reset oldest entries and retry
+        if len(all_clips) == 0 and len(self._used_footage) > 0:
+            used_count = len(self._used_footage)
+            print(f"[{account_key}] ⚠ ALL {used_count} stock clips already used! Resetting oldest 50% for reuse with variations...")
+            # Keep only the newest half — oldest clips can be reused
+            used_list = sorted(list(self._used_footage))
+            keep_count = len(used_list) // 2
+            self._used_footage = set(used_list[keep_count:])  # Keep newest half
+            self._save_footage_log()
+            print(f"[{account_key}] Footage log trimmed: {used_count} → {len(self._used_footage)} items. Retrying downloads...")
+            
+            pexels = self._download_pexels_clips(account_key, topic, num_clips)
+            pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
+            all_clips = pexels + pixabay
+            random.shuffle(all_clips)
+        
         print(f"[{account_key}] Stock clips: {len(all_clips)} (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
         return all_clips[:num_clips]
 
@@ -378,13 +403,20 @@ class MediaGenerator:
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
             all_media = [("video", clip) for clip in stock_clips]
             
-            # If stock is insufficient, the loop_engine will expand these via variations
-            # in assemble.py — we do NOT fall back to AI images
-            if len(all_media) < 3:
+            # ABSOLUTE LAST RESORT: if stock is truly empty even after exhaustion recovery,
+            # generate AI tarsier images so the pipeline doesn't crash
+            if len(all_media) == 0:
+                print(f"[{account_key}] ⚠ ZERO stock clips available! Generating AI images as emergency fallback...")
+                for i in range(min(6, TARGET_CLIPS)):
+                    img = self.generate_tarsier_image(account_key, i, topic)
+                    if img:
+                        all_media.append(("image", img))
+                print(f"[{account_key}] Emergency AI images: {len(all_media)}")
+            elif len(all_media) < 3:
                 print(f"[{account_key}] WARNING: Only {len(all_media)} stock clips found. Loop engine will expand.")
             
             stock_n = len(all_media)
-            print(f"[{account_key}] Final: {stock_n} stock clips (ZERO AI - correction plan rule)")
+            print(f"[{account_key}] Final: {stock_n} media items")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
