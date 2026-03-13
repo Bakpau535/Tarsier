@@ -41,68 +41,51 @@ class MediaGenerator:
             "tarsius", "primate conservation", "endangered primate",
         ]
         
-        # Per-account AI prompts — FLUX AI rules from correction plan:
-        # - Channels with flux_allowed=False: only stock footage, no AI images
-        # - Channels with flux_allowed=True: ENVIRONMENT ONLY, never tarsier/animal
-        # - yt_documenter, yt_funny, fb_fanspage = ZERO FLUX
-        # - yt_anthro, yt_pov, yt_drama = FLUX for environment/backgrounds only
-        self.account_prompts = {
+        # Per-account AI prompts — TARSIER DOMINANT for all channels
+        # Tarsier images = 70%+ of all AI images, environment = supplement only
+        self.tarsier_prompts = [
+            "4k macro photography of a Philippine tarsier, huge round eyes, scientific documentary style, shallow depth of field",
+            "extreme close up of tarsier face with enormous eyes reflecting light, detailed fur texture, nocturnal wildlife photography",
+            "tarsier gripping a thin branch with elongated finger bones, detailed paws, biology style photo",
+            "side profile of a tarsier showing ear rotation mid-hunt, national geographic photography",
+            "tarsier hunting an insect at night, infrared camera style, wildlife research documentation",
+            "adorable baby tarsier clinging to mother, huge round eyes, heartwarming wildlife moment",
+            "tarsier perched on a branch in bohol philippines, lush green jungle background, conservation photo",
+            "tarsier leaping mid-air between branches, motion blur, dynamic action wildlife shot",
+            "tarsier with head rotated 180 degrees looking backwards, eerie fascinating anatomy, macro shot",
+            "two tarsiers on same branch at night, social behavior documentation, dual portrait",
+            "tarsier eating a cricket, night hunting behavior, close-up macro wildlife photography",
+            "tarsier baby with eyes closed sleeping on branch, peaceful tiny primate, soft lighting",
+            "stunning portrait of a tarsier with galaxy-like reflected eyes, viral photography style",
+            "tarsier fingers in extreme macro detail, showing suction-cup-like finger pads, biology photo",
+            "tarsier silhouette against full moon, dramatic nocturnal wildlife, cinematic style",
+        ]
+        
+        # Environment/support prompts — used for 30% supplement only
+        self.support_prompts = {
             "yt_documenter": [
-                "4k macro photography of a Philippine tarsier, huge round eyes, scientific documentary style, shallow depth of field",
-                "extreme close up of tarsier skull anatomy overlay, enormous eye sockets visible, educational nature documentary",
-                "tarsier gripping a branch with elongated finger bones visible, detailed fur texture, biology textbook style photo",
-                "side profile of a tarsier showing ear rotation, nocturnal adaptations, national geographic scientific photography",
-                "tarsier hunting an insect at night, infrared camera style, wildlife research documentation",
-                "comparison shot of tarsier eye vs its brain size, ultra detailed macro, science illustration style",
-                "tarsier perched on a branch in bohol philippines, habitat conservation signage visible, documentary field shot",
+                "tropical rainforest canopy at dawn, scientific expedition atmosphere, national geographic style",
+                "bohol tarsier sanctuary signage and forest path, conservation site documentation",
             ],
             "yt_funny": [
-                "adorable baby tarsier with comically huge surprised eyes, cute funny expression, bright colorful background",
-                "tarsier looking shocked with mouth open, meme-worthy expression, hilarious cute animal photo",
-                "tiny tarsier yawning dramatically showing tiny teeth, sleepy funny face, warm sunset lighting",
-                "tarsier peeking from behind a leaf with one enormous eye visible, funny hide and seek, playful",
-                "two tarsiers staring at each other with huge round eyes, funny standoff, comedy wildlife moment",
-                "tarsier sitting on a branch looking confused, head tilted sideways, adorable goofy expression",
-                "tarsier caught mid-sneeze, funny blurry action shot, cute hilarious animal moment",
+                "colorful tropical jungle with funny tiny props, whimsical playful atmosphere",
+                "bright cheerful forest clearing with miniature furniture, comedy set design",
             ],
-            # FLUX-allowed channels: ENVIRONMENT ONLY prompts (no tarsier/animal keywords)
             "yt_anthro": [
-                "miniature office desk with tiny furniture, coffee cup, papers, warm cozy lighting, whimsical fantasy scene",
-                "tiny kitchen scene with miniature cooking utensils, warm homey atmosphere, storybook illustration",
-                "miniature school classroom with tiny chairs and chalkboard, playful colorful fantasy setting",
-                "tiny living room with miniature sofa and TV, cozy evening lighting, whimsical interior design",
-                "miniature bicycle on a forest path, fairy tale atmosphere, no animals, just props",
-                "tiny chef kitchen with miniature utensils and ingredients, warm lighting, whimsical food scene",
-                "miniature newspaper and tiny park bench, intellectual setting, artistic urban miniature",
+                "miniature office desk with tiny furniture, coffee cup, warm cozy lighting, whimsical scene",
+                "tiny kitchen scene with miniature cooking utensils, warm homey atmosphere, storybook",
             ],
             "yt_pov": [
-                # ENVIRONMENT ONLY — atmospheric forest scenes for POV channel
-                "dark hollow tree interior looking out at moonlit jungle, atmospheric horror style, no animals",
-                "dense jungle canopy at night with glowing insects, cinematic night photography, empty forest",
-                "moonlit forest floor with fallen leaves and moss, moody atmospheric, mysterious empty path",
-                "silhouette of tree branches against full moon, dark fantasy nature, no animals visible",
-                "rainy tropical forest with water droplets on leaves, POV from under a leaf, moody atmosphere",
-                "starry sky through dense forest canopy, cosmic dreamy feeling, peaceful night scene",
-                "misty morning forest with sunbeams through trees, ethereal atmospheric, no animals",
+                "dark hollow tree interior looking out at moonlit jungle, atmospheric night, no animals",
+                "dense jungle canopy at night with glowing insects, cinematic night photography",
             ],
             "yt_drama": [
-                # ENVIRONMENT ONLY — dramatic scenes for drama channel
-                "dead tree branch at sunset, dramatic golden hour lighting, cinematic wide shot, lonely landscape",
-                "destroyed forest clearing with lone standing tree, environmental drama, post-apocalyptic nature",
-                "dark forest with approaching storm clouds, ominous atmosphere, dramatic lighting",
-                "misty forest path disappearing into darkness, emotional cinematic, no animals",
-                "burning forest in background, environmental tragedy, dramatic wide angle, no animals",
-                "rain falling on broken tree branches, sad atmosphere, moody cinematic photography",
-                "sunrise over deforested hillside, environmental contrast, dramatic documentary style",
+                "dead tree branch at sunset, dramatic golden hour lighting, cinematic wide shot",
+                "misty forest path disappearing into darkness, emotional cinematic atmosphere",
             ],
             "fb_fanspage": [
-                "stunning portrait of a tarsier with galaxy eyes, viral social media worthy, vibrant colorful background",
-                "world record smallest primate comparison with coin, fascinating scale photo, shareable viral content",
-                "infographic style tarsier facts overlay, bold text, social media optimized, educational viral content",
-                "incredible macro shot of tarsier fingers gripping branch, amazing detail, viral worthy photography",
-                "baby tarsier first time opening eyes, heartwarming moment, emotional viral animal content",
-                "tarsier conservation success story image, hopeful green scene, inspiring shareable content",
-                "split screen tarsier vs human eye comparison, mind blowing facts style, social media optimized",
+                "lush green tropical forest of bohol philippines, vibrant nature, shareable scenic photo",
+                "conservation sanctuary entrance with green trees, hopeful atmosphere",
             ],
         }
 
@@ -166,13 +149,14 @@ class MediaGenerator:
         return "".join(c for c in topic if c.isalnum() or c in (' ', '-', '_')).replace(' ', '_')[:50]
 
     # ==========================================
-    # FOOTAGE DEDUPLICATION — HARD RULE
-    # No footage/image may EVER be reused across
-    # any channel, any run, any time.
+    # FOOTAGE DEDUPLICATION — SPLIT RULES:
+    # 1. TARSIER clips: CAN reuse source but MUST
+    #    use DIFFERENT loop variation each time
+    # 2. SUPPORT clips: NEVER reuse (hard rule)
     # ==========================================
 
     def _load_footage_log(self) -> set:
-        """Load persistent set of all ever-used footage IDs."""
+        """Load persistent set of used footage IDs (support footage only)."""
         try:
             if os.path.exists(self.FOOTAGE_LOG_PATH):
                 with open(self.FOOTAGE_LOG_PATH, "r") as f:
@@ -191,11 +175,11 @@ class MediaGenerator:
             print(f"[MediaGen] Warning: Could not save footage log: {e}")
 
     def _is_footage_used(self, footage_id: str) -> bool:
-        """Check if this footage has EVER been used before."""
+        """Check if this SUPPORT footage has been used before."""
         return footage_id in self._used_footage
 
     def _mark_footage_used(self, footage_id: str):
-        """Mark footage as used permanently and save to disk."""
+        """Mark SUPPORT footage as used permanently."""
         self._used_footage.add(footage_id)
         self._save_footage_log()
 
@@ -223,9 +207,8 @@ class MediaGenerator:
                     vid_id = f"pexels_{video['id']}"
                     if len(downloaded) >= num_clips:
                         break
-                    # HARD RULE: skip if EVER used before (any channel, any run)
-                    if self._is_footage_used(vid_id):
-                        continue
+                    # Tarsier clips CAN be reused — loop engine creates unique variations
+                    # (dedup only applies to support/environment footage)
                     best_file = None
                     for vf in video.get("video_files", []):
                         if vf.get("width", 0) >= 720 and vf.get("file_type") == "video/mp4":
@@ -241,7 +224,6 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
-                            self._mark_footage_used(vid_id)  # Permanently record
                             print(f"[{account_key}] Pexels clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
                             time.sleep(0.5)
                     except Exception as e:
@@ -270,9 +252,8 @@ class MediaGenerator:
                     vid_id = f"pixabay_{video['id']}"
                     if len(downloaded) >= num_clips:
                         break
-                    # HARD RULE: skip if EVER used before
-                    if self._is_footage_used(vid_id):
-                        continue
+                    # Tarsier clips CAN be reused — loop engine creates unique variations
+                    # (dedup only applies to support/environment footage)
                     vid_url = None
                     for q in ["medium", "large", "small"]:
                         entry = video.get("videos", {}).get(q, {})
@@ -289,7 +270,6 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
-                            self._mark_footage_used(vid_id)  # Permanently record
                             print(f"[{account_key}] Pixabay clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
                             time.sleep(0.5)
                     except Exception as e:
@@ -317,28 +297,32 @@ class MediaGenerator:
     # AI TARSIER IMAGES — Per-account themed
     # ==========================================
     
-    def generate_tarsier_image(self, account_key: str, index: int, topic: str) -> Optional[str]:
-        """Generates AI image using FLUX with key pool fallback.
-        Tries own key first, then backup keys from stock_only channels.
+    def generate_tarsier_image(self, account_key: str, index: int, topic: str,
+                               force_tarsier: bool = False) -> Optional[str]:
+        """Generates AI image.
+        70% chance = tarsier image (dominant)
+        30% chance = environment/support image
+        force_tarsier=True always generates tarsier.
         """
-        account = ACCOUNTS.get(account_key, {})
+        import time as _time
         
-        prompts = self.account_prompts.get(account_key, self.account_prompts["fb_fanspage"])
-        base_prompt = prompts[index % len(prompts)]
+        # 70% tarsier, 30% support (unless forced)
+        use_tarsier = force_tarsier or (random.random() < 0.7)
         
-        seed = random.randint(1000, 9999)
-        prompt = f"{base_prompt}, related to {topic}, seed:{seed}"
-        
-        # Enforce FLUX rules: if flux_allowed=True, ensure no animal keywords
-        if account.get("flux_allowed", False):
-            forbidden_words = ["tarsier", "animal", "primate", "creature", "monkey", "ape"]
-            for word in forbidden_words:
-                prompt = prompt.replace(word, "scene")
-            img_type = "environment"
-        else:
+        if use_tarsier:
+            base_prompt = self.tarsier_prompts[index % len(self.tarsier_prompts)]
             img_type = "tarsier"
+        else:
+            support = self.support_prompts.get(account_key, self.support_prompts["fb_fanspage"])
+            base_prompt = support[index % len(support)]
+            img_type = "environment"
         
-        print(f"[{account_key}] AI {img_type} image {index}: {base_prompt[:50]}... (seed:{seed})")
+        # Make each prompt unique with topic + timestamp + seed
+        seed = random.randint(1000, 9999)
+        timestamp = int(_time.time())
+        prompt = f"{base_prompt}, about {topic}, unique:{timestamp}_{seed}"
+        
+        print(f"[{account_key}] AI {img_type} image {index}: {base_prompt[:60]}... (seed:{seed})")
         payload = {"inputs": prompt}
         
         # Try key pool: own key first, then backups from unused channels
@@ -392,21 +376,29 @@ class MediaGenerator:
         TARGET_CLIPS = 12
         
         if visual_source == "stock_only":
-            # Try stock first — only NEVER-BEFORE-USED clips
-            print(f"[{account_key}] Visual source: STOCK PREFERRED (trying Pexels+Pixabay first)")
+            # TARSIER DOMINANT: stock tarsier clips always available (loop engine makes unique)
+            # Dedup only applies to support/environment clips
+            print(f"[{account_key}] Visual source: STOCK TARSIER DOMINANT")
             stock_clips = self.download_stock_clips(account_key, topic, num_clips=TARGET_CLIPS)
             all_media = [("video", clip) for clip in stock_clips]
             
-            # Stock exhausted? → AI images produce INFINITE unique visuals
+            # Supplement with AI TARSIER images to reach target
             if len(all_media) < TARGET_CLIPS:
                 ai_needed = TARGET_CLIPS - len(all_media)
-                if len(all_media) == 0:
-                    print(f"[{account_key}] Stock pool EXHAUSTED → switching to AI images (100% unique per generation)")
-                else:
-                    print(f"[{account_key}] Only {len(all_media)} new stock clips → supplementing with {ai_needed} AI images")
+                tarsier_ai = max(ai_needed // 2, 1)  # MIN 50% tarsier (user rule: 50:50 minimum)
+                support_ai = ai_needed - tarsier_ai
                 
-                for i in range(ai_needed):
-                    img = self.generate_tarsier_image(account_key, i, topic)
+                print(f"[{account_key}] Generating {ai_needed} AI images ({tarsier_ai} tarsier + {support_ai} environment)")
+                
+                # Generate tarsier images first (dominant)
+                for i in range(tarsier_ai):
+                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
+                    if img:
+                        all_media.append(("image", img))
+                
+                # Then support images
+                for i in range(support_ai):
+                    img = self.generate_tarsier_image(account_key, tarsier_ai + i, topic, force_tarsier=False)
                     if img:
                         all_media.append(("image", img))
             
