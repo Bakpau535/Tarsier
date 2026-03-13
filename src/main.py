@@ -297,13 +297,41 @@ class Pipeline:
                 return
         
         # 1. Riset → Script Engine scraping fakta tarsier terbaru (Bagian 4 Step 1)
-        topic_info = self.researcher.generate_random_topic()
-        self._log("INFO", "SYSTEM", f"Selected Topic: {topic_info['topic_name']}")
+        # Try multiple topics until we find one that hasn't been used
+        MAX_TOPIC_RETRIES = 10
+        topic_info = None
+        for topic_attempt in range(MAX_TOPIC_RETRIES):
+            candidate = self.researcher.generate_random_topic()
+            topic_name = candidate['topic_name']
+            
+            # Check if ALL target accounts already completed this topic
+            all_completed = True
+            for ak in accounts_to_process:
+                if not self.db.is_topic_completed(topic_name, ak):
+                    all_completed = False
+                    break
+            
+            if not all_completed:
+                topic_info = candidate
+                self._log("INFO", "SYSTEM", f"Selected Topic: {topic_name}")
+                break
+            else:
+                self._log("INFO", "SYSTEM", f"Topic '{topic_name}' already completed for all accounts. Trying another... ({topic_attempt+1}/{MAX_TOPIC_RETRIES})")
+        
+        if topic_info is None:
+            self._log("ERROR", "SYSTEM", f"No unused topics found after {MAX_TOPIC_RETRIES} attempts! All topics may be exhausted.")
+            self._save_log()
+            return
 
         all_success = True
         
         # Process each account with retry logic
         for account_key in accounts_to_process:
+            # Skip if this specific account already completed this topic
+            if self.db.is_topic_completed(topic_info['topic_name'], account_key):
+                self._log("INFO", account_key, f"Topic '{topic_info['topic_name']}' already completed. Skipping.")
+                continue
+            
             # Bagian 15 - Error Handling: retry otomatis maksimal 3x
             success = False
             last_error = ""
