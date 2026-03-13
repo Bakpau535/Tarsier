@@ -371,6 +371,100 @@ class MediaGenerator:
         return clips[:num_clips]
 
     # ==========================================
+    # REAL TARSIER PHOTOS — from Pexels/Pixabay Photos API
+    # For formal channels: ZERO AI, only real photographs
+    # Loop engine converts photos to video via Ken Burns/zoom/pan
+    # ==========================================
+
+    def _download_pexels_tarsier_photos(self, account_key: str, num_photos: int) -> List[str]:
+        """Download REAL tarsier photos from Pexels Photos API."""
+        if not self.pexels_key:
+            return []
+        print(f"[{account_key}] Searching Pexels PHOTOS for tarsier images...")
+        headers = {"Authorization": self.pexels_key}
+        downloaded = []
+        for term in self.tarsier_search_terms:
+            if len(downloaded) >= num_photos:
+                break
+            try:
+                r = requests.get("https://api.pexels.com/v1/search", headers=headers,
+                    params={"query": term, "per_page": 15, "orientation": "landscape"}, timeout=15)
+                if r.status_code != 200:
+                    continue
+                photos = r.json().get("photos", [])
+                random.shuffle(photos)
+                for photo in photos:
+                    if len(downloaded) >= num_photos:
+                        break
+                    # Get landscape-sized photo
+                    src = photo.get("src", {})
+                    photo_url = src.get("landscape") or src.get("large") or src.get("medium")
+                    if not photo_url:
+                        continue
+                    try:
+                        dl = requests.get(photo_url, timeout=30)
+                        if dl.status_code == 200 and len(dl.content) > 5000:
+                            fp = os.path.join(TMP_DIR, f"{account_key}_tarsier_photo_pexels_{photo['id']}.jpg")
+                            with open(fp, "wb") as f:
+                                f.write(dl.content)
+                            downloaded.append(fp)
+                            print(f"[{account_key}] Pexels PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:pexels_photo_{photo['id']}]")
+                            time.sleep(0.5)
+                    except Exception as e:
+                        print(f"[{account_key}] Photo download error: {e}")
+            except Exception as e:
+                print(f"[{account_key}] Pexels photos error: {e}")
+        return downloaded
+
+    def _download_pixabay_tarsier_photos(self, account_key: str, num_photos: int) -> List[str]:
+        """Download REAL tarsier photos from Pixabay Photos API."""
+        if not self.pixabay_key:
+            return []
+        print(f"[{account_key}] Searching Pixabay PHOTOS for tarsier images...")
+        downloaded = []
+        for term in self.tarsier_search_terms:
+            if len(downloaded) >= num_photos:
+                break
+            try:
+                r = requests.get("https://pixabay.com/api/",
+                    params={"key": self.pixabay_key, "q": term, "per_page": 15,
+                            "image_type": "photo", "orientation": "horizontal",
+                            "min_width": 1280, "safesearch": "true"}, timeout=15)
+                if r.status_code != 200:
+                    continue
+                hits = r.json().get("hits", [])
+                random.shuffle(hits)
+                for photo in hits:
+                    if len(downloaded) >= num_photos:
+                        break
+                    photo_url = photo.get("largeImageURL") or photo.get("webformatURL")
+                    if not photo_url:
+                        continue
+                    try:
+                        dl = requests.get(photo_url, timeout=30)
+                        if dl.status_code == 200 and len(dl.content) > 5000:
+                            fp = os.path.join(TMP_DIR, f"{account_key}_tarsier_photo_pixabay_{photo['id']}.jpg")
+                            with open(fp, "wb") as f:
+                                f.write(dl.content)
+                            downloaded.append(fp)
+                            print(f"[{account_key}] Pixabay PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:pixabay_photo_{photo['id']}]")
+                            time.sleep(0.5)
+                    except Exception as e:
+                        print(f"[{account_key}] Photo download error: {e}")
+            except Exception as e:
+                print(f"[{account_key}] Pixabay photos error: {e}")
+        return downloaded
+
+    def download_tarsier_photos(self, account_key: str, num_photos: int = 10) -> List[str]:
+        """Download REAL tarsier photos from Pexels + Pixabay. CAN be reused (loop makes unique)."""
+        pexels = self._download_pexels_tarsier_photos(account_key, num_photos)
+        pixabay = self._download_pixabay_tarsier_photos(account_key, num_photos)
+        all_photos = pexels + pixabay
+        random.shuffle(all_photos)
+        print(f"[{account_key}] Tarsier PHOTOS: {len(all_photos)} real photos (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
+        return all_photos[:num_photos]
+
+    # ==========================================
     # AI TARSIER IMAGES — Per-account themed
     # ==========================================
     
@@ -455,52 +549,52 @@ class MediaGenerator:
         if visual_source == "stock_only":
             # ==========================================
             # FORMAL CHANNELS: 50:50 tarsier:support
-            # Tarsier clips: CAN reuse (loop engine makes unique variations)
-            # Support clips: NEVER reuse (tracked in used_footage.json)
+            # *** ZERO AI IMAGES ***
+            # Tarsier: stock video + stock PHOTOS (CAN reuse, loop engine makes unique)
+            # Support: stock video (NEVER reuse, tracked in used_footage.json)
             # ==========================================
             HALF = TARGET_CLIPS // 2  # 6 tarsier + 6 support
             
-            print(f"[{account_key}] Visual source: STOCK 50:50 ({HALF} tarsier + {HALF} support)")
+            print(f"[{account_key}] Visual source: STOCK ONLY — ZERO AI ({HALF} tarsier + {HALF} support)")
             
-            # --- 50% TARSIER clips (reusable with loop variations) ---
-            tarsier_clips = self.download_stock_clips(account_key, topic, num_clips=HALF)
-            tarsier_media = [("video", clip, "tarsier") for clip in tarsier_clips]
+            # --- 50% TARSIER: stock videos + stock photos (reusable with loop) ---
+            tarsier_videos = self.download_stock_clips(account_key, topic, num_clips=HALF)
+            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
             
-            # If not enough tarsier stock, supplement with AI tarsier
-            if len(tarsier_media) < HALF:
-                ai_needed = HALF - len(tarsier_media)
-                print(f"[{account_key}] Tarsier stock low ({len(tarsier_media)}). Adding {ai_needed} AI tarsier...")
-                for i in range(ai_needed):
-                    img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
-                    if img:
-                        tarsier_media.append(("image", img, "tarsier"))
+            tarsier_media = []
+            for clip in tarsier_videos:
+                tarsier_media.append(("video", clip))
+            for photo in tarsier_photos:
+                tarsier_media.append(("image", photo))  # loop_engine converts to video
             
-            # --- 50% SUPPORT clips (NEVER reused, tracked in used_footage.json) ---
+            # Cap at HALF, prefer videos first then photos
+            tarsier_media = tarsier_media[:HALF]
+            
+            if len(tarsier_media) == 0:
+                print(f"[{account_key}] CRITICAL: Zero tarsier content from Pexels+Pixabay! Check API keys!")
+            elif len(tarsier_media) < HALF:
+                print(f"[{account_key}] Tarsier stock: {len(tarsier_media)}/{HALF}. Loop engine will create variations.")
+            else:
+                print(f"[{account_key}] Tarsier stock: {len(tarsier_media)}/{HALF} (videos:{len(tarsier_videos)} photos:{len(tarsier_photos)})")
+            
+            # --- 50% SUPPORT: stock videos (NEVER reused) ---
             support_clips = self.download_support_clips(account_key, num_clips=HALF)
-            support_media = [("video", clip, "support") for clip in support_clips]
+            support_media = [("video", clip) for clip in support_clips]
             
-            # If not enough support stock, supplement with AI environment
             if len(support_media) < HALF:
-                ai_needed = HALF - len(support_media)
-                print(f"[{account_key}] Support stock low ({len(support_media)}). Adding {ai_needed} AI environment...")
-                for i in range(ai_needed):
-                    img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
-                    if img:
-                        support_media.append(("image", img, "support"))
+                print(f"[{account_key}] Support stock: {len(support_media)}/{HALF}. Loop engine will expand.")
             
             # Interleave: tarsier, support, tarsier, support...
             all_media = []
             for i in range(max(len(tarsier_media), len(support_media))):
                 if i < len(tarsier_media):
-                    t, path, _ = tarsier_media[i]
-                    all_media.append((t, path))
+                    all_media.append(tarsier_media[i])
                 if i < len(support_media):
-                    t, path, _ = support_media[i]
-                    all_media.append((t, path))
+                    all_media.append(support_media[i])
             
             t_count = len(tarsier_media)
             s_count = len(support_media)
-            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} support) — ratio {t_count}:{s_count}")
+            print(f"[{account_key}] Final: {len(all_media)} REAL clips ({t_count} tarsier + {s_count} support) — ZERO AI — ratio {t_count}:{s_count}")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
