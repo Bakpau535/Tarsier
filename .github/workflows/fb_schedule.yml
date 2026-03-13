@@ -47,6 +47,11 @@ jobs:
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
           GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
           GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
+          HF_API_KEY_1: ${{ secrets.HF_API_KEY_1 }}
+          HF_API_KEY_2: ${{ secrets.HF_API_KEY_2 }}
+          HF_API_KEY_3: ${{ secrets.HF_API_KEY_3 }}
+          HF_API_KEY_4: ${{ secrets.HF_API_KEY_4 }}
+          HF_API_KEY_5: ${{ secrets.HF_API_KEY_5 }}
           HF_API_KEY_6: ${{ secrets.HF_API_KEY_6 }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
