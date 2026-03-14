@@ -2956,5 +2956,65 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-14T13:38:17.102776",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-14T13:38:21.411522",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier intelligence and cognition"
+    },
+    {
+        "timestamp": "2026-03-14T13:38:21.412002",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier intelligence and cognition"
+    },
+    {
+        "timestamp": "2026-03-14T13:38:33.658174",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-14T13:38:47.268773",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Mind-Blowing: Tarsiers 'See' Prey with Sound"
+    },
+    {
+        "timestamp": "2026-03-14T13:43:34.287465",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-14T13:43:40.987466",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-14T13:43:41.021539",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-14T13:43:41.090315",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-03-14T13:43:41.090725",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
