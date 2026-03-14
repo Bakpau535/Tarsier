@@ -2692,5 +2692,77 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-14T10:50:51.333763",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-14T10:50:52.159889",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Unique sensory abilities' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:52.798111",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Predators and threats' already completed for all accounts. Trying another... (2/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:53.459574",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Nocturnal adaptations' already completed for all accounts. Trying another... (3/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:54.035557",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Habitat and distribution' already completed for all accounts. Trying another... (4/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:54.607294",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Diet and hunting' already completed for all accounts. Trying another... (5/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:55.182460",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Evolutionary history' already completed for all accounts. Trying another... (6/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:55.806133",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Habitat and distribution' already completed for all accounts. Trying another... (7/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:56.448917",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Conservation status' already completed for all accounts. Trying another... (8/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:56.979026",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Local myths and folklore' already completed for all accounts. Trying another... (9/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:57.504825",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Conservation status' already completed for all accounts. Trying another... (10/10)"
+    },
+    {
+        "timestamp": "2026-03-14T10:50:57.504841",
+        "level": "ERROR",
+        "account": "SYSTEM",
+        "message": "No unused topics found after 10 attempts! All topics may be exhausted."
     }
 ]
