@@ -858,6 +858,8 @@ class MediaGenerator:
             for query in queries:
                 try:
                     print(f"[{account_key}] Freesound search: '{query}'...")
+                    # Randomize page to get different results each run
+                    rand_page = random.randint(1, 5)
                     r = requests.get(
                         "https://freesound.org/apiv2/search/text/",
                         params={
@@ -866,7 +868,8 @@ class MediaGenerator:
                             "fields": "id,name,duration,previews",
                             "filter": "duration:[30 TO 300]",  # 30s-5min tracks only
                             "sort": "rating_desc",
-                            "page_size": 5,
+                            "page_size": 15,
+                            "page": rand_page,
                         },
                         timeout=15
                     )
@@ -878,7 +881,7 @@ class MediaGenerator:
                     if not results:
                         continue
                     
-                    # Pick a random track from top results
+                    # Pick a random track from results
                     track = random.choice(results)
                     preview_url = track.get("previews", {}).get("preview-hq-mp3")
                     if not preview_url:
