@@ -247,8 +247,18 @@ class VideoAssembler:
             if processed_voice and os.path.exists(processed_voice):
                 try:
                     voice = AudioFileClip(processed_voice)
+                    print(f"[{account_key}] VO duration: {voice.duration:.1f}s | Video duration: {final_video.duration:.1f}s")
+                    
                     if voice.duration > final_video.duration:
+                        # VO longer than video → trim VO
                         voice = voice.subclipped(0, final_video.duration)
+                        print(f"[{account_key}] Trimmed VO to match video ({final_video.duration:.1f}s)")
+                    elif voice.duration < final_video.duration - 2.0:
+                        # VO significantly shorter than video → trim video to match VO + 1.5s buffer
+                        target_dur = voice.duration + 1.5
+                        final_video = final_video.subclipped(0, min(target_dur, final_video.duration))
+                        print(f"[{account_key}] Trimmed video to match VO ({target_dur:.1f}s) — prevents awkward silence at end")
+                    
                     audio_clips.append(voice)
                 except Exception as e:
                     print(f"[{account_key}] Voiceover load failed (skipping): {e}")

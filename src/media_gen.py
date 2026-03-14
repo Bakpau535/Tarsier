@@ -939,13 +939,14 @@ class MediaGenerator:
         return None
 
     # Per-account music search keywords for Freesound API
+    # IMPORTANT: queries MUST include "music" to avoid ambient/nature sounds (crickets, rain, etc)
     MUSIC_SEARCH = {
-        "yt_documenter": ["cinematic documentary", "nature ambient instrumental", "science background music"],
-        "yt_funny": ["upbeat playful", "happy comedy background", "cheerful ukulele"],
-        "yt_anthro": ["whimsical storytelling", "quirky adventure music", "fantasy background"],
-        "yt_pov": ["ambient atmospheric dark", "mysterious forest night", "suspense ambient"],
-        "yt_drama": ["emotional orchestral", "dramatic piano sad", "cinematic tension"],
-        "fb_fanspage": ["warm friendly background", "positive nature music", "gentle acoustic"],
+        "yt_documenter": ["cinematic piano music", "documentary orchestral music", "nature film music instrumental"],
+        "yt_funny": ["upbeat ukulele music", "happy comedy music instrumental", "cheerful fun music"],
+        "yt_anthro": ["whimsical piano music", "storytelling guitar music", "adventure music instrumental"],
+        "yt_pov": ["ambient piano music dark", "mysterious cello music", "suspense music instrumental"],
+        "yt_drama": ["emotional piano music", "dramatic orchestral music sad", "cinematic strings music"],
+        "fb_fanspage": ["gentle piano music calm", "positive acoustic guitar music", "soft background music instrumental"],
     }
 
     # CDN fallback URLs per-account — expanded pool for variety (6+ per channel)
@@ -1021,7 +1022,7 @@ class MediaGenerator:
                             "query": query,
                             "token": FREESOUND_API_KEY,
                             "fields": "id,name,duration,previews",
-                            "filter": "duration:[30 TO 300]",  # 30s-5min tracks only
+                            "filter": "duration:[45 TO 300]",  # 45s-5min tracks only (short clips are usually ambient/SFX)
                             "sort": "rating_desc",
                             "page_size": 15,
                             "page": rand_page,

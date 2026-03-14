@@ -9,13 +9,15 @@ from typing import Optional
 
 # Per-channel volume settings (voice_vol, music_normal, music_ducked)
 # Values are in 0-100 scale representing percentage
+# Music volume raised 2026-03-14: previous values (0.06~0.12) were inaudible
+# ALSO note: assemble.py applies ANOTHER with_volume_scaled(0.5), so effective volume = music_normal * 0.5
 VOLUME_SPEC = {
-    "yt_documenter": {"music_normal": 0.08, "music_ducked": 0.04, "duck_threshold": -30},
-    "yt_funny":      {"music_normal": 0.18, "music_ducked": 0.18, "duck_threshold": -30},  # No ducking needed
-    "yt_anthro":     {"music_normal": 0.10, "music_ducked": 0.05, "duck_threshold": -28},
-    "yt_pov":        {"music_normal": 0.06, "music_ducked": 0.02, "duck_threshold": -32},
-    "yt_drama":      {"music_normal": 0.12, "music_ducked": 0.05, "duck_threshold": -28},
-    "fb_fanspage":   {"music_normal": 0.10, "music_ducked": 0.10, "duck_threshold": -30},
+    "yt_documenter": {"music_normal": 0.25, "music_ducked": 0.12, "duck_threshold": -30},
+    "yt_funny":      {"music_normal": 0.35, "music_ducked": 0.35, "duck_threshold": -30},  # No ducking needed
+    "yt_anthro":     {"music_normal": 0.28, "music_ducked": 0.14, "duck_threshold": -28},
+    "yt_pov":        {"music_normal": 0.20, "music_ducked": 0.08, "duck_threshold": -32},
+    "yt_drama":      {"music_normal": 0.30, "music_ducked": 0.12, "duck_threshold": -28},
+    "fb_fanspage":   {"music_normal": 0.28, "music_ducked": 0.28, "duck_threshold": -30},
 }
 
 
