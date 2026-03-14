@@ -2836,5 +2836,65 @@
         "level": "ERROR",
         "account": "SYSTEM",
         "message": "No unused topics found after 10 attempts! All topics may be exhausted."
+    },
+    {
+        "timestamp": "2026-03-14T11:26:54.449837",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-14T11:26:55.549955",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Night hunting strategies"
+    },
+    {
+        "timestamp": "2026-03-14T11:26:55.550430",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Night hunting strategies"
+    },
+    {
+        "timestamp": "2026-03-14T11:27:03.051151",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-14T11:27:14.804006",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Its Eyes Outweigh Its Brain! The Tarsier's Unique Vision"
+    },
+    {
+        "timestamp": "2026-03-14T11:32:09.794518",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-14T11:32:17.424887",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-14T11:32:17.438482",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-14T11:32:17.507976",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-03-14T11:32:17.508378",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
