@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- API Keys ---
-# Gemini 2.5 Flash — 11 key rotasi untuk kapasitas maksimal
+# Gemini 2.5 Flash — 12 key rotasi untuk kapasitas maksimal
 _gemini_keys_raw = [
     os.environ.get("GEMINI_API_KEY", ""),
     os.environ.get("GEMINI_API_KEY_2", ""),
@@ -18,6 +18,7 @@ _gemini_keys_raw = [
     os.environ.get("GEMINI_API_KEY_9", ""),
     os.environ.get("GEMINI_API_KEY_10", ""),
     os.environ.get("GEMINI_API_KEY_11", ""),
+    os.environ.get("GEMINI_API_KEY_12", ""),
 ]
 GEMINI_API_KEYS = [k for k in _gemini_keys_raw if k]
 GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
