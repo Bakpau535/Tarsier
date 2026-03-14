@@ -23,6 +23,13 @@ _gemini_keys_raw = [
 GEMINI_API_KEYS = [k for k in _gemini_keys_raw if k]
 GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
 
+# DIAGNOSTIC: Print key prefixes to verify secrets are loaded correctly
+print(f"[Config] Gemini keys loaded: {len(GEMINI_API_KEYS)} active")
+for i, k in enumerate(_gemini_keys_raw):
+    label = f"KEY_{i+1}" if i > 0 else "KEY  "
+    prefix = k[:8] + "..." if k else "*** EMPTY ***"
+    print(f"  {label}: {prefix}")
+
 # Per-channel Gemini key assignment — each channel gets its own primary key
 # to prevent one channel from exhausting another's quota
 GEMINI_KEY_MAP = {
