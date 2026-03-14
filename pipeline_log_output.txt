@@ -1,0 +1,215 @@
+﻿Analyzing Run #31 sha=323df94
+
+====================================================================================================
+FILE: run-fb-tarsier-pipeline/7_Run Pipeline (FB Only).txt
+====================================================================================================
+∩╗┐2026-03-14T07:07:11.5947518Z ##[group]Run python src/main.py --target fb_fanspage
+2026-03-14T07:07:11.5947973Z [36;1mpython src/main.py --target fb_fanspage[0m
+2026-03-14T07:07:11.5998735Z shell: /usr/bin/bash -e {0}
+2026-03-14T07:07:11.5999018Z env:
+2026-03-14T07:07:11.5999311Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-03-14T07:07:11.5999977Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib/pkgconfig
+2026-03-14T07:07:11.6000455Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-03-14T07:07:11.6000878Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-03-14T07:07:11.6001291Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-03-14T07:07:11.6001710Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib
+2026-03-14T07:07:11.6002063Z   PREVIEW_MODE: true
+2026-03-14T07:07:11.6002519Z   GEMINI_API_KEY: ***
+2026-03-14T07:07:11.6002864Z   GEMINI_API_KEY_2: ***
+2026-03-14T07:07:11.6003222Z   GEMINI_API_KEY_3: ***
+2026-03-14T07:07:11.6003546Z   GEMINI_API_KEY_4: ***
+2026-03-14T07:07:11.6003901Z   GEMINI_API_KEY_5: ***
+2026-03-14T07:07:11.6004201Z   HF_API_KEY_1: ***
+2026-03-14T07:07:11.6004494Z   HF_API_KEY_2: ***
+2026-03-14T07:07:11.6004773Z   HF_API_KEY_3: ***
+2026-03-14T07:07:11.6005063Z   HF_API_KEY_4: ***
+2026-03-14T07:07:11.6005383Z   HF_API_KEY_5: ***
+2026-03-14T07:07:11.6005669Z   HF_API_KEY_6: ***
+2026-03-14T07:07:11.6005912Z   SMTP_HOST: ***
+2026-03-14T07:07:11.6006151Z   SMTP_PORT: ***
+2026-03-14T07:07:11.6006409Z   SMTP_USER: ***
+2026-03-14T07:07:11.6006657Z   SMTP_PASS: ***
+2026-03-14T07:07:11.6006904Z   FB_ADMIN_EMAIL: ***
+2026-03-14T07:07:11.6007310Z   PEXELS_API_KEY: ***
+2026-03-14T07:07:11.6007605Z   PIXABAY_API_KEY: ***
+2026-03-14T07:07:11.6007947Z   FREESOUND_API_KEY: ***
+2026-03-14T07:07:11.6008197Z ##[endgroup]
+2026-03-14T07:07:53.5555059Z [ScriptEngine] Initialized with 5 unique Gemini API key(s).
+2026-03-14T07:07:53.5556010Z [MediaGen] Footage log loaded: 18 items already used
+2026-03-14T07:07:53.5556744Z [MediaGen] PEXELS_API_KEY: SET (9hqsr9x2...)
+2026-03-14T07:07:53.5557386Z [MediaGen] PIXABAY_API_KEY: SET (54861487...)
+2026-03-14T07:07:53.5557939Z [MediaGen] HF_API_KEYS: 6/6 keys set
+2026-03-14T07:07:53.5570750Z [MediaGen] ==========================
+2026-03-14T07:07:53.5571554Z [MetadataGen] Initialized with 5 unique Gemini API key(s).
+2026-03-14T07:07:53.5572181Z [INFO] [SYSTEM] Starting Tarsier Pipeline...
+2026-03-14T07:07:53.5572918Z [INFO] [SYSTEM] Selected Topic: Tarsier Reproduction and lifecycle
+2026-03-14T07:07:53.5573785Z [INFO] [fb_fanspage] Processing topic: Tarsier Reproduction and lifecycle
+2026-03-14T07:07:53.5574608Z [fb_fanspage] Calling Gemini (own key-1, attempt 1/3)...
+2026-03-14T07:07:53.5576505Z [fb_fanspage] Gemini error (own key-1): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.
+2026-03-14T07:07:53.5578925Z [fb_fanspage] own key-1 EXHAUSTED, trying next key...
+2026-03-14T07:07:53.5579814Z [fb_fanspage] Calling Gemini (backup key-2, attempt 1/3)...
+2026-03-14T07:07:53.5581725Z [fb_fanspage] Gemini error (backup key-2): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.
+2026-03-14T07:07:53.5583647Z [fb_fanspage] backup key-2 EXHAUSTED, trying next key...
+2026-03-14T07:07:53.5584396Z [fb_fanspage] Calling Gemini (backup key-3, attempt 1/3)...
+2026-03-14T07:07:53.5586265Z [fb_fanspage] Gemini error (backup key-3): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.
+2026-03-14T07:07:53.5643832Z [fb_fanspage] backup key-3 EXHAUSTED, trying next key...
+2026-03-14T07:07:53.5644657Z [fb_fanspage] Calling Gemini (backup key-4, attempt 1/3)...
+2026-03-14T07:07:53.5646585Z [fb_fanspage] Gemini error (backup key-4): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.
+2026-03-14T07:07:53.5649045Z [fb_fanspage] backup key-4 EXHAUSTED, trying next key...
+2026-03-14T07:07:53.5649988Z [fb_fanspage] Calling Gemini (backup key-5, attempt 1/3)...
+2026-03-14T07:07:53.5651837Z [fb_fanspage] Gemini error (backup key-5): 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.
+2026-03-14T07:07:53.5653672Z [fb_fanspage] backup key-5 EXHAUSTED, trying next key...
+2026-03-14T07:07:53.5656255Z [fb_fanspage] FINAL FAILURE: All keys exhausted. Last error: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit.
+2026-03-14T07:07:53.5659205Z [fb_fanspage] Gemini unavailable ΓÇö using FALLBACK SCRIPT TEMPLATE
+2026-03-14T07:07:53.5661359Z [fb_fanspage] FALLBACK SCRIPT used (template #1/3) ΓÇö topic: Wikipedia Summary: Tarsiers ( TAR-see-╔Örz) are haplorhine primates of the family Tarsiidae
+2026-03-14T07:07:53.5662645Z [fb_fanspage] Fallback script loaded (922 chars).
+2026-03-14T07:07:53.5663294Z [INFO] [fb_fanspage] Script generated successfully.
+2026-03-14T07:07:53.5663977Z [fb_fanspage] Generating metadata...
+2026-03-14T07:07:53.5664621Z [fb_fanspage] own key EXHAUSTED for metadata, trying next...
+2026-03-14T07:07:53.5665397Z [fb_fanspage] backup key EXHAUSTED for metadata, trying next...
+2026-03-14T07:07:53.5666188Z [fb_fanspage] backup key EXHAUSTED for metadata, trying next...
+2026-03-14T07:07:53.5666988Z [fb_fanspage] backup key EXHAUSTED for metadata, trying next...
+2026-03-14T07:07:53.5667777Z [fb_fanspage] backup key EXHAUSTED for metadata, trying next...
+2026-03-14T07:07:53.5668508Z [INFO] [fb_fanspage] Metadata generated: Tarsier Facts
+2026-03-14T07:07:53.5669240Z [fb_fanspage] Visual source: STOCK ONLY (6 tarsier + 6 support)
+2026-03-14T07:07:53.5727994Z [fb_fanspage] Searching Pexels for TARSIER clips...
+2026-03-14T07:07:53.5728750Z [fb_fanspage] Pexels tarsier search 'tarsier': 15 results
+2026-03-14T07:07:53.5729606Z [fb_fanspage] Pexels clip 1 (8738KB) [ID:pexels_8348824]
+2026-03-14T07:07:53.5730305Z [fb_fanspage] Pexels clip 2 (34718KB) [ID:pexels_18784596]
+2026-03-14T07:07:53.5731000Z [fb_fanspage] Pexels clip 3 (4073KB) [ID:pexels_18360083]
+2026-03-14T07:07:53.5731685Z [fb_fanspage] Pexels clip 4 (13487KB) [ID:pexels_18705644]
+2026-03-14T07:07:53.5732375Z [fb_fanspage] Pexels clip 5 (5141KB) [ID:pexels_18508077]
+2026-03-14T07:07:53.5733070Z [fb_fanspage] Pexels clip 6 (13304KB) [ID:pexels_10988820]
+2026-03-14T07:07:53.5734152Z [fb_fanspage] Searching Pixabay for TARSIER clips...
+2026-03-14T07:07:53.5734846Z [fb_fanspage] Pixabay tarsier search 'tarsier': 0 results
+2026-03-14T07:07:53.5735707Z [fb_fanspage] Pixabay tarsier search 'philippine tarsier': 10 results
+2026-03-14T07:07:53.5736504Z [fb_fanspage] Pixabay clip 1 (33990KB) [ID:pixabay_218794]
+2026-03-14T07:07:53.5737199Z [fb_fanspage] Pixabay clip 2 (3343KB) [ID:pixabay_35774]
+2026-03-14T07:07:53.5737880Z [fb_fanspage] Pixabay clip 3 (23150KB) [ID:pixabay_158413]
+2026-03-14T07:07:53.5738577Z [fb_fanspage] Pixabay clip 4 (90401KB) [ID:pixabay_218793]
+2026-03-14T07:07:53.5739276Z [fb_fanspage] Pixabay clip 5 (20793KB) [ID:pixabay_161384]
+2026-03-14T07:07:53.5740139Z [fb_fanspage] Pixabay clip 6 (51191KB) [ID:pixabay_218785]
+2026-03-14T07:07:53.5740834Z [fb_fanspage] Tarsier stock clips: 12 (Pexels:6 Pixabay:6)
+2026-03-14T07:07:53.5741566Z [fb_fanspage] Searching Pexels PHOTOS for tarsier images...
+2026-03-14T07:07:53.5742315Z [fb_fanspage] Pexels PHOTO 1 (41KB) [ID:pexels_photo_289367]
+2026-03-14T07:07:53.5743076Z [fb_fanspage] Pexels PHOTO 2 (54KB) [ID:pexels_photo_12284399]
+2026-03-14T07:07:53.5744120Z [fb_fanspage] Pexels PHOTO 3 (98KB) [ID:pexels_photo_1210288]
+2026-03-14T07:07:53.5744881Z [fb_fanspage] Pexels PHOTO 4 (198KB) [ID:pexels_photo_20547294]
+2026-03-14T07:07:53.5745648Z [fb_fanspage] Pexels PHOTO 5 (155KB) [ID:pexels_photo_20242430]
+2026-03-14T07:07:53.5746405Z [fb_fanspage] Pexels PHOTO 6 (191KB) [ID:pexels_photo_3049269]
+2026-03-14T07:07:53.5747159Z [fb_fanspage] Searching Pixabay PHOTOS for tarsier images...
+2026-03-14T07:07:53.5747926Z [fb_fanspage] Pixabay PHOTO 1 (172KB) [ID:pixabay_photo_1479837]
+2026-03-14T07:07:53.5748713Z [fb_fanspage] Pixabay PHOTO 2 (158KB) [ID:pixabay_photo_10027572]
+2026-03-14T07:07:53.5767928Z [fb_fanspage] Pixabay PHOTO 3 (415KB) [ID:pixabay_photo_5033793]
+2026-03-14T07:07:53.5768889Z [fb_fanspage] Pixabay PHOTO 4 (508KB) [ID:pixabay_photo_8458046]
+2026-03-14T07:07:53.5769953Z [fb_fanspage] Pixabay PHOTO 5 (183KB) [ID:pixabay_photo_4680903]
+2026-03-14T07:07:53.5770764Z [fb_fanspage] Pixabay PHOTO 6 (354KB) [ID:pixabay_photo_2438262]
+2026-03-14T07:07:53.5771576Z [fb_fanspage] Tarsier PHOTOS: 12 real photos (Pexels:6 Pixabay:6)
+2026-03-14T07:07:53.5772317Z [fb_fanspage] Tarsier stock: 6/6 (videos:6 photos:6)
+2026-03-14T07:07:53.5773053Z [fb_fanspage] Searching Pexels for SUPPORT/environment clips...
+2026-03-14T07:07:53.5773825Z [fb_fanspage] Support clip 1 (38317KB) [ID:pexels_26965181]
+2026-03-14T07:07:53.5774533Z [fb_fanspage] Support clip 2 (6141KB) [ID:pexels_3177845]
+2026-03-14T07:07:53.5775232Z [fb_fanspage] Support clip 3 (21675KB) [ID:pexels_20737732]
+2026-03-14T07:07:53.5775938Z [fb_fanspage] Support clip 4 (3377KB) [ID:pexels_8397435]
+2026-03-14T07:07:53.5776614Z [fb_fanspage] Support clip 5 (5328KB) [ID:pexels_7710100]
+2026-03-14T07:07:53.5777305Z [fb_fanspage] Support clip 6 (20737KB) [ID:pexels_36410112]
+2026-03-14T07:07:53.5777966Z [fb_fanspage] Support clips: 6 NEW unique clips
+2026-03-14T07:07:53.5778988Z [fb_fanspage] Final: 12 clips (6 tarsier + 6 support) ΓÇö ratio 6:6
+2026-03-14T07:07:53.5800254Z [fb_fanspage] Generating voiceover: en-US-JennyNeural (rate=-5%, pitch=0Hz, SSML=ON)
+2026-03-14T07:07:53.5801136Z [fb_fanspage] Voiceover saved (620KB, SSML)
+2026-03-14T07:07:53.5801766Z [fb_fanspage] Freesound search: 'gentle acoustic'...
+2026-03-14T07:07:53.5802549Z [fb_fanspage] Downloading: Calm Acoustic Guitar for Serene Moments (240s)
+2026-03-14T07:07:53.5803313Z [fb_fanspage] Freesound music saved (5458KB)
+2026-03-14T07:07:53.5804242Z [fb_fanspage] Assembly profile: cut=(3, 6)s, transition=dissolve, ratio=1:1, letterbox=False, loop=standard
+2026-03-14T07:07:53.5805256Z [fb_fanspage] Assembling: 12 stock clips + 0 AI images...
+2026-03-14T07:07:53.5806271Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5807207Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5807771Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 0
+2026-03-14T07:07:53.5829130Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5832951Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5833811Z [fb_fanspage] Added variation 1: fb_fanspage_Tarsier_Reproduction_and_lifecycle_pexels_3.mp4 (4.9s)
+2026-03-14T07:07:53.5835168Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5836144Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5836738Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 1
+2026-03-14T07:07:53.5840108Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5841114Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5841873Z [fb_fanspage] Added variation 2: fb_fanspage_support_pexels_pexels_26965181_1.mp4 (3.3s)
+2026-03-14T07:07:53.5843117Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5844127Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5845105Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 2
+2026-03-14T07:07:53.5846161Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5847106Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5847950Z [fb_fanspage] Added variation 3: fb_fanspage_Tarsier_Reproduction_and_lifecycle_pixabay_2.mp4 (4.6s)
+2026-03-14T07:07:53.5849682Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5851046Z   built with gcc 13 (Ubu
+2026-03-14T07:07:53.5851909Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 3
+2026-03-14T07:07:53.5853011Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:07:53.5853948Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0730624Z [fb_fanspage] Added variation 4: fb_fanspage_support_pexels_pexels_3177845_2.mp4 (5.1s)
+2026-03-14T07:17:59.0732145Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0733176Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0733811Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 4
+2026-03-14T07:17:59.0734941Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0735974Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0736852Z [fb_fanspage] Added variation 5: fb_fanspage_Tarsier_Reproduction_and_lifecycle_pexels_2.mp4 (3.0s)
+2026-03-14T07:17:59.0738006Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0738666Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0739050Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 5
+2026-03-14T07:17:59.0740230Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0741228Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0742198Z [fb_fanspage] Added variation 6: fb_fanspage_support_pexels_pexels_20737732_3.mp4 (4.7s)
+2026-03-14T07:17:59.0743641Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0744748Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0745404Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 6
+2026-03-14T07:17:59.0746701Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0747647Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0748241Z [fb_fanspage] Added variation 7: fb_fanspage_Tarsier_Reproduction_and_lifecycle_pexels_4.mp4 (5.6s)
+2026-03-14T07:17:59.0749145Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0750648Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0751072Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 7
+2026-03-14T07:17:59.0751802Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0752458Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0752974Z [fb_fanspage] Added variation 8: fb_fanspage_support_pexels_pexels_8397435_4.mp4 (4.2s)
+2026-03-14T07:17:59.0753778Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0754333Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0754679Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 8
+2026-03-14T07:17:59.0755286Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0755828Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0756302Z [fb_fanspage] Added variation 9: fb_fanspage_Tarsier_Reproduction_and_lifecycle_pixabay_5.mp4 (5.5s)
+2026-03-14T07:17:59.0757085Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0757830Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0758169Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 9
+2026-03-14T07:17:59.0758770Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0759313Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0759961Z [fb_fanspage] Added variation 10: fb_fanspage_support_pexels_pexels_7710100_5.mp4 (5.2s)
+2026-03-14T07:17:59.0760678Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0761222Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0761562Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 10
+2026-03-14T07:17:59.0762161Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0762697Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0763174Z [fb_fanspage] Added variation 11: fb_fanspage_Tarsier_Reproduction_and_lifecycle_pixabay_6.mp4 (5.9s)
+2026-03-14T07:17:59.0763955Z [fb_fanspage] FFmpeg slowmo error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0764484Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0764795Z [fb_fanspage] Loop variation: zoomin (1080x1080) from clip 11
+2026-03-14T07:17:59.0765345Z [fb_fanspage] FFmpeg flip error: ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+2026-03-14T07:17:59.0765836Z   built with gcc 13 (Ubu
+2026-03-14T07:17:59.0766226Z [fb_fanspage] Added variation 12: fb_fanspage_support_pexels_pexels_36410112_6.mp4 (5.9s)
+2026-03-14T07:17:59.0766743Z [fb_fanspage] Video assembled: 52.5s total (transition=dissolve)
+2026-03-14T07:17:59.0767142Z [fb_fanspage] Voice normalized to -14 dBFS
+2026-03-14T07:17:59.0767472Z [fb_fanspage] Music processed (vol: 10%)
+2026-03-14T07:17:59.0768051Z [fb_fanspage] Final video: /home/runner/work/Tarsier/Tarsier/tmp/fb_fanspage_Tarsier_Reproduction_and_lifecycle_final.mp4
+2026-03-14T07:17:59.0768672Z [INFO] [fb_fanspage] Video assembled successfully.
+2026-03-14T07:17:59.0769347Z Running Quality Control for [fb_fanspage] /home/runner/work/Tarsier/Tarsier/tmp/fb_fanspage_Tarsier_Reproduction_and_lifecycle_final.mp4...
+2026-03-14T07:17:59.0770661Z QC Resolution: 1080x1080 (1:1 square) ΓÇö PASS
+2026-03-14T07:17:59.0771040Z QC Metadata: all fields present ΓÇö PASS
+2026-03-14T07:17:59.0771474Z QC Duration check error: unsupported operand type(s) for -: 'tuple' and 'int'
+2026-03-14T07:17:59.0771905Z QC Score: 90/100 (threshold: 80)
+2026-03-14T07:17:59.0772191Z [fb_fanspage] QC Passed!
+2026-03-14T07:17:59.0772772Z [fb_fanspage] Extracting Short from /home/runner/work/Tarsier/Tarsier/tmp/fb_fanspage_Tarsier_Reproduction_and_lifecycle_final.mp4...
+2026-03-14T07:17:59.0773659Z [fb_fanspage] Short saved: /home/runner/work/Tarsier/Tarsier/tmp/fb_fanspage_Tarsier_Reproduction_and_lifecycle_short.mp4
+2026-03-14T07:17:59.0774517Z [INFO] [fb_fanspage] Shorts extracted.
+2026-03-14T07:17:59.0774880Z [fb_fanspage] Generating thumbnail for: Tarsier Facts
+2026-03-14T07:17:59.0775229Z [INFO] [fb_fanspage] Thumbnail generated.
+2026-03-14T07:17:59.0775620Z [INFO] [fb_fanspage] PREVIEW MODE: Files saved to output/fb_fanspage/
+2026-03-14T07:17:59.0776034Z [INFO] [SYSTEM] Cleaning up temporary files...
+2026-03-14T07:17:59.0776372Z [INFO] [SYSTEM] Summary email sent: 0/1 success.

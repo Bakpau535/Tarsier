@@ -5,13 +5,19 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- API Keys ---
-# Gemini 2.5 Flash — 5 key rotasi untuk kapasitas 100 RPD
+# Gemini 2.5 Flash — 11 key rotasi untuk kapasitas maksimal
 _gemini_keys_raw = [
     os.environ.get("GEMINI_API_KEY", ""),
     os.environ.get("GEMINI_API_KEY_2", ""),
     os.environ.get("GEMINI_API_KEY_3", ""),
     os.environ.get("GEMINI_API_KEY_4", ""),
     os.environ.get("GEMINI_API_KEY_5", ""),
+    os.environ.get("GEMINI_API_KEY_6", ""),
+    os.environ.get("GEMINI_API_KEY_7", ""),
+    os.environ.get("GEMINI_API_KEY_8", ""),
+    os.environ.get("GEMINI_API_KEY_9", ""),
+    os.environ.get("GEMINI_API_KEY_10", ""),
+    os.environ.get("GEMINI_API_KEY_11", ""),
 ]
 GEMINI_API_KEYS = [k for k in _gemini_keys_raw if k]
 GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
@@ -24,7 +30,7 @@ GEMINI_KEY_MAP = {
     "yt_anthro":     os.environ.get("GEMINI_API_KEY_3", ""),
     "yt_pov":        os.environ.get("GEMINI_API_KEY_4", ""),
     "yt_drama":      os.environ.get("GEMINI_API_KEY_5", ""),
-    "fb_fanspage":   os.environ.get("GEMINI_API_KEY", ""),  # shares key 1 as primary, others as backup
+    "fb_fanspage":   os.environ.get("GEMINI_API_KEY_6", ""),  # dedicated key 6
 }
 
 # Freesound API Key for background music
