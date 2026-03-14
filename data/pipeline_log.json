@@ -2632,5 +2632,65 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-14T07:58:03.025364",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-14T07:58:04.129577",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-03-14T07:58:04.130186",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-03-14T07:58:19.355900",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-14T07:58:27.747600",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: This Shy Primate Can Die From Human Interaction."
+    },
+    {
+        "timestamp": "2026-03-14T08:04:48.067883",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-14T08:04:55.201167",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-14T08:04:55.219318",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-14T08:04:55.306804",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-03-14T08:04:55.307190",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
