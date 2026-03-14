@@ -466,13 +466,100 @@ class MediaGenerator:
                 print(f"[{account_key}] Pixabay photos error: {e}")
         return downloaded
 
+    def _download_wikimedia_tarsier_photos(self, account_key: str, num_photos: int) -> List[str]:
+        """Download REAL tarsier photos from Wikimedia Commons API (FREE, no API key needed).
+        Wikimedia Commons has extensive wildlife photography including many real tarsier images."""
+        print(f"[{account_key}] Searching Wikimedia Commons for tarsier images...")
+        downloaded = []
+        
+        # Multiple search strategies for maximum coverage
+        search_queries = [
+            # Category-based search (most reliable for real photos)
+            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Tarsiidae",
+             "gcmtype": "file", "gcmlimit": "20", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+            # Text search for tarsier photos
+            {"action": "query", "generator": "search", "gsrsearch": "tarsier animal photo",
+             "gsrnamespace": "6", "gsrlimit": "20", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+            # Specific tarsier species
+            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Carlito syrichta",
+             "gcmtype": "file", "gcmlimit": "20", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+            # Sulawesi tarsier
+            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Tarsius tarsier",
+             "gcmtype": "file", "gcmlimit": "20", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+        ]
+        
+        seen_titles = set()
+        for params in search_queries:
+            if len(downloaded) >= num_photos:
+                break
+            try:
+                r = requests.get("https://commons.wikimedia.org/w/api.php",
+                                 params=params, timeout=15,
+                                 headers={"User-Agent": "TarsierBot/1.0 (educational project)"})
+                if r.status_code != 200:
+                    print(f"[{account_key}] Wikimedia API error: {r.status_code}")
+                    continue
+                
+                data = r.json()
+                pages = data.get("query", {}).get("pages", {})
+                page_list = list(pages.values())
+                random.shuffle(page_list)
+                
+                for page in page_list:
+                    if len(downloaded) >= num_photos:
+                        break
+                    title = page.get("title", "")
+                    if title in seen_titles:
+                        continue
+                    seen_titles.add(title)
+                    
+                    imageinfo = page.get("imageinfo", [{}])
+                    if not imageinfo:
+                        continue
+                    info = imageinfo[0]
+                    mime = info.get("mime", "")
+                    
+                    # Only accept JPEG/PNG images
+                    if mime not in ("image/jpeg", "image/png"):
+                        continue
+                    
+                    # Use thumbnail URL (sized to 1280px width) if available, else original
+                    photo_url = info.get("thumburl") or info.get("url")
+                    if not photo_url:
+                        continue
+                    
+                    try:
+                        dl = requests.get(photo_url, timeout=30,
+                                          headers={"User-Agent": "TarsierBot/1.0 (educational project)"})
+                        if dl.status_code == 200 and len(dl.content) > 5000:
+                            ext = "jpg" if "jpeg" in mime else "png"
+                            safe_title = title.replace(" ", "_").replace("/", "_")[:50]
+                            fp = os.path.join(TMP_DIR, f"{account_key}_tarsier_wiki_{len(downloaded)+1}.{ext}")
+                            with open(fp, "wb") as f:
+                                f.write(dl.content)
+                            downloaded.append(fp)
+                            print(f"[{account_key}] Wikimedia PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [{safe_title}]")
+                            time.sleep(0.3)
+                    except Exception as e:
+                        print(f"[{account_key}] Wikimedia download error: {e}")
+            except Exception as e:
+                print(f"[{account_key}] Wikimedia search error: {e}")
+        
+        return downloaded
+
     def download_tarsier_photos(self, account_key: str, num_photos: int = 10) -> List[str]:
-        """Download REAL tarsier photos from Pexels + Pixabay. CAN be reused (loop makes unique)."""
-        pexels = self._download_pexels_tarsier_photos(account_key, num_photos)
+        """Download REAL tarsier photos from Pixabay + Wikimedia Commons + Pexels.
+        Priority: Pixabay (verified real tarsier) > Wikimedia (large collection) > Pexels (least reliable)."""
         pixabay = self._download_pixabay_tarsier_photos(account_key, num_photos)
-        all_photos = pexels + pixabay
+        wikimedia = self._download_wikimedia_tarsier_photos(account_key, num_photos)
+        pexels = self._download_pexels_tarsier_photos(account_key, num_photos)
+        all_photos = pixabay + wikimedia + pexels
         random.shuffle(all_photos)
-        print(f"[{account_key}] Tarsier PHOTOS: {len(all_photos)} real photos (Pexels:{len(pexels)} Pixabay:{len(pixabay)})")
+        print(f"[{account_key}] Tarsier PHOTOS: {len(all_photos)} real photos (Pixabay:{len(pixabay)} Wikimedia:{len(wikimedia)} Pexels:{len(pexels)})")
         return all_photos[:num_photos]
 
     # ==========================================
