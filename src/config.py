@@ -260,8 +260,8 @@ TOPIC/FACTS TO USE:
 
 IMPORTANT RULES:
 - Write ENTIRELY IN ENGLISH
-- Target: approximately 6-8 sentences (~45 seconds when spoken aloud at normal pace)
-- CRITICAL: Keep the script SHORT — maximum 600 characters total. TTS reads slower than humans.
+- Target: approximately 5-6 sentences (~45 seconds when spoken aloud at normal pace)
+- CRITICAL: Keep the script SHORT — maximum 400 characters total. TTS with SSML reads very slowly (~8 chars/sec).
 - Follow the STRUCTURE defined above EXACTLY
 - Provide ONLY the narration script — no formatting labels, no scene directions, no markdown
 - Every script must be UNIQUE — do not use generic templates

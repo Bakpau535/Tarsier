@@ -11,18 +11,24 @@ headers = {
     'Accept': 'application/vnd.github.v3+json'
 }
 
-# Get ALL completed runs (both FB and YT)
-r = requests.get('https://api.github.com/repos/Bakpau535/Tarsier/actions/runs?per_page=10', headers=headers)
+# Get latest run
+r = requests.get('https://api.github.com/repos/Bakpau535/Tarsier/actions/runs?per_page=3', headers=headers)
 runs = r.json().get('workflow_runs', [])
 
-completed = [run for run in runs if run['status'] == 'completed']
-print(f"Found {len(completed)} completed runs\n")
-
-for target in completed[:2]:  # Last 2 runs
-    print(f"{'='*80}")
-    print(f"Run #{target['run_number']} | {target['name']} | sha={target['head_sha'][:7]} | {target['conclusion']} | {target['created_at']}")
-    print(f"{'='*80}")
+for target in runs[:1]:
+    print(f"Run #{target['run_number']} | {target['name']} | sha={target['head_sha'][:7]} | status={target['status']} | {target['conclusion']}")
     
+    if target['status'] != 'completed':
+        print("Still running, waiting...")
+        import time
+        for _ in range(10):
+            time.sleep(15)
+            r2 = requests.get(f"https://api.github.com/repos/Bakpau535/Tarsier/actions/runs/{target['id']}", headers=headers)
+            s = r2.json().get('status')
+            print(f"  ...{s}")
+            if s == 'completed':
+                break
+
     log_r = requests.get(f'https://api.github.com/repos/Bakpau535/Tarsier/actions/runs/{target["id"]}/logs', 
                          headers=headers, allow_redirects=True)
     if log_r.status_code != 200:
@@ -34,26 +40,24 @@ for target in completed[:2]:  # Last 2 runs
 
     with zipfile.ZipFile('run_logs.zip') as z:
         for name in z.namelist():
-            if 'Run Pipeline' in name:
+            if 'Run Pipeline' in name or 'Install' in name:
                 content = z.read(name).decode('utf-8', errors='replace')
                 lines = content.split('\n')
                 for line in lines:
                     stripped = line.strip()
                     if 'Z ' in stripped:
                         stripped = stripped.split('Z ', 1)[1] if 'Z ' in stripped else stripped
-                    # Show ALL important lines
+                    # Show KEY diagnostic and important lines
                     if any(k in stripped for k in [
+                        'KEY', 'key-', 'Gemini keys',
                         'Selected Topic', 'Processing topic',
-                        'Script generated', 'FALLBACK SCRIPT', 'FALLBACK',
+                        'Script generated', 'FALLBACK',
                         'Metadata generated', 'Voiceover',
-                        'Freesound', 'CDN', 'Music',
-                        'Tarsier strategy', 'Tarsier total', 'Tarsier PHOTOS',
-                        'Final:', 'QC Score', 'PREVIEW',
-                        'assembly', 'assembled', 'duration',
-                        'total', 'Video', 'audio',
-                        'Gemini error', 'Gemini (', 'Script generated',
-                        'MAIN TOPIC', 'Music log',
-                        'already completed', 'key-',
+                        'Freesound', 'Music',
+                        'VO duration', 'Video assembled',
+                        'QC Score', 'PREVIEW',
+                        'Gemini error', 'EXHAUSTED',
+                        'Music log',
                     ]):
                         print(f"  {stripped}")
     print()
