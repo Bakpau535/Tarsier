@@ -55,21 +55,21 @@
     },
     {
         "topik": "Tarsier Physical characteristics",
-        "tanggal": "2026-03-04",
+        "tanggal": "2026-03-14",
         "akun": "yt_pov",
-        "status": "gagal"
+        "status": "selesai"
     },
     {
         "topik": "Tarsier Physical characteristics",
-        "tanggal": "2026-03-04",
+        "tanggal": "2026-03-14",
         "akun": "yt_drama",
-        "status": "gagal"
+        "status": "selesai"
     },
     {
         "topik": "Tarsier Physical characteristics",
-        "tanggal": "2026-03-13",
+        "tanggal": "2026-03-14",
         "akun": "fb_fanspage",
-        "status": "gagal"
+        "status": "selesai"
     },
     {
         "topik": "Tarsier Species comparison",
@@ -147,6 +147,12 @@
         "topik": "Tarsier Nocturnal adaptations",
         "tanggal": "2026-03-13",
         "akun": "fb_fanspage",
+        "status": "selesai"
+    },
+    {
+        "topik": "Tarsier Physical characteristics",
+        "tanggal": "2026-03-14",
+        "akun": "yt_documenter",
         "status": "selesai"
     }
 ]
