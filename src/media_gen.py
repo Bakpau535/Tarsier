@@ -12,6 +12,8 @@ from src.ssml_builder import build_ssml, get_edge_tts_params
 class MediaGenerator:
     # Path to persistent footage log — tracks EVERY clip/image ever used
     FOOTAGE_LOG_PATH = os.path.join(DATA_DIR, "used_footage.json")
+    # Path to persistent music log — tracks EVERY music track ever used
+    MUSIC_LOG_PATH = os.path.join(DATA_DIR, "used_music.json")
 
     def __init__(self):
         import json as _json
@@ -26,6 +28,10 @@ class MediaGenerator:
         # Load persistent footage log — HARD RULE: no footage reused EVER
         self._used_footage = self._load_footage_log()
         print(f"[MediaGen] Footage log loaded: {len(self._used_footage)} items already used")
+        
+        # Load persistent music log — HARD RULE: no music reused
+        self._used_music = self._load_music_log()
+        print(f"[MediaGen] Music log loaded: {len(self._used_music)} tracks already used")
         
         # === DIAGNOSTIC: Print API key status ===
         print(f"[MediaGen] PEXELS_API_KEY: {'SET (' + self.pexels_key[:8] + '...)' if self.pexels_key else '*** MISSING ***'}")
@@ -198,6 +204,29 @@ class MediaGenerator:
                 self._json.dump(sorted(list(self._used_footage)), f, indent=2)
         except Exception as e:
             print(f"[MediaGen] Warning: Could not save footage log: {e}")
+
+    def _load_music_log(self) -> set:
+        """Load set of previously used music track IDs/URLs."""
+        try:
+            if os.path.exists(self.MUSIC_LOG_PATH):
+                with open(self.MUSIC_LOG_PATH, "r") as f:
+                    return set(self._json.load(f))
+        except Exception as e:
+            print(f"[MediaGen] Warning: Could not load music log: {e}")
+        return set()
+
+    def _save_music_log(self):
+        """Save updated music log to disk."""
+        try:
+            with open(self.MUSIC_LOG_PATH, "w") as f:
+                self._json.dump(sorted(list(self._used_music)), f, indent=2)
+        except Exception as e:
+            print(f"[MediaGen] Warning: Could not save music log: {e}")
+
+    def _mark_music_used(self, music_id: str):
+        """Mark a music track as used and persist."""
+        self._used_music.add(music_id)
+        self._save_music_log()
 
     def _is_footage_used(self, footage_id: str) -> bool:
         """Check if this SUPPORT footage has been used before."""
@@ -919,31 +948,55 @@ class MediaGenerator:
         "fb_fanspage": ["warm friendly background", "positive nature music", "gentle acoustic"],
     }
 
-    # CDN fallback URLs per-account (proven working Pixabay CDN)
+    # CDN fallback URLs per-account — expanded pool for variety (6+ per channel)
     CDN_FALLBACK = {
         "yt_documenter": [
             "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3",
             "https://cdn.pixabay.com/download/audio/2022/04/27/audio_67bcce56c1.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc34898.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/12/14/audio_5e3e4f6e22.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/03/08/audio_5b0c1e4f57.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/06/28/audio_5d9c5f0af9.mp3",
         ],
         "yt_funny": [
             "https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cb749d484.mp3",
             "https://cdn.pixabay.com/download/audio/2022/08/31/audio_419263fac4.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/06/07/audio_b9bd4e1cf5.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/01/12/audio_3c2f4a6b83.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/04/19/audio_7c4b8d9e12.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/09/05/audio_8e2f1a3b67.mp3",
         ],
         "yt_anthro": [
             "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3",
             "https://cdn.pixabay.com/download/audio/2022/03/24/audio_a90a740a0e.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/09/18/audio_4c3f2b8d51.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/02/15/audio_6d1e9a4c73.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/05/22/audio_9f3b7c1e84.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/08/10/audio_2a5d8e6f19.mp3",
         ],
         "yt_pov": [
             "https://cdn.pixabay.com/download/audio/2021/08/09/audio_dc39bde560.mp3",
             "https://cdn.pixabay.com/download/audio/2022/02/22/audio_d1718ab41b.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/07/14/audio_7b5e2a9d36.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/11/03/audio_1c8d4e5a73.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/03/21/audio_4f6a9b2c81.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/07/17/audio_8d3e1f5a29.mp3",
         ],
         "yt_drama": [
             "https://cdn.pixabay.com/download/audio/2022/04/27/audio_67bcce56c1.mp3",
             "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/08/22/audio_3b7c1d9e54.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/01/28/audio_5e2a8f4b61.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/06/05/audio_7c9d3a1e82.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/10/12/audio_2f4b6e8a93.mp3",
         ],
         "fb_fanspage": [
             "https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cb749d484.mp3",
             "https://cdn.pixabay.com/download/audio/2021/08/09/audio_dc39bde560.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/06/22/audio_5e1c3b9a47.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/12/08/audio_8f2d6a4c15.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/04/03/audio_3a7e1c9d52.mp3",
+            "https://cdn.pixabay.com/download/audio/2023/08/25/audio_6b4d2f8e71.mp3",
         ],
     }
 
@@ -983,19 +1036,27 @@ class MediaGenerator:
                     if not results:
                         continue
                     
-                    # Pick a random track from results
-                    track = random.choice(results)
+                    # Filter out already-used tracks
+                    fresh_results = [t for t in results if f"freesound_{t.get('id')}" not in self._used_music]
+                    if not fresh_results:
+                        print(f"[{account_key}] All {len(results)} Freesound results already used, trying next query...")
+                        continue
+                    
+                    # Pick a random track from FRESH results only
+                    track = random.choice(fresh_results)
                     preview_url = track.get("previews", {}).get("preview-hq-mp3")
                     if not preview_url:
                         continue
                     
-                    print(f"[{account_key}] Downloading: {track.get('name', 'unknown')} ({track.get('duration', 0):.0f}s)")
+                    track_id = f"freesound_{track.get('id')}"
+                    print(f"[{account_key}] Downloading: {track.get('name', 'unknown')} ({track.get('duration', 0):.0f}s) [ID:{track_id}]")
                     dl = requests.get(preview_url, timeout=30)
                     if dl.status_code == 200 and len(dl.content) > 10000:
                         if self._is_valid_audio(dl.content):
                             with open(filename, "wb") as f:
                                 f.write(dl.content)
-                            print(f"[{account_key}] Freesound music saved ({len(dl.content)//1024}KB)")
+                            self._mark_music_used(track_id)
+                            print(f"[{account_key}] Freesound music saved ({len(dl.content)//1024}KB) — marked as used")
                             return filename
                 except Exception as e:
                     print(f"[{account_key}] Freesound error: {e}")
@@ -1005,16 +1066,23 @@ class MediaGenerator:
         # ========== Strategy 2: CDN fallback ==========
         print(f"[{account_key}] Trying CDN fallback...")
         cdn_urls = self.CDN_FALLBACK.get(account_key, self.CDN_FALLBACK["fb_fanspage"])
-        random.shuffle(cdn_urls)
+        # Filter out already-used CDN URLs
+        fresh_cdns = [url for url in cdn_urls if f"cdn_{url[-20:]}" not in self._used_music]
+        if not fresh_cdns:
+            print(f"[{account_key}] All CDN music already used, resetting CDN pool...")
+            fresh_cdns = cdn_urls  # Reset if all used
+        random.shuffle(fresh_cdns)
         
-        for url in cdn_urls:
+        for url in fresh_cdns:
             try:
                 dl = requests.get(url, timeout=30)
                 if dl.status_code == 200 and len(dl.content) > 10000:
                     if self._is_valid_audio(dl.content):
                         with open(filename, "wb") as f:
                             f.write(dl.content)
-                        print(f"[{account_key}] CDN music saved ({len(dl.content)//1024}KB)")
+                        cdn_id = f"cdn_{url[-20:]}"
+                        self._mark_music_used(cdn_id)
+                        print(f"[{account_key}] CDN music saved ({len(dl.content)//1024}KB) — marked as used")
                         return filename
             except Exception as e:
                 print(f"[{account_key}] CDN error: {e}")
