@@ -17,18 +17,43 @@ class ResearchEngine:
         # habitat, makanan, reproduksi, predator, konservasi, fakta unik,
         # perbandingan spesies, sejarah, mitos lokal, dll
         self.facets = [
-            "Diet and hunting",           # makanan
-            "Physical characteristics",   # fakta unik
-            "Habitat and distribution",   # habitat
-            "Reproduction and lifecycle", # reproduksi
-            "Conservation status",        # konservasi
-            "Evolutionary history",       # sejarah
-            "Behavior and social structure", # perilaku
-            "Predators and threats",      # predator
-            "Species comparison",         # perbandingan spesies
-            "Local myths and folklore",   # mitos lokal
-            "Unique sensory abilities",   # fakta unik
-            "Nocturnal adaptations",      # fakta unik
+            # --- Original 12 topics ---
+            "Diet and hunting",                   # makanan
+            "Physical characteristics",           # fakta unik
+            "Habitat and distribution",           # habitat
+            "Reproduction and lifecycle",         # reproduksi
+            "Conservation status",                # konservasi
+            "Evolutionary history",               # sejarah
+            "Behavior and social structure",      # perilaku
+            "Predators and threats",              # predator
+            "Species comparison",                 # perbandingan spesies
+            "Local myths and folklore",           # mitos lokal
+            "Unique sensory abilities",           # fakta unik
+            "Nocturnal adaptations",              # fakta unik
+            # --- NEW: 23 additional topics ---
+            "Ultrasonic communication",           # komunikasi ultrasonik
+            "Eye anatomy and vision",             # mata tarsier
+            "Tarsier and human interaction",      # interaksi dengan manusia
+            "Captivity and rescue programs",      # penyelamatan
+            "Role in ecosystem",                  # peran ekosistem
+            "Tarsier intelligence and cognition", # kecerdasan
+            "Jumping and locomotion mechanics",   # cara bergerak
+            "Tarsier in popular culture",         # budaya populer
+            "Philippine Tarsier Foundation",      # lembaga konservasi
+            "Sulawesi Tarsier species",           # tarsier Sulawesi
+            "Tarsier skeleton and bone structure", # anatomi tulang
+            "Tarsier vs other primates",          # perbandingan primata
+            "Baby tarsier development",           # perkembangan bayi
+            "Tarsier sleeping habits",            # kebiasaan tidur
+            "Tarsier territorial behavior",       # perilaku teritorial
+            "Threats from deforestation",         # ancaman deforestasi
+            "Tarsier brain and neuroscience",     # otak tarsier
+            "Tarsier fur and grooming",           # bulu dan grooming
+            "Fossil record of tarsiers",          # rekaman fosil
+            "Tarsier stress and mortality",       # stres dan kematian
+            "Night hunting strategies",           # strategi berburu malam
+            "Tarsier dental formula and teeth",   # gigi tarsier
+            "Ecotourism and tarsier watching",    # ekowisata
         ]
 
     # --- Sumber 1: Wikipedia API → fakta dasar tarsier ---
