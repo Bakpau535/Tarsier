@@ -54,7 +54,7 @@ jobs:
         env:
           # PREVIEW_MODE: set to "true" to save videos as artifacts instead of uploading to YouTube
           # Change to "false" when ready for auto-posting
-          PREVIEW_MODE: "true"
+          PREVIEW_MODE: "false"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
@@ -106,6 +106,7 @@ jobs:
           git add data/topics.json || true
           git add data/pipeline_log.json || true
           git add data/used_footage.json || true
+          git add data/used_music.json || true
           git diff-index --quiet HEAD && exit 0
           git commit -m "chore: auto-update database"
           for i in 1 2 3; do
@@ -113,7 +114,7 @@ jobs:
             echo "Rebase conflict on attempt $i. Resolving..."
             git rebase --abort 2>/dev/null || true
             git pull origin main -X ours || true
-            git add data/topics.json data/pipeline_log.json data/used_footage.json || true
+            git add data/topics.json data/pipeline_log.json data/used_footage.json data/used_music.json || true
             git diff-index --quiet HEAD || git commit -m "chore: auto-update database (resolved)"
             git push && exit 0
           done
