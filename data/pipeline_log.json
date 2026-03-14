@@ -2572,5 +2572,65 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-14T07:07:14.401647",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-14T07:07:15.121429",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Reproduction and lifecycle"
+    },
+    {
+        "timestamp": "2026-03-14T07:07:15.121935",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Reproduction and lifecycle"
+    },
+    {
+        "timestamp": "2026-03-14T07:07:15.489203",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-14T07:07:15.819152",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-14T07:17:43.860253",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-14T07:17:57.484625",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-14T07:17:57.507086",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-14T07:17:57.590644",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-03-14T07:17:57.591076",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
