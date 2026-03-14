@@ -560,38 +560,41 @@ class MediaGenerator:
         if visual_source == "stock_only":
             # ==========================================
             # FORMAL CHANNELS: 50:50 tarsier:support
-            # Priority: stock video → stock photo → AI tarsier FALLBACK (only if stock = 0)
-            # Tarsier: stock video + stock PHOTOS (CAN reuse, loop engine makes unique)
-            # Support: stock video (NEVER reuse, tracked in used_footage.json)
-            # AI fallback: ONLY when stock returns ZERO results
+            # TARSIER SOURCE (verified 2026-03-14):
+            #   - Pexels VIDEO search "tarsier" = USELESS (returns maple leaves, fog, NOT tarsier)
+            #   - Pixabay VIDEO search "tarsier" = 0 results
+            #   - Pixabay PHOTO search "tarsier" = ~8 real tarsier photos ✓
+            #   - AI generated (FLUX/SDXL) = reliable with visual-description prompts ✓
+            # STRATEGY: Pixabay real photos + AI tarsier images (primary)
+            # SUPPORT: Pexels/Pixabay forest/nature videos (these work fine)
             # ==========================================
             HALF = TARGET_CLIPS // 2  # 6 tarsier + 6 support
             
             print(f"[{account_key}] Visual source: STOCK ONLY ({HALF} tarsier + {HALF} support)")
+            print(f"[{account_key}] Tarsier strategy: Pixabay PHOTOS + AI images (Pexels VIDEO disabled — returns non-tarsier)")
             
-            # --- 50% TARSIER: stock videos + stock photos (reusable with loop) ---
-            tarsier_videos = self.download_stock_clips(account_key, topic, num_clips=HALF)
-            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
-            
+            # --- 50% TARSIER: Pixabay real photos + AI-generated images ---
             tarsier_media = []
-            for clip in tarsier_videos:
-                tarsier_media.append(("video", clip))
+            
+            # Step 1: Get real tarsier PHOTOS from Pixabay (max ~8 exist)
+            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
             for photo in tarsier_photos:
-                tarsier_media.append(("image", photo))  # loop_engine converts to video
+                tarsier_media.append(("image", photo))
+            real_photo_count = len(tarsier_media)
+            print(f"[{account_key}] Real tarsier photos: {real_photo_count}")
             
-            # Cap at HALF, prefer videos first then photos
-            tarsier_media = tarsier_media[:HALF]
-            
-            # FALLBACK: if ZERO tarsier stock, use AI tarsier images
-            if len(tarsier_media) == 0:
-                print(f"[{account_key}] FALLBACK: Zero tarsier stock! Using AI tarsier images...")
-                for i in range(HALF):
+            # Step 2: Fill remaining slots with AI-generated tarsier images
+            remaining = HALF - len(tarsier_media)
+            if remaining > 0:
+                print(f"[{account_key}] Generating {remaining} AI tarsier images to fill 50% quota...")
+                for i in range(remaining):
                     img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                     if img:
                         tarsier_media.append(("image", img))
-                print(f"[{account_key}] AI tarsier fallback: {len(tarsier_media)} images")
-            else:
-                print(f"[{account_key}] Tarsier stock: {len(tarsier_media)}/{HALF} (videos:{len(tarsier_videos)} photos:{len(tarsier_photos)})")
+                    time.sleep(1)
+            
+            ai_count = len(tarsier_media) - real_photo_count
+            print(f"[{account_key}] Tarsier total: {len(tarsier_media)}/{HALF} (real_photos:{real_photo_count} AI:{ai_count})")
             
             # --- 50% SUPPORT: stock videos (NEVER reused) ---
             support_clips = self.download_support_clips(account_key, num_clips=HALF)

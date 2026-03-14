@@ -11,19 +11,21 @@ headers = {
     'Accept': 'application/vnd.github.v3+json'
 }
 
-# Get Run #31 (latest FB run with diagnostics)
+# Get latest completed FB run
 r = requests.get('https://api.github.com/repos/Bakpau535/Tarsier/actions/runs?per_page=5', headers=headers)
 runs = r.json().get('workflow_runs', [])
+
 target = None
 for run in runs:
-    if run['head_sha'].startswith('323df94') or (run['name'] == 'FB Fanspage Schedule' and run['run_number'] == 31):
+    if run['name'] == 'FB Fanspage Schedule' and run['status'] == 'completed':
         target = run
         break
 
 if not target:
-    target = runs[0]
+    print("No completed FB run found")
+    sys.exit(1)
 
-print(f"Analyzing Run #{target['run_number']} sha={target['head_sha'][:7]}")
+print(f"Analyzing Run #{target['run_number']} sha={target['head_sha'][:7]} conclusion={target['conclusion']}")
 
 log_r = requests.get(f'https://api.github.com/repos/Bakpau535/Tarsier/actions/runs/{target["id"]}/logs', 
                      headers=headers, allow_redirects=True)
@@ -37,13 +39,19 @@ with open('run_logs.zip', 'wb') as f:
 with zipfile.ZipFile('run_logs.zip') as z:
     for name in z.namelist():
         if 'Run Pipeline' in name:
-            print(f"\n{'='*100}")
-            print(f"FILE: {name}")
-            print(f"{'='*100}")
             content = z.read(name).decode('utf-8', errors='replace')
             lines = content.split('\n')
+            # Print only the important diagnostic lines
             for line in lines:
-                # Strip ANSI and timestamp prefix for readability
-                cleaned = line.rstrip()
-                if cleaned:
-                    print(cleaned)
+                if any(k in line for k in [
+                    'MediaGen', 'PEXELS', 'PIXABAY', 'HF_API', 'Gemini', 'FALLBACK',
+                    'Visual source', 'tarsier', 'Tarsier', 'support', 'Support',
+                    'Final:', 'ratio', 'Script generated', 'Metadata generated',
+                    'Freesound', 'music', 'Music', 'assembled', 'QC', 'PREVIEW',
+                    'Selected Topic', 'Processing topic', 'voiceover', 'Voiceover'
+                ]):
+                    # Strip timestamp prefix
+                    stripped = line.strip()
+                    if 'Z ' in stripped:
+                        stripped = stripped.split('Z ', 1)[1] if 'Z ' in stripped else stripped
+                    print(stripped)
