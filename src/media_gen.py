@@ -713,22 +713,34 @@ class MediaGenerator:
         
         elif visual_source == "stock_plus_flux_env":
             # ==========================================
-            # SEMI-FORMAL: Stock tarsier + AI 50:50
-            # Same 50:50 rule applies
+            # SEMI-FORMAL (yt_anthro, yt_pov, yt_drama): Stock tarsier + AI 50:50
+            # TARSIER: real photos (Pixabay/Wikimedia) + AI tarsier images
+            # ENVIRONMENT: 100% AI generated (always fresh/unique)
+            # Pexels VIDEO search disabled — returns non-tarsier content
             # ==========================================
             HALF = TARGET_CLIPS // 2
             
             print(f"[{account_key}] Visual source: Stock+AI 50:50 ({HALF} tarsier + {HALF} environment)")
             
-            # --- 50% TARSIER ---
-            tarsier_clips = self.download_stock_clips(account_key, topic, num_clips=HALF)
-            tarsier_media = [("video", clip) for clip in tarsier_clips]
+            # --- 50% TARSIER: real photos + AI tarsier ---
+            tarsier_media = []
+            
+            # Step 1: Get real tarsier PHOTOS from Pixabay/Wikimedia/Pexels
+            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
+            for photo in tarsier_photos:
+                tarsier_media.append(("image", photo))
+            real_photo_count = len(tarsier_media)
+            
+            # Step 2: Fill remaining slots with AI-generated tarsier
             if len(tarsier_media) < HALF:
                 for i in range(HALF - len(tarsier_media)):
                     img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                     if img:
                         tarsier_media.append(("image", img))
                     time.sleep(1)
+            
+            ai_tarsier_count = len(tarsier_media) - real_photo_count
+            print(f"[{account_key}] Tarsier: {len(tarsier_media)}/{HALF} (real_photos:{real_photo_count} AI:{ai_tarsier_count})")
             
             # --- 50% ENVIRONMENT (AI generated, always new) ---
             support_media = []
