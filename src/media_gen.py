@@ -27,6 +27,13 @@ class MediaGenerator:
         self._used_footage = self._load_footage_log()
         print(f"[MediaGen] Footage log loaded: {len(self._used_footage)} items already used")
         
+        # === DIAGNOSTIC: Print API key status ===
+        print(f"[MediaGen] PEXELS_API_KEY: {'SET (' + self.pexels_key[:8] + '...)' if self.pexels_key else '*** MISSING ***'}")
+        print(f"[MediaGen] PIXABAY_API_KEY: {'SET (' + self.pixabay_key[:8] + '...)' if self.pixabay_key else '*** MISSING ***'}")
+        hf_count = sum(1 for v in HF_API_KEYS.values() if v)
+        print(f"[MediaGen] HF_API_KEYS: {hf_count}/6 keys set")
+        print(f"[MediaGen] ==========================")
+        
         # Tarsier-ONLY stock search terms — every term MUST contain 'tarsier' or 'tarsius'
         # to guarantee only real tarsier footage is downloaded (no random primates)
         self.tarsier_search_terms = [
@@ -218,8 +225,10 @@ class MediaGenerator:
                 r = requests.get("https://api.pexels.com/videos/search", headers=headers,
                     params={"query": term, "per_page": 15, "size": "medium", "orientation": "landscape"}, timeout=15)
                 if r.status_code != 200:
+                    print(f"[{account_key}] Pexels tarsier search '{term}': HTTP {r.status_code}")
                     continue
                 videos = r.json().get("videos", [])
+                print(f"[{account_key}] Pexels tarsier search '{term}': {len(videos)} results")
                 random.shuffle(videos)
                 for video in videos:
                     vid_id = f"pexels_{video['id']}"
@@ -263,8 +272,10 @@ class MediaGenerator:
                     params={"key": self.pixabay_key, "q": term, "per_page": 10,
                             "video_type": "film", "safesearch": "true"}, timeout=15)
                 if r.status_code != 200:
+                    print(f"[{account_key}] Pixabay tarsier search '{term}': HTTP {r.status_code}")
                     continue
                 hits = r.json().get("hits", [])
+                print(f"[{account_key}] Pixabay tarsier search '{term}': {len(hits)} results")
                 random.shuffle(hits)
                 for video in hits:
                     vid_id = f"pixabay_{video['id']}"
