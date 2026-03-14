@@ -257,6 +257,10 @@ IMPORTANT RULES:
 - Follow the STRUCTURE defined above EXACTLY
 - Provide ONLY the narration script — no formatting labels, no scene directions, no markdown
 - Every script must be UNIQUE — do not use generic templates
+- CRITICAL: Focus exclusively on the MAIN TOPIC specified above
+- Do NOT repeat generic tarsier overview facts — write ONLY about the specific topic
+- Each script must contain facts and angles that are DIFFERENT from any previous script
+- Include at least 3 facts that are SPECIFIC to the topic, not general tarsier information
 """
 
 METADATA_GENERATION_PROMPT = """

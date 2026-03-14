@@ -176,12 +176,36 @@ class ResearchEngine:
         2. Google Scholar
         3. IUCN Red List
         4. News scraping
+        
+        IMPORTANT: The topic name and specific focus MUST be prominently placed
+        at the TOP of raw_facts so Gemini generates truly different scripts
+        per topic, not generic tarsier facts every time.
         """
         facet = random.choice(self.facets)
         
-        # Source 1: Wikipedia
+        # Source 1: Wikipedia — try to get topic-specific section first
+        section_text = ""
+        # Try multiple keywords from the facet for better section matching
+        facet_words = facet.lower().split()
+        for keyword in facet_words:
+            if len(keyword) > 3:  # Skip short words like "and", "in"
+                section_text = self.fetch_specific_section("Tarsier", keyword)
+                if section_text:
+                    break
+        
+        # Also try the full facet as a search on related Wikipedia pages
+        if not section_text:
+            for alt_page in ["Philippine tarsier", "Tarsiidae", "Tarsier"]:
+                for keyword in facet_words:
+                    if len(keyword) > 3:
+                        section_text = self.fetch_specific_section(alt_page, keyword)
+                        if section_text:
+                            break
+                if section_text:
+                    break
+        
+        # Generic Wikipedia summary (kept short — not the main content)
         base_summary = self.fetch_base_facts("Tarsier")
-        section_text = self.fetch_specific_section("Tarsier", facet.split()[0])
         
         # Source 2: Google Scholar
         scholar_text = self.fetch_google_scholar(f"tarsier {facet.lower()}")
@@ -192,12 +216,20 @@ class ResearchEngine:
         # Source 4: News
         news_text = self.fetch_tarsier_news(f"tarsier {facet.lower()}")
         
-        # Combine all sources
-        combined_text = f"Wikipedia Summary: {base_summary[:500]}...\n"
-        combined_text += f"Specific Section ({facet}): {section_text[:1000]}\n"
+        # BUILD raw_facts — TOPIC IS FRONT-LOADED for Gemini differentiation
+        combined_text = f"MAIN TOPIC: {facet.upper()}\n"
+        combined_text += f"You MUST write specifically about: {facet} — do NOT write generic tarsier facts.\n"
+        combined_text += f"Every sentence must relate to the specific topic of '{facet}'.\n\n"
+        
+        if section_text:
+            combined_text += f"Topic-Specific Research ({facet}):\n{section_text[:1000]}\n\n"
+        
         if scholar_text:
-            combined_text += f"Recent Research: {scholar_text[:500]}\n"
-        combined_text += f"Conservation Status (IUCN): {iucn_text[:300]}\n"
+            combined_text += f"Recent Scientific Research on {facet}:\n{scholar_text[:500]}\n\n"
+        
+        combined_text += f"Background (brief): {base_summary[:200]}...\n"
+        combined_text += f"Conservation Status: {iucn_text[:200]}\n"
+        
         if news_text:
             combined_text += f"Recent News: {news_text[:300]}\n"
         
