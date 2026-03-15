@@ -172,6 +172,7 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     Get a deterministic but varied fallback script based on channel + topic.
     Uses topic hash to pick a script — same topic always gets same script,
     different topics get different scripts.
+    Auto-truncates to ~400 chars to match VO duration target (~45s).
     """
     scripts = FALLBACK_SCRIPTS.get(account_key, FB_SCRIPTS)
     # Hash topic to get consistent index
@@ -184,5 +185,17 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
     script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
     
-    print(f"[{account_key}] FALLBACK SCRIPT used (template #{index+1}/{len(scripts)}) — topic: {topic_mention}")
+    # Auto-truncate to ~400 chars (TTS reads ~8 chars/sec → 400 chars ≈ 50s)
+    MAX_CHARS = 420
+    if len(script) > MAX_CHARS:
+        # Cut at last sentence boundary within limit
+        truncated = script[:MAX_CHARS]
+        last_period = truncated.rfind('.')
+        if last_period > 200:
+            script = truncated[:last_period + 1]
+        else:
+            script = truncated.rsplit(' ', 1)[0] + '.'
+    
+    print(f"[{account_key}] FALLBACK SCRIPT used (template #{index+1}/{len(scripts)}) — topic: {topic_mention} ({len(script)} chars)")
     return script
+
