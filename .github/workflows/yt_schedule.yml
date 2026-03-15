@@ -42,13 +42,27 @@ jobs:
           sleep $delay
 
       - name: Restore YouTube OAuth Tokens
+        env:
+          TK1: ${{ secrets.YT_DOCUMENTER_TOKEN }}
+          TK2: ${{ secrets.YT_FUNNY_TOKEN }}
+          TK3: ${{ secrets.YT_ANTHRO_TOKEN }}
+          TK4: ${{ secrets.YT_POV_TOKEN }}
+          TK5: ${{ secrets.YT_DRAMA_TOKEN }}
         run: |
           mkdir -p data/tokens
-          echo '${{ secrets.YT_DOCUMENTER_TOKEN }}' > data/tokens/yt_documenter_token.json
-          echo '${{ secrets.YT_FUNNY_TOKEN }}' > data/tokens/yt_funny_token.json
-          echo '${{ secrets.YT_ANTHRO_TOKEN }}' > data/tokens/yt_anthro_token.json
-          echo '${{ secrets.YT_POV_TOKEN }}' > data/tokens/yt_pov_token.json
-          echo '${{ secrets.YT_DRAMA_TOKEN }}' > data/tokens/yt_drama_token.json
+          printf '%s' "$TK1" > data/tokens/yt_documenter_token.json
+          printf '%s' "$TK2" > data/tokens/yt_funny_token.json
+          printf '%s' "$TK3" > data/tokens/yt_anthro_token.json
+          printf '%s' "$TK4" > data/tokens/yt_pov_token.json
+          printf '%s' "$TK5" > data/tokens/yt_drama_token.json
+          # Validate token files
+          for f in data/tokens/*.json; do
+            if python3 -c "import json; json.load(open('$f'))" 2>/dev/null; then
+              echo "OK: $f"
+            else
+              echo "ERROR: $f is NOT valid JSON — upload will fail for this account!"
+            fi
+          done
 
       - name: Run Pipeline
         env:

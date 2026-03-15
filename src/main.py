@@ -195,7 +195,10 @@ class Pipeline:
 
             # 8. QC Check → scoring system per bagian, minimal skor 80/100 (Bagian 4 Step 8, Bagian 5)
             # Duration target based on channel profile clip count
-            target_duration = len(script_segments) * profile.get("cut_duration", 6)
+            cut_dur = profile.get("cut_duration", 6)
+            if isinstance(cut_dur, (tuple, list)):
+                cut_dur = sum(cut_dur) / len(cut_dur)  # average of range
+            target_duration = len(script_segments) * int(cut_dur)
             if not self.qc.evaluate(final_video, metadata, target_duration, account_key):
                 raise ValueError("Quality Control failed. Score below 80/100.")
 

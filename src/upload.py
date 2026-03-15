@@ -60,7 +60,19 @@ class Uploader:
             print(f"[{account_key}] Run: python yt_authorize.py --account {account_key}")
             return None
         
-        creds = Credentials.from_authorized_user_file(token_file, SCOPES)
+        try:
+            creds = Credentials.from_authorized_user_file(token_file, SCOPES)
+        except Exception as e:
+            print(f"[{account_key}] Token file CORRUPT or invalid JSON: {e}")
+            print(f"[{account_key}] Token file: {token_file}")
+            # Show first 100 chars for debugging
+            try:
+                with open(token_file, 'r') as f:
+                    content = f.read(100)
+                print(f"[{account_key}] Token content preview: {repr(content)}")
+            except:
+                pass
+            return None
         
         # Refresh if expired
         if creds.expired and creds.refresh_token:
