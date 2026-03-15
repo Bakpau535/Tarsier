@@ -43,7 +43,7 @@ jobs:
 
       - name: Restore YouTube OAuth Tokens
         env:
-          TK1: ${{ secrets.YT_DOCUMENTER_TOKEN }}
+          TK1: ${{ secrets.YT_SCIENTIFIC_TOKEN }}
           TK2: ${{ secrets.YT_FUNNY_TOKEN }}
           TK3: ${{ secrets.YT_ANTHRO_TOKEN }}
           TK4: ${{ secrets.YT_POV_TOKEN }}
