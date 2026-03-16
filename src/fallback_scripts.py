@@ -167,17 +167,33 @@ FALLBACK_SCRIPTS = {
 }
 
 
+_used_fallback_indices = {}  # Track used template indices per channel across the run
+
 def get_fallback_script(account_key: str, topic: str) -> str:
     """
-    Get a deterministic but varied fallback script based on channel + topic.
-    Uses topic hash to pick a script — same topic always gets same script,
-    different topics get different scripts.
-    Auto-truncates to ~400 chars to match VO duration target (~45s).
+    Get a unique fallback script based on channel + topic.
+    DEDUP RULES:
+    - Hash includes account_key so different channels get different templates
+    - Tracks used indices per channel to never repeat within same pipeline run
+    - Auto-truncates to ~400 chars to match VO duration target (~45s)
     """
     scripts = FALLBACK_SCRIPTS.get(account_key, FB_SCRIPTS)
-    # Hash topic to get consistent index
-    topic_hash = int(hashlib.md5(topic.encode()).hexdigest(), 16)
+    
+    # Hash includes BOTH topic AND account_key for differentiation
+    combined = f"{account_key}::{topic}"
+    topic_hash = int(hashlib.md5(combined.encode()).hexdigest(), 16)
     index = topic_hash % len(scripts)
+    
+    # If this index was already used for this channel, cycle to next unused
+    used = _used_fallback_indices.get(account_key, set())
+    attempts = 0
+    while index in used and attempts < len(scripts):
+        index = (index + 1) % len(scripts)
+        attempts += 1
+    
+    # Track usage
+    used.add(index)
+    _used_fallback_indices[account_key] = used
     
     script = scripts[index]
     
@@ -185,10 +201,9 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
     script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
     
-    # Auto-truncate to ~400 chars (TTS reads ~8 chars/sec → 400 chars ≈ 50s)
+    # Auto-truncate to ~400 chars (TTS reads ~8 chars/sec -> 400 chars ~ 50s)
     MAX_CHARS = 420
     if len(script) > MAX_CHARS:
-        # Cut at last sentence boundary within limit
         truncated = script[:MAX_CHARS]
         last_period = truncated.rfind('.')
         if last_period > 200:

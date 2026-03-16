@@ -72,3 +72,54 @@ class DatabaseManager:
     def mark_failed(self, topic: str, account: str):
         """Marks a topic as failed."""
         self.add_topic_record(topic, account, "gagal")
+
+    # === Script Hash Dedup System ===
+    # Ensures NO script is ever reused — within same channel or across channels
+    
+    def _get_scripts_file(self) -> str:
+        """Path to used_scripts.json in same directory as topics.json."""
+        return os.path.join(os.path.dirname(self.topics_file), "used_scripts.json")
+    
+    def _load_script_hashes(self) -> dict:
+        """Load script hash database. Format: {hash: {account, topic, date}}"""
+        scripts_file = self._get_scripts_file()
+        if not os.path.exists(scripts_file):
+            return {}
+        try:
+            with open(scripts_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, FileNotFoundError):
+            return {}
+    
+    def _save_script_hashes(self, data: dict):
+        scripts_file = self._get_scripts_file()
+        with open(scripts_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2)
+    
+    def is_script_duplicate(self, script: str) -> bool:
+        """
+        Check if this exact script (by hash) has EVER been used on ANY channel.
+        Returns True if duplicate.
+        """
+        import hashlib
+        script_hash = hashlib.sha256(script.strip().encode()).hexdigest()[:16]
+        hashes = self._load_script_hashes()
+        if script_hash in hashes:
+            prev = hashes[script_hash]
+            print(f"[DEDUP] Script hash {script_hash} already used by {prev.get('account','')} on {prev.get('date','')}")
+            return True
+        return False
+    
+    def record_script_hash(self, script: str, account: str, topic: str):
+        """Record a script hash so it can never be reused."""
+        import hashlib
+        script_hash = hashlib.sha256(script.strip().encode()).hexdigest()[:16]
+        hashes = self._load_script_hashes()
+        hashes[script_hash] = {
+            "account": account,
+            "topic": topic,
+            "date": datetime.now().strftime("%Y-%m-%d %H:%M")
+        }
+        self._save_script_hashes(hashes)
+        print(f"[DEDUP] Script hash {script_hash} recorded for {account}")
+
