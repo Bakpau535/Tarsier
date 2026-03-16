@@ -28,23 +28,18 @@ class ScriptEngine:
 
     def _get_key_pool(self, account_key: str) -> list:
         """
-        Get ordered list of Gemini keys: channel's own 2 keys first, then others as backup.
-        Priority: own primary → own backup → other channels' keys.
-        Skips keys already marked as depleted.
+        Get Gemini keys for this channel ONLY — 2 dedicated keys, NO cross-channel borrowing.
+        Priority: own primary → own backup. That's it.
         """
         own_key = GEMINI_KEY_MAP.get(account_key, "")
         own_backup = GEMINI_KEY_MAP_BACKUP.get(account_key, "")
         pool = []
-        # Own primary key first
+        # Own primary key
         if own_key and own_key not in self._depleted_keys:
             pool.append(own_key)
-        # Own backup key second
+        # Own backup key
         if own_backup and own_backup not in self._depleted_keys and own_backup not in pool:
             pool.append(own_backup)
-        # Then all other keys as backup (NOT other channels' dedicated keys)
-        for k in GEMINI_API_KEYS:
-            if k and k not in self._depleted_keys and k not in pool:
-                pool.append(k)
         return pool
 
     def _call_gemini(self, prompt: str, account_key: str) -> str:

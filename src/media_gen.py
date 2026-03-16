@@ -129,24 +129,19 @@ class MediaGenerator:
 
     def _get_key_pool(self, account_key: str) -> list:
         """
-        Get ordered list of HF API keys to try: own key first, own backup second, then others.
-        Each account has 2 dedicated keys (primary + backup) to maximize resilience.
+        Get HF API keys for this channel ONLY — 2 dedicated keys, NO cross-channel borrowing.
+        Priority: own primary → own backup. That's it.
         """
         from src.config import HF_API_KEYS_BACKUP
-        all_keys = [(k, v) for k, v in HF_API_KEYS.items() if v]
-        # Own primary key first
-        own_key = HF_API_KEYS.get(account_key, "")
         pool = []
+        # Own primary key
+        own_key = HF_API_KEYS.get(account_key, "")
         if own_key and own_key not in self._depleted_keys:
             pool.append(own_key)
-        # Own backup key second
+        # Own backup key
         own_backup = HF_API_KEYS_BACKUP.get(account_key, "")
         if own_backup and own_backup not in self._depleted_keys and own_backup not in pool:
             pool.append(own_backup)
-        # Then all other keys as backup (skip depleted ones)
-        for k, v in all_keys:
-            if k != account_key and v not in self._depleted_keys and v not in pool:
-                pool.append(v)
         return pool
 
     def _make_api_request(self, url: str, headers: dict, payload: dict,
