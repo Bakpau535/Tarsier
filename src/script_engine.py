@@ -5,7 +5,7 @@ import time
 import re
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, ACCOUNTS, SCRIPT_GENERATION_PROMPT, MAX_RETRIES
+from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, GEMINI_KEY_MAP_BACKUP, ACCOUNTS, SCRIPT_GENERATION_PROMPT, MAX_RETRIES
 from src.persona_prompts import PERSONA_BRIEFS
 from src.similarity_checker import check_script_similarity, get_most_similar_channel
 from src.fallback_scripts import get_fallback_script
@@ -19,20 +19,29 @@ class ScriptEngine:
         for k in GEMINI_API_KEYS:
             if k and k not in self._key_to_client:
                 self._key_to_client[k] = genai.Client(api_key=k)
+        # Also add backup keys to client pool
+        for k in GEMINI_KEY_MAP_BACKUP.values():
+            if k and k not in self._key_to_client:
+                self._key_to_client[k] = genai.Client(api_key=k)
         self._depleted_keys = set()  # Track keys that returned 429
         print(f"[ScriptEngine] Initialized with {len(self._key_to_client)} unique Gemini API key(s).")
 
     def _get_key_pool(self, account_key: str) -> list:
         """
-        Get ordered list of Gemini keys: channel's own key first, then others as backup.
+        Get ordered list of Gemini keys: channel's own 2 keys first, then others as backup.
+        Priority: own primary → own backup → other channels' keys.
         Skips keys already marked as depleted.
         """
         own_key = GEMINI_KEY_MAP.get(account_key, "")
+        own_backup = GEMINI_KEY_MAP_BACKUP.get(account_key, "")
         pool = []
-        # Own key first
+        # Own primary key first
         if own_key and own_key not in self._depleted_keys:
             pool.append(own_key)
-        # Then all other keys as backup
+        # Own backup key second
+        if own_backup and own_backup not in self._depleted_keys and own_backup not in pool:
+            pool.append(own_backup)
+        # Then all other keys as backup (NOT other channels' dedicated keys)
         for k in GEMINI_API_KEYS:
             if k and k not in self._depleted_keys and k not in pool:
                 pool.append(k)

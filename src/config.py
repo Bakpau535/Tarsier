@@ -30,7 +30,7 @@ for i, k in enumerate(_gemini_keys_raw):
     prefix = k[:8] + "..." if k else "*** EMPTY ***"
     print(f"  {label}: {prefix}")
 
-# Per-channel Gemini key assignment — each channel gets its own primary key
+# Per-channel Gemini key assignment — each channel gets 2 dedicated keys
 # to prevent one channel from exhausting another's quota
 GEMINI_KEY_MAP = {
     "yt_documenter": os.environ.get("GEMINI_API_KEY", ""),
@@ -38,7 +38,16 @@ GEMINI_KEY_MAP = {
     "yt_anthro":     os.environ.get("GEMINI_API_KEY_3", ""),
     "yt_pov":        os.environ.get("GEMINI_API_KEY_4", ""),
     "yt_drama":      os.environ.get("GEMINI_API_KEY_5", ""),
-    "fb_fanspage":   os.environ.get("GEMINI_API_KEY_6", ""),  # dedicated key 6
+    "fb_fanspage":   os.environ.get("GEMINI_API_KEY_6", ""),
+}
+# Backup Gemini keys — one extra key per channel
+GEMINI_KEY_MAP_BACKUP = {
+    "yt_documenter": os.environ.get("GEMINI_API_KEY_7", ""),
+    "yt_funny":      os.environ.get("GEMINI_API_KEY_8", ""),
+    "yt_anthro":     os.environ.get("GEMINI_API_KEY_9", ""),
+    "yt_pov":        os.environ.get("GEMINI_API_KEY_10", ""),
+    "yt_drama":      os.environ.get("GEMINI_API_KEY_11", ""),
+    "fb_fanspage":   os.environ.get("GEMINI_API_KEY_12", ""),
 }
 
 # Freesound API Key for background music
