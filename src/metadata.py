@@ -6,7 +6,7 @@ from google import genai
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, METADATA_GENERATION_PROMPT, MAX_RETRIES
+from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, GEMINI_KEY_MAP_BACKUP, METADATA_GENERATION_PROMPT, MAX_RETRIES
 from src.persona_prompts import METADATA_TITLE_PROMPTS
 
 class MetadataGenerator:
@@ -17,17 +17,22 @@ class MetadataGenerator:
         for k in GEMINI_API_KEYS:
             if k and k not in self._key_to_client:
                 self._key_to_client[k] = genai.Client(api_key=k)
+        # Also add backup keys to client pool
+        for k in GEMINI_KEY_MAP_BACKUP.values():
+            if k and k not in self._key_to_client:
+                self._key_to_client[k] = genai.Client(api_key=k)
         self._depleted_keys = set()
         print(f"[MetadataGen] Initialized with {len(self._key_to_client)} unique Gemini API key(s).")
 
     def _get_key_pool(self, account_key: str) -> list:
+        """Get Gemini keys for this channel ONLY — 2 dedicated keys, NO cross-channel borrowing."""
         own_key = GEMINI_KEY_MAP.get(account_key, "")
+        own_backup = GEMINI_KEY_MAP_BACKUP.get(account_key, "")
         pool = []
         if own_key and own_key not in self._depleted_keys:
             pool.append(own_key)
-        for k in GEMINI_API_KEYS:
-            if k and k not in self._depleted_keys and k not in pool:
-                pool.append(k)
+        if own_backup and own_backup not in self._depleted_keys and own_backup not in pool:
+            pool.append(own_backup)
         return pool
 
     def _fallback_metadata(self, script: str) -> dict:

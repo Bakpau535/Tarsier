@@ -341,7 +341,7 @@ class MediaGenerator:
         return downloaded
 
     def download_stock_clips(self, account_key: str, topic: str, num_clips: int = 7) -> List[str]:
-        """Download TARSIER stock clips. No dedup — tarsier clips CAN be reused (loop engine makes unique)."""
+        """Download TARSIER stock clips. All clips are deduped via used_footage.json — NEVER reused."""
         pexels = self._download_pexels_clips(account_key, topic, num_clips)
         pixabay = self._download_pixabay_clips(account_key, topic, num_clips)
         all_clips = pexels + pixabay
