@@ -193,16 +193,18 @@ class Uploader:
         if not video_id:
             return None
         
-        # Upload thumbnail
-        if thumbnail_path and os.path.exists(thumbnail_path):
-            try:
-                service.thumbnails().set(
-                    videoId=video_id,
-                    media_body=MediaFileUpload(thumbnail_path, mimetype="image/png")
-                ).execute()
-                print(f"[{account_key}] Thumbnail uploaded.")
-            except Exception as e:
-                print(f"[{account_key}] Thumbnail upload failed (non-critical): {e}")
+        # Thumbnail upload disabled — channels not yet verified for custom thumbnails
+        # YouTube auto-generates a thumbnail from the video instead.
+        # To re-enable: uncomment below after verifying channels at youtube.com/verify
+        # if thumbnail_path and os.path.exists(thumbnail_path):
+        #     try:
+        #         service.thumbnails().set(
+        #             videoId=video_id,
+        #             media_body=MediaFileUpload(thumbnail_path, mimetype="image/png")
+        #         ).execute()
+        #         print(f"[{account_key}] Thumbnail uploaded.")
+        #     except Exception as e:
+        #         print(f"[{account_key}] Thumbnail upload failed (non-critical): {e}")
         
         return video_id
 
