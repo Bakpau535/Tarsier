@@ -3382,5 +3382,71 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-16T17:33:13.481041",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-16T17:33:16.869561",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier dental formula and teeth"
+    },
+    {
+        "timestamp": "2026-03-16T17:33:16.870012",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth"
+    },
+    {
+        "timestamp": "2026-03-16T17:33:17.156142",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Script duplicate detected! Regenerating (attempt 2)..."
+    },
+    {
+        "timestamp": "2026-03-16T17:33:17.156432",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-16T17:33:17.403192",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-16T17:37:18.820176",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-16T17:37:21.116122",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-16T17:37:21.131387",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-16T17:37:25.312105",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-16T17:37:25.312127",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
