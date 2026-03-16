@@ -2,10 +2,10 @@ name: YT Long Video Schedule
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 07:00 WIB (00:00 UTC)
-    - cron: '0 4 * * *'  # 11:00 WIB (04:00 UTC)
-    - cron: '0 8 * * *'  # 15:00 WIB (08:00 UTC)
-    - cron: '0 12 * * *' # 19:00 WIB (12:00 UTC)
+    - cron: '17 0 * * *'  # ~07:17 WIB + random delay
+    - cron: '23 4 * * *'  # ~11:23 WIB + random delay
+    - cron: '41 8 * * *'  # ~15:41 WIB + random delay
+    - cron: '53 12 * * *' # ~19:53 WIB + random delay
   workflow_dispatch:
 
 concurrency:
@@ -20,6 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
+      - name: Random Startup Delay
+        if: github.event_name == 'schedule'
+        run: |
+          # Random delay 0-25 minutes to make posting time unpredictable
+          DELAY=$((RANDOM % 1500))
+          echo "Waiting ${DELAY} seconds (~$((DELAY/60)) minutes) before starting..."
+          sleep $DELAY
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 

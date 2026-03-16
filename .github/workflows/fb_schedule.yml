@@ -2,7 +2,7 @@ name: FB Fanspage Schedule
 
 on:
   schedule:
-    - cron: '0 1 * * *' # 08:00 WIB (01:00 UTC)
+    - cron: '38 1 * * *' # ~08:38 WIB + random delay
   workflow_dispatch:
 
 permissions:
@@ -12,6 +12,13 @@ jobs:
   run-fb-tarsier-pipeline:
     runs-on: ubuntu-latest
     steps:
+      - name: Random Startup Delay
+        if: github.event_name == 'schedule'
+        run: |
+          DELAY=$((RANDOM % 1500))
+          echo "Waiting ${DELAY} seconds (~$((DELAY/60)) minutes) before starting..."
+          sleep $DELAY
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
