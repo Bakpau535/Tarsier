@@ -43,7 +43,7 @@ GEMINI_KEY_MAP = {
 
 # Freesound API Key for background music
 FREESOUND_API_KEY = os.environ.get("FREESOUND_API_KEY", "")
-# 6 HF Inference API Keys for each parallel account
+# 12 HF Inference API Keys — 2 per account (primary + backup)
 HF_API_KEYS = {
     "yt_documenter": os.environ.get("HF_API_KEY_1", ""),
     "yt_funny": os.environ.get("HF_API_KEY_2", ""),
@@ -51,6 +51,15 @@ HF_API_KEYS = {
     "yt_pov": os.environ.get("HF_API_KEY_4", ""),
     "yt_drama": os.environ.get("HF_API_KEY_5", ""),
     "fb_fanspage": os.environ.get("HF_API_KEY_6", "")
+}
+# Backup HF keys — one extra key per account
+HF_API_KEYS_BACKUP = {
+    "yt_documenter": os.environ.get("HF_API_KEY_7", ""),
+    "yt_funny": os.environ.get("HF_API_KEY_8", ""),
+    "yt_anthro": os.environ.get("HF_API_KEY_9", ""),
+    "yt_pov": os.environ.get("HF_API_KEY_10", ""),
+    "yt_drama": os.environ.get("HF_API_KEY_11", ""),
+    "fb_fanspage": os.environ.get("HF_API_KEY_12", "")
 }
 
 # --- Account Configurations ---

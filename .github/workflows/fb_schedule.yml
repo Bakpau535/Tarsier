@@ -60,6 +60,12 @@ jobs:
           HF_API_KEY_4: ${{ secrets.HF_API_KEY_4 }}
           HF_API_KEY_5: ${{ secrets.HF_API_KEY_5 }}
           HF_API_KEY_6: ${{ secrets.HF_API_KEY_6 }}
+          HF_API_KEY_7: ${{ secrets.HF_API_KEY_7 }}
+          HF_API_KEY_8: ${{ secrets.HF_API_KEY_8 }}
+          HF_API_KEY_9: ${{ secrets.HF_API_KEY_9 }}
+          HF_API_KEY_10: ${{ secrets.HF_API_KEY_10 }}
+          HF_API_KEY_11: ${{ secrets.HF_API_KEY_11 }}
+          HF_API_KEY_12: ${{ secrets.HF_API_KEY_12 }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
