@@ -249,15 +249,28 @@ class VideoAssembler:
                     voice = AudioFileClip(processed_voice)
                     print(f"[{account_key}] VO duration: {voice.duration:.1f}s | Video duration: {final_video.duration:.1f}s")
                     
-                    if voice.duration > final_video.duration:
-                        # VO longer than video → trim VO
-                        voice = voice.subclipped(0, final_video.duration)
-                        print(f"[{account_key}] Trimmed VO to match video ({final_video.duration:.1f}s)")
+                    if voice.duration > final_video.duration + 0.5:
+                        # VO longer than video → EXTEND video by looping last clip
+                        # Never cut the VO — it must always play completely
+                        gap = voice.duration - final_video.duration + 1.0  # +1s buffer
+                        print(f"[{account_key}] Extending video by {gap:.1f}s to match VO...")
+                        if clips:
+                            # Loop the last clip to fill the gap
+                            last_clip = clips[-1]
+                            loop_dur = min(gap, last_clip.duration)
+                            filler = last_clip.subclipped(0, loop_dur)
+                            extended = concatenate_videoclips([final_video, filler], method="compose")
+                            final_video = extended
+                            print(f"[{account_key}] Video extended to {final_video.duration:.1f}s (VO: {voice.duration:.1f}s)")
+                        # If still shorter after extension, trim VO as last resort
+                        if voice.duration > final_video.duration:
+                            voice = voice.subclipped(0, final_video.duration)
+                            print(f"[{account_key}] VO trimmed to {final_video.duration:.1f}s (last resort)")
                     elif voice.duration < final_video.duration - 2.0:
                         # VO significantly shorter than video → trim video to match VO + 1.5s buffer
                         target_dur = voice.duration + 1.5
                         final_video = final_video.subclipped(0, min(target_dur, final_video.duration))
-                        print(f"[{account_key}] Trimmed video to match VO ({target_dur:.1f}s) — prevents awkward silence at end")
+                        print(f"[{account_key}] Trimmed video to match VO ({target_dur:.1f}s)")
                     
                     audio_clips.append(voice)
                 except Exception as e:
