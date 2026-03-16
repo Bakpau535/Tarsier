@@ -7,7 +7,7 @@ load_dotenv()
 # --- API Keys ---
 # Gemini 2.5 Flash — 12 key rotasi untuk kapasitas maksimal
 _gemini_keys_raw = [
-    os.environ.get("GEMINI_API_KEY", ""),
+    os.environ.get("GEMINI_API_KEY_1", ""),
     os.environ.get("GEMINI_API_KEY_2", ""),
     os.environ.get("GEMINI_API_KEY_3", ""),
     os.environ.get("GEMINI_API_KEY_4", ""),
@@ -33,7 +33,7 @@ for i, k in enumerate(_gemini_keys_raw):
 # Per-channel Gemini key assignment — each channel gets 2 dedicated keys
 # to prevent one channel from exhausting another's quota
 GEMINI_KEY_MAP = {
-    "yt_documenter": os.environ.get("GEMINI_API_KEY", ""),
+    "yt_documenter": os.environ.get("GEMINI_API_KEY_1", ""),
     "yt_funny":      os.environ.get("GEMINI_API_KEY_2", ""),
     "yt_anthro":     os.environ.get("GEMINI_API_KEY_3", ""),
     "yt_pov":        os.environ.get("GEMINI_API_KEY_4", ""),

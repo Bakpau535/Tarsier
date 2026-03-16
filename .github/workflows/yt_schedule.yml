@@ -74,7 +74,7 @@ jobs:
           # PREVIEW_MODE: set to "true" to save videos as artifacts instead of uploading to YouTube
           # Change to "false" when ready for auto-posting
           PREVIEW_MODE: "false"
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
           GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
