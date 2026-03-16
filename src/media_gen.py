@@ -263,8 +263,9 @@ class MediaGenerator:
                     vid_id = f"pexels_{video['id']}"
                     if len(downloaded) >= num_clips:
                         break
-                    # Tarsier clips CAN be reused — loop engine creates unique variations
-                    # (dedup only applies to support/environment footage)
+                    # ALL clips must be unique — no reuse within or across channels
+                    if self._is_footage_used(vid_id):
+                        continue
                     best_file = None
                     for vf in video.get("video_files", []):
                         if vf.get("width", 0) >= 720 and vf.get("file_type") == "video/mp4":
@@ -280,6 +281,7 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
+                            self._mark_footage_used(vid_id)
                             print(f"[{account_key}] Pexels clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
                             time.sleep(0.5)
                     except Exception as e:
@@ -310,8 +312,9 @@ class MediaGenerator:
                     vid_id = f"pixabay_{video['id']}"
                     if len(downloaded) >= num_clips:
                         break
-                    # Tarsier clips CAN be reused — loop engine creates unique variations
-                    # (dedup only applies to support/environment footage)
+                    # ALL clips must be unique — no reuse within or across channels
+                    if self._is_footage_used(vid_id):
+                        continue
                     vid_url = None
                     for q in ["medium", "large", "small"]:
                         entry = video.get("videos", {}).get(q, {})
@@ -328,6 +331,7 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
+                            self._mark_footage_used(vid_id)
                             print(f"[{account_key}] Pixabay clip {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{vid_id}]")
                             time.sleep(0.5)
                     except Exception as e:
@@ -545,6 +549,10 @@ class MediaGenerator:
                     if title in seen_titles:
                         continue
                     seen_titles.add(title)
+                    # Persistent dedup — never reuse same photo across channels/runs
+                    wiki_id = f"wiki_{title.replace(' ', '_')[:60]}"
+                    if self._is_footage_used(wiki_id):
+                        continue
                     
                     imageinfo = page.get("imageinfo", [{}])
                     if not imageinfo:
@@ -571,6 +579,7 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
+                            self._mark_footage_used(wiki_id)
                             print(f"[{account_key}] Wikimedia PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [{safe_title}]")
                             time.sleep(0.3)
                     except Exception as e:

@@ -201,8 +201,8 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
     script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
     
-    # Auto-truncate to ~400 chars (TTS reads ~8 chars/sec -> 400 chars ~ 50s)
-    MAX_CHARS = 420
+    # Auto-truncate to ~250 chars (TTS reads ~8 chars/sec -> 250 chars ~ 30s, matching video length)
+    MAX_CHARS = 250
     if len(script) > MAX_CHARS:
         truncated = script[:MAX_CHARS]
         last_period = truncated.rfind('.')
