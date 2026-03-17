@@ -3730,5 +3730,65 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-17T17:15:05.466851",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-17T17:15:08.359702",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Reproduction and lifecycle"
+    },
+    {
+        "timestamp": "2026-03-17T17:15:08.360277",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Reproduction and lifecycle"
+    },
+    {
+        "timestamp": "2026-03-17T17:15:20.366267",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-17T17:15:29.964581",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Tremors of a Fragile Promise"
+    },
+    {
+        "timestamp": "2026-03-17T17:21:54.898465",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-17T17:22:01.198824",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-17T17:22:01.221202",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-17T17:22:10.378146",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-17T17:22:10.378170",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
