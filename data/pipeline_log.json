@@ -3448,5 +3448,167 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-17T06:07:48.160392",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-17T06:07:50.184358",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier fur and grooming"
+    },
+    {
+        "timestamp": "2026-03-17T06:07:50.184917",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier fur and grooming"
+    },
+    {
+        "timestamp": "2026-03-17T06:07:50.397704",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-17T06:07:50.530790",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:02.751565",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:04.860701",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.861504",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.862239",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier fur and grooming"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.862537",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Script duplicate detected! Regenerating (attempt 2)..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.862640",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Script duplicate detected! Regenerating (attempt 3)..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.862712",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Script duplicate detected! Regenerating (attempt 4)..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.863048",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:09.863078",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:21.865345",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:24.005231",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.005989",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.006835",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier fur and grooming"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.007004",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Script duplicate detected! Regenerating (attempt 2)..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.007117",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Script duplicate detected! Regenerating (attempt 3)..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.007206",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Script duplicate detected! Regenerating (attempt 4)..."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.007459",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:29.007481",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:41.009915",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-17T06:08:43.637424",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:48.638137",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-17T06:08:50.476782",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
