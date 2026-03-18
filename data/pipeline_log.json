@@ -3862,5 +3862,71 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-18T08:18:26.683698",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-18T08:18:28.756052",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Unique sensory abilities' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-18T08:18:29.580850",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier territorial behavior"
+    },
+    {
+        "timestamp": "2026-03-18T08:18:29.581463",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior"
+    },
+    {
+        "timestamp": "2026-03-18T08:18:43.970144",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-18T08:18:54.688557",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Shadow of the Encroacher"
+    },
+    {
+        "timestamp": "2026-03-18T08:25:18.004061",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-18T08:25:24.030837",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-18T08:25:24.105677",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-18T08:25:29.676514",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-18T08:25:29.676540",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
