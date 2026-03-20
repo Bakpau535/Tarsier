@@ -4684,5 +4684,65 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-20T08:42:52.892678",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-20T08:42:54.915208",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-20T08:42:54.915827",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-20T08:42:55.094956",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-20T08:42:55.263122",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-20T08:49:38.979832",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-20T08:49:43.629076",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-20T08:49:43.652834",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-20T08:49:51.958047",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-20T08:49:51.958068",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
