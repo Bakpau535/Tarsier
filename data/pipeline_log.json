@@ -5680,5 +5680,83 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-23T17:08:15.406008",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-23T17:08:17.682111",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Tarsier territorial behavior' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-23T17:08:22.345879",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier and human interaction"
+    },
+    {
+        "timestamp": "2026-03-23T17:08:22.346564",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier and human interaction"
+    },
+    {
+        "timestamp": "2026-03-23T17:08:22.666657",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Script duplicate detected! Regenerating (attempt 2)..."
+    },
+    {
+        "timestamp": "2026-03-23T17:08:22.666782",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Script duplicate detected! Regenerating (attempt 3)..."
+    },
+    {
+        "timestamp": "2026-03-23T17:08:22.667218",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-23T17:08:22.921071",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-23T17:11:36.810090",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-23T17:11:39.112694",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-23T17:11:39.131999",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-23T17:11:42.844236",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-23T17:11:42.844256",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
