@@ -5488,5 +5488,77 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-23T06:39:40.504400",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-23T06:39:42.673817",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Nocturnal adaptations' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-23T06:39:44.793486",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Physical characteristics' already completed for all accounts. Trying another... (2/10)"
+    },
+    {
+        "timestamp": "2026-03-23T06:39:47.119318",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier in popular culture"
+    },
+    {
+        "timestamp": "2026-03-23T06:39:47.120064",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier in popular culture"
+    },
+    {
+        "timestamp": "2026-03-23T06:39:59.573150",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-23T06:40:10.767480",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: This Tiny Primate Has Eyes Bigger Than Its Brain!"
+    },
+    {
+        "timestamp": "2026-03-23T06:49:40.062835",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-23T06:49:54.155475",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-23T06:49:54.169427",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-23T06:49:56.458419",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-23T06:49:56.458447",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
