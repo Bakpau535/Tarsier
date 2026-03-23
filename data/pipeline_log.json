@@ -5620,5 +5620,65 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-23T12:30:44.487797",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-23T12:30:47.524022",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier intelligence and cognition"
+    },
+    {
+        "timestamp": "2026-03-23T12:30:47.524734",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier intelligence and cognition"
+    },
+    {
+        "timestamp": "2026-03-23T12:31:06.453885",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-23T12:31:15.221772",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Shattered Maps, Rewired Minds"
+    },
+    {
+        "timestamp": "2026-03-23T12:37:06.497974",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-23T12:37:11.959206",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-23T12:37:12.003990",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-23T12:37:19.002985",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-23T12:37:19.003006",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
