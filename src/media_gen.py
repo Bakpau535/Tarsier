@@ -180,14 +180,13 @@ class MediaGenerator:
         return "".join(c for c in topic if c.isalnum() or c in (' ', '-', '_')).replace(' ', '_')[:50]
 
     # ==========================================
-    # FOOTAGE DEDUPLICATION — SPLIT RULES:
-    # 1. TARSIER clips: CAN reuse source but MUST
-    #    use DIFFERENT loop variation each time
-    # 2. SUPPORT clips: NEVER reuse (hard rule)
+    # FOOTAGE DEDUPLICATION — ALL footage NEVER reused:
+    # Tarsier clips, support clips, photos, music
+    # All tracked in used_footage.json / used_music.json
     # ==========================================
 
     def _load_footage_log(self) -> set:
-        """Load persistent set of used footage IDs (support footage only)."""
+        """Load persistent set of ALL used footage IDs."""
         try:
             if os.path.exists(self.FOOTAGE_LOG_PATH):
                 with open(self.FOOTAGE_LOG_PATH, "r") as f:
