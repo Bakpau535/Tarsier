@@ -153,23 +153,35 @@ class Pipeline:
 
         try:
             # 2. Script Generate → Gemini API transform 1 script jadi 5+ style per akun (Bagian 4 Step 2)
-            script = self.script_engine.generate_script(topic_info['raw_facts'], account_key)
+            script, template_id = self.script_engine.generate_script(topic_info['raw_facts'], account_key)
             if not script:
                 raise ValueError("Script generation failed.")
             
             # DEDUP CHECK: Reject scripts that have EVER been used before (any channel)
-            for dedup_attempt in range(3):
-                if not self.db.is_script_duplicate(script):
-                    break
-                self._log("WARN", account_key, f"Script duplicate detected! Regenerating (attempt {dedup_attempt+2})...")
-                # Add variation hint to force different output
-                variation = f"\n\nIMPORTANT: Generate a COMPLETELY DIFFERENT script. Variation #{dedup_attempt+2}."
-                script = self.script_engine.generate_script(topic_info['raw_facts'] + variation, account_key)
-                if not script:
-                    raise ValueError("Script regeneration failed.")
+            if template_id:
+                # Fallback script: dedup by stable template_id (not text hash)
+                # because topic injection + excerpt position changes the hash every time
+                if self.db.is_script_duplicate(template_id):
+                    self._log("WARN", account_key, f"Fallback template {template_id} already used! But no alternative available.")
+                # Record the template_id so it's tracked
+                self.db.record_script_hash(template_id, account_key, topic_name)
+            else:
+                # Gemini script: dedup by content hash (text is unique each time)
+                for dedup_attempt in range(3):
+                    if not self.db.is_script_duplicate(script):
+                        break
+                    self._log("WARN", account_key, f"Script duplicate detected! Regenerating (attempt {dedup_attempt+2})...")
+                    # Add variation hint to force different output
+                    variation = f"\n\nIMPORTANT: Generate a COMPLETELY DIFFERENT script. Variation #{dedup_attempt+2}."
+                    script, template_id = self.script_engine.generate_script(topic_info['raw_facts'] + variation, account_key)
+                    if not script:
+                        raise ValueError("Script regeneration failed.")
+                    if template_id:
+                        break  # Fell back to template — stop regenerating
+                
+                # Record script hash so it can never be reused
+                self.db.record_script_hash(script, account_key, topic_name)
             
-            # Record script hash so it can never be reused
-            self.db.record_script_hash(script, account_key, topic_name)
             self._log("INFO", account_key, "Script generated successfully.")
 
             # 11. Metadata Generator → Gemini API auto-generate judul, deskripsi, hashtag, tags (Bagian 4 Step 11)

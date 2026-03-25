@@ -91,9 +91,12 @@ class ScriptEngine:
         print(f"[{account_key}] FINAL FAILURE: All keys exhausted. Last error: {last_error[:300]}")
         return ""
 
-    def generate_script(self, topic_info: str, account_key: str) -> str:
+    def generate_script(self, topic_info: str, account_key: str) -> tuple:
         """
         Generates a narration script using the channel's UNIQUE persona brief.
+        Returns: (script_text, template_id)
+          - template_id is None when Gemini generates fresh script
+          - template_id is stable ID (e.g. 'fb_yt_documenter_3') when fallback used
         RESILIENCE: If ALL Gemini keys fail, uses pre-written fallback templates.
         This method NEVER returns empty — pipeline is guaranteed to continue.
         """
@@ -112,13 +115,13 @@ class ScriptEngine:
         result = self._call_gemini(prompt, account_key)
         if result:
             print(f"[{account_key}] Script generated via Gemini ({len(result)} chars).")
-            return result
+            return result, None  # No template_id for Gemini-generated scripts
         
         # FALLBACK: All Gemini keys exhausted → use pre-written template
         print(f"[{account_key}] Gemini unavailable — using FALLBACK SCRIPT TEMPLATE")
-        fallback = get_fallback_script(account_key, topic_info)
+        fallback, template_id = get_fallback_script(account_key, topic_info)
         print(f"[{account_key}] Fallback script loaded ({len(fallback)} chars).")
-        return fallback
+        return fallback, template_id
 
     def generate_all_styles(self, raw_facts: str) -> dict:
         """
@@ -129,7 +132,7 @@ class ScriptEngine:
         scripts = {}
         for account_key in ACCOUNTS.keys():
             print(f"Generating script for {account_key}...")
-            script = self.generate_script(raw_facts, account_key)
+            script, _ = self.generate_script(raw_facts, account_key)
             scripts[account_key] = script
 
         # Similarity check — max 40% between any pair
@@ -142,7 +145,8 @@ class ScriptEngine:
             # Regenerate the most similar channel's script
             worst_channel = get_most_similar_channel(scripts)
             print(f"[ScriptEngine] Retry {retry+1}/3: Regenerating script for {worst_channel}")
-            scripts[worst_channel] = self.generate_script(raw_facts, worst_channel)
+            script, _ = self.generate_script(raw_facts, worst_channel)
+            scripts[worst_channel] = script
         
         return scripts
 

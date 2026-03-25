@@ -186,9 +186,10 @@ def _save_used_fb_indices(data: dict):
     with open(_USED_FB_IDX_FILE, "w") as f:
         _json.dump(data, f, indent=2)
 
-def get_fallback_script(account_key: str, topic: str) -> str:
+def get_fallback_script(account_key: str, topic: str) -> tuple:
     """
     Get a unique fallback script based on channel + topic + date.
+    Returns: (script_text, template_id) where template_id is stable for dedup.
     DEDUP RULES:
     - Uses date + topic + account as seed so each RUN gets a different template
     - Persistent tracking via used_fallback_idx.json (survives across runs)
@@ -224,6 +225,9 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     all_used[account_key] = list(used_set)
     _save_used_fb_indices(all_used)
     
+    # Stable template ID for dedup (does NOT change with topic/excerpt)
+    template_id = f"fb_{account_key}_{index}"
+    
     script = scripts[index]
     
     # Inject topic reference for uniqueness
@@ -234,6 +238,7 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     # (even same template will sound different by starting at different sentences)
     import re
     sentences = re.split(r'(?<=[.!?])\s+', script.strip())
+    start_idx = 0
     if len(sentences) > 3:
         # Use hash to pick a start point (deterministic per topic+date)
         start_idx = topic_hash % max(1, len(sentences) // 2)
@@ -241,6 +246,6 @@ def get_fallback_script(account_key: str, topic: str) -> str:
         script = ' '.join(excerpt_sentences)
     
     print(f"[{account_key}] FALLBACK SCRIPT used (template #{index+1}/{len(scripts)}) — "
-          f"topic: {topic_mention} ({len(script)} chars, start sentence #{start_idx if len(sentences) > 3 else 0})")
-    return script
+          f"topic: {topic_mention} ({len(script)} chars, start sentence #{start_idx})")
+    return script, template_id
 
