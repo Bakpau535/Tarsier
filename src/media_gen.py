@@ -440,6 +440,10 @@ class MediaGenerator:
                 for photo in photos:
                     if len(downloaded) >= num_photos:
                         break
+                    photo_id = f"pexels_photo_{photo['id']}"
+                    # Persistent dedup — never reuse same photo
+                    if self._is_footage_used(photo_id):
+                        continue
                     # Get landscape-sized photo
                     src = photo.get("src", {})
                     photo_url = src.get("landscape") or src.get("large") or src.get("medium")
@@ -452,7 +456,8 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
-                            print(f"[{account_key}] Pexels PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:pexels_photo_{photo['id']}]")
+                            self._mark_footage_used(photo_id)
+                            print(f"[{account_key}] Pexels PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{photo_id}]")
                             time.sleep(0.5)
                     except Exception as e:
                         print(f"[{account_key}] Photo download error: {e}")
@@ -481,6 +486,10 @@ class MediaGenerator:
                 for photo in hits:
                     if len(downloaded) >= num_photos:
                         break
+                    photo_id = f"pixabay_photo_{photo['id']}"
+                    # Persistent dedup — never reuse same photo
+                    if self._is_footage_used(photo_id):
+                        continue
                     photo_url = photo.get("largeImageURL") or photo.get("webformatURL")
                     if not photo_url:
                         continue
@@ -491,7 +500,8 @@ class MediaGenerator:
                             with open(fp, "wb") as f:
                                 f.write(dl.content)
                             downloaded.append(fp)
-                            print(f"[{account_key}] Pixabay PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:pixabay_photo_{photo['id']}]")
+                            self._mark_footage_used(photo_id)
+                            print(f"[{account_key}] Pixabay PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{photo_id}]")
                             time.sleep(0.5)
                     except Exception as e:
                         print(f"[{account_key}] Photo download error: {e}")
