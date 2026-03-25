@@ -167,33 +167,62 @@ FALLBACK_SCRIPTS = {
 }
 
 
-_used_fallback_indices = {}  # Track used template indices per channel across the run
+import os as _os
+import json as _json
+from datetime import datetime as _datetime
+
+_DATA_DIR = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "data")
+_USED_FB_IDX_FILE = _os.path.join(_DATA_DIR, "used_fallback_idx.json")
+
+def _load_used_fb_indices() -> dict:
+    try:
+        with open(_USED_FB_IDX_FILE, "r") as f:
+            return _json.load(f)
+    except (FileNotFoundError, _json.JSONDecodeError):
+        return {}
+
+def _save_used_fb_indices(data: dict):
+    _os.makedirs(_DATA_DIR, exist_ok=True)
+    with open(_USED_FB_IDX_FILE, "w") as f:
+        _json.dump(data, f, indent=2)
 
 def get_fallback_script(account_key: str, topic: str) -> str:
     """
-    Get a unique fallback script based on channel + topic.
+    Get a unique fallback script based on channel + topic + date.
     DEDUP RULES:
-    - Hash includes account_key so different channels get different templates
-    - Tracks used indices per channel to never repeat within same pipeline run
-    - Auto-truncates to ~400 chars to match VO duration target (~45s)
+    - Uses date + topic + account as seed so each RUN gets a different template
+    - Persistent tracking via used_fallback_idx.json (survives across runs)
+    - NO truncation — assemble.py VO sync handles audio/video duration matching
+    - Random excerpt position so even same template sounds different
     """
     scripts = FALLBACK_SCRIPTS.get(account_key, FB_SCRIPTS)
     
-    # Hash includes BOTH topic AND account_key for differentiation
-    combined = f"{account_key}::{topic}"
+    # Use date + topic + account as seed — each day picks differently
+    today = _datetime.now().strftime("%Y-%m-%d-%H")
+    combined = f"{account_key}::{topic}::{today}"
     topic_hash = int(hashlib.md5(combined.encode()).hexdigest(), 16)
     index = topic_hash % len(scripts)
     
-    # If this index was already used for this channel, cycle to next unused
-    used = _used_fallback_indices.get(account_key, set())
+    # Persistent tracking: load previously used indices for this channel
+    all_used = _load_used_fb_indices()
+    used_set = set(all_used.get(account_key, []))
+    
+    # Cycle to unused template if this one was already used
     attempts = 0
-    while index in used and attempts < len(scripts):
+    while index in used_set and attempts < len(scripts):
         index = (index + 1) % len(scripts)
         attempts += 1
     
-    # Track usage
-    used.add(index)
-    _used_fallback_indices[account_key] = used
+    # If ALL templates used, reset tracking for this channel (start fresh cycle)
+    if attempts >= len(scripts):
+        used_set = set()
+        index = topic_hash % len(scripts)
+        print(f"[{account_key}] All fallback templates exhausted — resetting cycle")
+    
+    # Record usage persistently
+    used_set.add(index)
+    all_used[account_key] = list(used_set)
+    _save_used_fb_indices(all_used)
     
     script = scripts[index]
     
@@ -201,16 +230,17 @@ def get_fallback_script(account_key: str, topic: str) -> str:
     topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
     script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
     
-    # Auto-truncate to ~250 chars (TTS reads ~8 chars/sec -> 250 chars ~ 30s, matching video length)
-    MAX_CHARS = 250
-    if len(script) > MAX_CHARS:
-        truncated = script[:MAX_CHARS]
-        last_period = truncated.rfind('.')
-        if last_period > 200:
-            script = truncated[:last_period + 1]
-        else:
-            script = truncated.rsplit(' ', 1)[0] + '.'
+    # Pick a random excerpt starting position for variety
+    # (even same template will sound different by starting at different sentences)
+    import re
+    sentences = re.split(r'(?<=[.!?])\s+', script.strip())
+    if len(sentences) > 3:
+        # Use hash to pick a start point (deterministic per topic+date)
+        start_idx = topic_hash % max(1, len(sentences) // 2)
+        excerpt_sentences = sentences[start_idx:]
+        script = ' '.join(excerpt_sentences)
     
-    print(f"[{account_key}] FALLBACK SCRIPT used (template #{index+1}/{len(scripts)}) — topic: {topic_mention} ({len(script)} chars)")
+    print(f"[{account_key}] FALLBACK SCRIPT used (template #{index+1}/{len(scripts)}) — "
+          f"topic: {topic_mention} ({len(script)} chars, start sentence #{start_idx if len(sentences) > 3 else 0})")
     return script
 
