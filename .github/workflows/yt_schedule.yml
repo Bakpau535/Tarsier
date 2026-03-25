@@ -18,7 +18,7 @@ permissions:
 jobs:
   run-tarsier-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - name: Random Startup Delay
         if: github.event_name == 'schedule'
@@ -120,11 +120,8 @@ jobs:
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
         run: |
-          # Pick ONE random YT account per run to stay within GitHub Actions time limits
-          ACCOUNTS=("yt_documenter" "yt_funny" "yt_anthro" "yt_pov" "yt_drama")
-          TARGET=${ACCOUNTS[$RANDOM % ${#ACCOUNTS[@]}]}
-          echo "Selected target account: $TARGET"
-          python src/main.py --target "$TARGET"
+          # Process ALL 5 YouTube channels — each uses its own 2 dedicated API keys
+          python src/main.py
 
       # Upload generated videos as downloadable artifacts (PREVIEW_MODE)
       - name: Upload Preview Artifacts
