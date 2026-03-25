@@ -1,16 +1,17 @@
 {
   "yt_documenter": [
+    0,
     4
   ],
   "yt_funny": [
-    0,
-    1,
-    2
-  ],
-  "yt_anthro": [
     0
   ],
+  "yt_anthro": [
+    0,
+    2
+  ],
   "yt_pov": [
+    0,
     2
   ]
 }
