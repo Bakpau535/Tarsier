@@ -7006,5 +7006,287 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-26T06:17:06.878931",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-26T06:17:08.330093",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:17:08.330942",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:17:08.640075",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:17:08.915104",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T06:33:04.699034",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:33:14.984183",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T06:33:14.997922",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T06:33:25.056954",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T06:33:25.057777",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:33:25.369942",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_2 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T06:33:25.370405",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:33:25.649733",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T06:33:38.035500",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T06:34:25.276311",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-26T06:34:30.277085",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-26T06:34:30.278121",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:34:30.278599",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_3 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T06:34:30.278974",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:34:30.278996",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T06:34:42.281128",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T06:36:13.106454",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-26T06:36:18.107334",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-26T06:36:18.108462",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:36:18.108882",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_4 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T06:36:18.109293",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:36:18.109319",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T06:36:30.111564",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T06:38:00.306671",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-26T06:38:05.307705",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-26T06:38:06.446832",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T06:38:06.447818",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:38:06.820080",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:38:07.135942",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T06:47:32.229081",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:47:41.711969",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T06:47:41.726685",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T06:48:06.090535",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T06:48:06.091401",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T06:48:32.034034",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:48:40.933401",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Tarsier's Desperate Hunt for Survival"
+    },
+    {
+        "timestamp": "2026-03-26T06:55:31.521881",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T06:55:35.570830",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T06:55:35.579331",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T06:55:43.956269",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T06:55:43.956416",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T06:55:43.956422",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
