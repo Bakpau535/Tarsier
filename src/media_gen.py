@@ -826,6 +826,7 @@ class MediaGenerator:
             # ==========================================
             # NON-FORMAL: 50:50 AI tarsier + AI environment
             # ALL images are freshly generated (never reused)
+            # FALLBACK: If AI fails → auto-switch to stock photos
             # ==========================================
             HALF = TARGET_CLIPS // 2
             
@@ -845,8 +846,33 @@ class MediaGenerator:
                     all_media.append(("image", img))
                 time.sleep(1)
             
-            t_count = sum(1 for _ in range(min(HALF, len(all_media))))
-            print(f"[{account_key}] Final: {len(all_media)} AI images (50:50 tarsier:environment, all freshly generated)")
+            # FALLBACK: If AI generated ZERO or too few images (HF keys depleted)
+            # → switch to stock photos so the channel NEVER fails
+            if len(all_media) < 3:
+                print(f"[{account_key}] AI generated only {len(all_media)} images — ACTIVATING STOCK FALLBACK")
+                
+                # 50% tarsier photos from Wikimedia/Pixabay/Pexels
+                tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
+                for photo in tarsier_photos:
+                    all_media.append(("image", photo))
+                print(f"[{account_key}] Stock fallback: {len(tarsier_photos)} real tarsier photos added")
+                
+                # 50% support/environment clips
+                support_clips = self.download_support_clips(account_key, num_clips=HALF)
+                for clip in support_clips:
+                    all_media.append(("video", clip))
+                print(f"[{account_key}] Stock fallback: {len(support_clips)} support clips added")
+                
+                # If STILL zero (all stock exhausted too), try AI environment as last resort
+                if len(all_media) == 0:
+                    print(f"[{account_key}] CRITICAL: Both AI and stock empty! Trying AI environment one more time...")
+                    for i in range(TARGET_CLIPS):
+                        img = self.generate_tarsier_image(account_key, 100 + i, topic, force_tarsier=False)
+                        if img:
+                            all_media.append(("image", img))
+                        time.sleep(1)
+            
+            print(f"[{account_key}] Final: {len(all_media)} media items (AI preferred, stock fallback if needed)")
             return all_media
         
         else:
