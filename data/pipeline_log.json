@@ -7942,5 +7942,113 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-26T17:18:35.017910",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-26T17:18:37.536569",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Physical characteristics' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.359012",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.359041",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): fb_fanspage → yt_documenter → yt_funny → yt_drama → yt_anthro → yt_pov"
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.359139",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.359230",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.360148",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Conservation status"
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.537319",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T17:18:38.681712",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T17:19:06.491579",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T17:25:35.531202",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T17:25:42.756134",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T17:25:42.768878",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T17:25:47.700645",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T17:25:47.700781",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T17:25:47.700904",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T17:25:47.701003",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Topic 'Tarsier Conservation status' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T17:25:47.701008",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
