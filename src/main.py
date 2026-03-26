@@ -6,6 +6,7 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 import time
+import random
 import json
 import smtplib
 from email.message import EmailMessage
@@ -365,12 +366,27 @@ class Pipeline:
 
         all_success = True
         
+        # ANTI-BOT: Shuffle channel processing order each run
+        # Fixed order = bot fingerprint. Random order = human-like behavior.
+        accounts_list = list(accounts_to_process)
+        random.shuffle(accounts_list)
+        self._log("INFO", "SYSTEM", f"Channel order (shuffled): {' → '.join(accounts_list)}")
+        
         # Process each account with retry logic
-        for account_key in accounts_to_process:
+        channel_count = 0
+        for account_key in accounts_list:
             # Skip if this specific account already completed this topic
             if self.db.is_topic_completed(topic_info['topic_name'], account_key):
                 self._log("INFO", account_key, f"Topic '{topic_info['topic_name']}' already completed. Skipping.")
                 continue
+            
+            # ANTI-BOT: Random delay between channel uploads (2-8 minutes)
+            # Makes upload pattern unpredictable, mimics human behavior
+            if channel_count > 0:
+                delay_sec = random.randint(120, 480)  # 2-8 minutes
+                self._log("INFO", "SYSTEM", f"Anti-bot delay: waiting {delay_sec}s (~{delay_sec//60}min) before next channel...")
+                time.sleep(delay_sec)
+            channel_count += 1
             
             # Bagian 15 - Error Handling: retry otomatis maksimal 3x
             success = False

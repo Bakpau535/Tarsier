@@ -20,12 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - name: Random Startup Delay
+      - name: Random Startup Delay (Anti-Bot)
         if: github.event_name == 'schedule'
         run: |
-          # Random delay 0-25 minutes to make posting time unpredictable
-          DELAY=$((RANDOM % 1500))
-          echo "Waiting ${DELAY} seconds (~$((DELAY/60)) minutes) before starting..."
+          # ANTI-BOT: Random delay 0-45 minutes to make posting time unpredictable
+          # Combined with per-channel delays in main.py (2-8min each)
+          DELAY=$((RANDOM % 2700))
+          echo "Anti-bot: waiting ${DELAY} seconds (~$((DELAY/60)) minutes) before starting..."
           sleep $DELAY
 
       - name: Checkout Repository
@@ -46,13 +47,6 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
           ffmpeg -version
-
-      - name: Random Delay (skip on manual trigger)
-        if: github.event_name == 'schedule'
-        run: |
-          delay=$((RANDOM % 3600))
-          echo "Scheduled run - sleeping for $delay seconds (max 1 hour)..."
-          sleep $delay
 
       - name: Restore YouTube OAuth Tokens
         env:
