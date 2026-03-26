@@ -40,16 +40,13 @@ class MediaGenerator:
         print(f"[MediaGen] HF_API_KEYS: {hf_count}/6 keys set")
         print(f"[MediaGen] ==========================")
         
-        # Tarsier-ONLY stock search terms — every term MUST contain 'tarsier' or 'tarsius'
-        # to guarantee only real tarsier footage is downloaded (no random primates)
+        # Tarsier-ONLY search terms — STRICT: only terms proven to return real tarsier photos.
+        # REMOVED generic compound terms like 'tarsier tree', 'tarsier forest', 'tarsier jungle'
+        # because Pexels/Pixabay split these into separate keywords → return monkeys/trees instead.
         self.tarsier_search_terms = [
-            "tarsier", "philippine tarsier", "bohol tarsier",
-            "tarsier primate", "tarsier animal", "tarsier eyes",
-            "tarsier close up", "tarsier wildlife", "tarsier night",
-            "tarsier nocturnal", "tarsier jungle", "tarsier forest",
-            "tarsier tree", "tarsier branch", "tarsier baby",
-            "tarsier face", "tarsier hunting", "tarsier insect",
-            "tarsier staring", "sulawesi tarsier", "tarsius",
+            "tarsier", "tarsius",
+            "philippine tarsier", "bohol tarsier", "sulawesi tarsier",
+            "tarsier primate", "tarsier animal",
         ]
         
         # Support/environment search terms — for downloading habitat B-roll
@@ -443,6 +440,10 @@ class MediaGenerator:
                     # Persistent dedup — never reuse same photo
                     if self._is_footage_used(photo_id):
                         continue
+                    # VALIDATION: reject photos without 'tarsier' or 'tarsius' in alt text
+                    alt_text = (photo.get("alt", "") or "").lower()
+                    if "tarsier" not in alt_text and "tarsius" not in alt_text:
+                        continue
                     # Get landscape-sized photo
                     src = photo.get("src", {})
                     photo_url = src.get("landscape") or src.get("large") or src.get("medium")
@@ -456,7 +457,7 @@ class MediaGenerator:
                                 f.write(dl.content)
                             downloaded.append(fp)
                             self._mark_footage_used(photo_id)
-                            print(f"[{account_key}] Pexels PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{photo_id}]")
+                            print(f"[{account_key}] Pexels PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{photo_id}] alt:{alt_text[:40]}")
                             time.sleep(0.5)
                     except Exception as e:
                         print(f"[{account_key}] Photo download error: {e}")
@@ -489,6 +490,10 @@ class MediaGenerator:
                     # Persistent dedup — never reuse same photo
                     if self._is_footage_used(photo_id):
                         continue
+                    # VALIDATION: reject photos without 'tarsier' or 'tarsius' in tags
+                    tags = (photo.get("tags", "") or "").lower()
+                    if "tarsier" not in tags and "tarsius" not in tags:
+                        continue
                     photo_url = photo.get("largeImageURL") or photo.get("webformatURL")
                     if not photo_url:
                         continue
@@ -500,7 +505,7 @@ class MediaGenerator:
                                 f.write(dl.content)
                             downloaded.append(fp)
                             self._mark_footage_used(photo_id)
-                            print(f"[{account_key}] Pixabay PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{photo_id}]")
+                            print(f"[{account_key}] Pixabay PHOTO {len(downloaded)} ({len(dl.content)//1024}KB) [ID:{photo_id}] tags:{tags[:40]}")
                             time.sleep(0.5)
                     except Exception as e:
                         print(f"[{account_key}] Photo download error: {e}")
@@ -514,23 +519,31 @@ class MediaGenerator:
         print(f"[{account_key}] Searching Wikimedia Commons for tarsier images...")
         downloaded = []
         
-        # Multiple search strategies for maximum coverage
+        # Multiple search strategies — CATEGORY-BASED is most reliable for real tarsier photos
         search_queries = [
-            # Category-based search (most reliable for real photos)
+            # Family-level category (guaranteed tarsier)
             {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Tarsiidae",
-             "gcmtype": "file", "gcmlimit": "20", "prop": "imageinfo",
+             "gcmtype": "file", "gcmlimit": "30", "prop": "imageinfo",
              "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
-            # Text search for tarsier photos
-            {"action": "query", "generator": "search", "gsrsearch": "tarsier animal photo",
-             "gsrnamespace": "6", "gsrlimit": "20", "prop": "imageinfo",
-             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
-            # Specific tarsier species
+            # Philippine tarsier (Carlito syrichta)
             {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Carlito syrichta",
+             "gcmtype": "file", "gcmlimit": "30", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+            # Sulawesi tarsier (Tarsius tarsier)
+            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Tarsius tarsier",
+             "gcmtype": "file", "gcmlimit": "30", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+            # Western tarsier
+            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Cephalopachus bancanus",
              "gcmtype": "file", "gcmlimit": "20", "prop": "imageinfo",
              "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
-            # Sulawesi tarsier
-            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Tarsius tarsier",
-             "gcmtype": "file", "gcmlimit": "20", "prop": "imageinfo",
+            # Tarsier genus (Tarsius)
+            {"action": "query", "generator": "categorymembers", "gcmtitle": "Category:Tarsius",
+             "gcmtype": "file", "gcmlimit": "30", "prop": "imageinfo",
+             "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
+            # Text search fallback (least reliable — only if categories empty)
+            {"action": "query", "generator": "search", "gsrsearch": "tarsier primate Tarsiidae",
+             "gsrnamespace": "6", "gsrlimit": "20", "prop": "imageinfo",
              "iiprop": "url|size|mime", "iiurlwidth": "1280", "format": "json"},
         ]
         
@@ -599,14 +612,15 @@ class MediaGenerator:
         return downloaded
 
     def download_tarsier_photos(self, account_key: str, num_photos: int = 10) -> List[str]:
-        """Download REAL tarsier photos from Pixabay + Wikimedia Commons + Pexels.
-        Priority: Pixabay (verified real tarsier) > Wikimedia (large collection) > Pexels (least reliable)."""
-        pixabay = self._download_pixabay_tarsier_photos(account_key, num_photos)
+        """Download REAL tarsier photos from Wikimedia > Pixabay > Pexels.
+        Priority: Wikimedia (category-based, most reliable) > Pixabay (tag-validated) > Pexels (alt-validated)."""
+        # Wikimedia FIRST — most reliable via taxonomy categories
         wikimedia = self._download_wikimedia_tarsier_photos(account_key, num_photos)
+        pixabay = self._download_pixabay_tarsier_photos(account_key, num_photos)
         pexels = self._download_pexels_tarsier_photos(account_key, num_photos)
-        all_photos = pixabay + wikimedia + pexels
-        random.shuffle(all_photos)
-        print(f"[{account_key}] Tarsier PHOTOS: {len(all_photos)} real photos (Pixabay:{len(pixabay)} Wikimedia:{len(wikimedia)} Pexels:{len(pexels)})")
+        # Wikimedia first (most reliable), then Pixabay, then Pexels (least reliable)
+        all_photos = wikimedia + pixabay + pexels
+        print(f"[{account_key}] Tarsier PHOTOS: {len(all_photos)} real photos (Wikimedia:{len(wikimedia)} Pixabay:{len(pixabay)} Pexels:{len(pexels)})")
         return all_photos[:num_photos]
 
     # ==========================================
