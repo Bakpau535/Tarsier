@@ -759,6 +759,19 @@ class MediaGenerator:
             elif len(support_media) < HALF:
                 print(f"[{account_key}] Support stock: {len(support_media)}/{HALF}. Loop engine will expand.")
             
+            # ENFORCE 50:50 RATIO — cap support to never exceed tarsier count
+            # If tarsier=2 and support=6, cap support to 2 so ratio is 2:2 (50:50)
+            t_count = len(tarsier_media)
+            s_count = len(support_media)
+            if t_count > 0 and s_count > t_count:
+                print(f"[{account_key}] RATIO FIX: Capping support from {s_count} to {t_count} to enforce 50:50")
+                support_media = support_media[:t_count]
+                s_count = t_count
+            elif s_count > 0 and t_count > s_count:
+                print(f"[{account_key}] RATIO FIX: Capping tarsier from {t_count} to {s_count} to enforce 50:50")
+                tarsier_media = tarsier_media[:s_count]
+                t_count = s_count
+            
             # Interleave: tarsier, support, tarsier, support...
             all_media = []
             for i in range(max(len(tarsier_media), len(support_media))):
@@ -767,8 +780,6 @@ class MediaGenerator:
                 if i < len(support_media):
                     all_media.append(support_media[i])
             
-            t_count = len(tarsier_media)
-            s_count = len(support_media)
             print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} support) — ratio {t_count}:{s_count}")
             return all_media
         
@@ -811,6 +822,18 @@ class MediaGenerator:
                     support_media.append(("image", img))
                 time.sleep(1)
             
+            # ENFORCE 50:50 RATIO — cap whichever side has more
+            t_count = len(tarsier_media)
+            s_count = len(support_media)
+            if t_count > 0 and s_count > t_count:
+                print(f"[{account_key}] RATIO FIX: Capping environment from {s_count} to {t_count} to enforce 50:50")
+                support_media = support_media[:t_count]
+                s_count = t_count
+            elif s_count > 0 and t_count > s_count:
+                print(f"[{account_key}] RATIO FIX: Capping tarsier from {t_count} to {s_count} to enforce 50:50")
+                tarsier_media = tarsier_media[:s_count]
+                t_count = s_count
+            
             # Interleave
             all_media = []
             for i in range(max(len(tarsier_media), len(support_media))):
@@ -819,7 +842,7 @@ class MediaGenerator:
                 if i < len(support_media):
                     all_media.append(support_media[i])
             
-            print(f"[{account_key}] Final: {len(all_media)} clips ({len(tarsier_media)} tarsier + {len(support_media)} environment)")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} environment) — ratio {t_count}:{s_count}")
             return all_media
         
         elif visual_source == "ai_only":
