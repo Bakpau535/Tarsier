@@ -190,16 +190,18 @@ def get_fallback_script(account_key: str, topic: str) -> tuple:
     """
     Get a unique fallback script based on channel + topic + date.
     Returns: (script_text, template_id) where template_id is stable for dedup.
-    DEDUP RULES:
-    - Uses date + topic + account as seed so each RUN gets a different template
-    - Persistent tracking via used_fallback_idx.json (survives across runs)
-    - NO truncation — assemble.py VO sync handles audio/video duration matching
-    - Random excerpt position so even same template sounds different
+    
+    DEDUP STRATEGY:
+    1. If unused templates exist → pick one, mark as used, return stable template_id
+    2. If ALL templates exhausted → create MASHUP from 2 templates + topic
+       Mashup = sentences from template A + sentences from template B
+       This creates genuinely new, unique scripts that never repeat
     """
+    import re
     scripts = FALLBACK_SCRIPTS.get(account_key, FB_SCRIPTS)
     
-    # Use date + topic + account as seed — each day picks differently
-    today = _datetime.now().strftime("%Y-%m-%d-%H")
+    # Use date + topic + account as seed — each call picks differently
+    today = _datetime.now().strftime("%Y-%m-%d-%H-%M")
     combined = f"{account_key}::{topic}::{today}"
     topic_hash = int(hashlib.md5(combined.encode()).hexdigest(), 16)
     index = topic_hash % len(scripts)
@@ -208,44 +210,78 @@ def get_fallback_script(account_key: str, topic: str) -> tuple:
     all_used = _load_used_fb_indices()
     used_set = set(all_used.get(account_key, []))
     
-    # Cycle to unused template if this one was already used
+    # Try to find an unused template
     attempts = 0
     while index in used_set and attempts < len(scripts):
         index = (index + 1) % len(scripts)
         attempts += 1
     
-    # If ALL templates used, reset tracking for this channel (start fresh cycle)
-    if attempts >= len(scripts):
-        used_set = set()
-        index = topic_hash % len(scripts)
-        print(f"[{account_key}] All fallback templates exhausted — resetting cycle")
+    if attempts < len(scripts):
+        # ========================================
+        # NORMAL: unused template available
+        # ========================================
+        used_set.add(index)
+        all_used[account_key] = list(used_set)
+        _save_used_fb_indices(all_used)
+        
+        template_id = f"fb_{account_key}_{index}"
+        script = scripts[index]
+        
+        # Inject topic reference
+        topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
+        script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
+        
+        print(f"[{account_key}] FALLBACK SCRIPT (template #{index+1}/{len(scripts)}) — "
+              f"topic: {topic_mention} ({len(script)} chars)")
+        return script, template_id
     
-    # Record usage persistently
-    used_set.add(index)
-    all_used[account_key] = list(used_set)
-    _save_used_fb_indices(all_used)
-    
-    # Stable template ID for dedup (does NOT change with topic/excerpt)
-    template_id = f"fb_{account_key}_{index}"
-    
-    script = scripts[index]
-    
-    # Inject topic reference for uniqueness
-    topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
-    script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
-    
-    # Pick a random excerpt starting position for variety
-    # (even same template will sound different by starting at different sentences)
-    import re
-    sentences = re.split(r'(?<=[.!?])\s+', script.strip())
-    start_idx = 0
-    if len(sentences) > 3:
-        # Use hash to pick a start point (deterministic per topic+date)
-        start_idx = topic_hash % max(1, len(sentences) // 2)
-        excerpt_sentences = sentences[start_idx:]
-        script = ' '.join(excerpt_sentences)
-    
-    print(f"[{account_key}] FALLBACK SCRIPT used (template #{index+1}/{len(scripts)}) — "
-          f"topic: {topic_mention} ({len(script)} chars, start sentence #{start_idx})")
-    return script, template_id
+    else:
+        # ========================================
+        # ALL TEMPLATES EXHAUSTED → CREATE MASHUP
+        # Combine sentences from 2 different templates
+        # to create a genuinely new, unique script
+        # ========================================
+        print(f"[{account_key}] All {len(scripts)} templates exhausted — creating MASHUP script")
+        
+        # Pick 2 different templates using hash
+        idx_a = topic_hash % len(scripts)
+        idx_b = (topic_hash // len(scripts) + 1) % len(scripts)
+        if idx_b == idx_a:
+            idx_b = (idx_a + 1) % len(scripts)
+        
+        script_a = scripts[idx_a]
+        script_b = scripts[idx_b]
+        
+        # Split both into sentences
+        sentences_a = re.split(r'(?<=[.!?])\s+', script_a.strip())
+        sentences_b = re.split(r'(?<=[.!?])\s+', script_b.strip())
+        
+        # Interleave: take odd sentences from A, even from B
+        mashup_sentences = []
+        max_len = max(len(sentences_a), len(sentences_b))
+        for i in range(max_len):
+            if i % 2 == 0 and i < len(sentences_a):
+                mashup_sentences.append(sentences_a[i])
+            elif i < len(sentences_b):
+                mashup_sentences.append(sentences_b[i])
+        
+        # Pick a subset based on topic hash for further variation
+        if len(mashup_sentences) > 4:
+            start = topic_hash % max(1, len(mashup_sentences) // 3)
+            end = min(len(mashup_sentences), start + max(4, len(mashup_sentences) // 2))
+            mashup_sentences = mashup_sentences[start:end]
+        
+        script = ' '.join(mashup_sentences)
+        
+        # Inject topic reference
+        topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
+        script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
+        
+        # Unique template_id using pair + timestamp (never same)
+        ts = int(_datetime.now().timestamp())
+        template_id = f"fb_{account_key}_mashup_{idx_a}_{idx_b}_{ts}"
+        
+        print(f"[{account_key}] MASHUP SCRIPT (mix #{idx_a+1}+#{idx_b+1}) — "
+              f"topic: {topic_mention} ({len(script)} chars, {len(mashup_sentences)} sentences)")
+        return script, template_id
 
