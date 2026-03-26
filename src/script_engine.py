@@ -91,7 +91,7 @@ class ScriptEngine:
         print(f"[{account_key}] FINAL FAILURE: All keys exhausted. Last error: {last_error[:300]}")
         return ""
 
-    def generate_script(self, topic_info: str, account_key: str) -> tuple:
+    def generate_script(self, topic_info: str, account_key: str, force_mashup: bool = False) -> tuple:
         """
         Generates a narration script using the channel's UNIQUE persona brief.
         Returns: (script_text, template_id)
@@ -102,6 +102,13 @@ class ScriptEngine:
         """
         if account_key not in ACCOUNTS:
             raise ValueError(f"Account key '{account_key}' is invalid.")
+
+        # If force_mashup, skip Gemini entirely — go straight to mashup template
+        if force_mashup:
+            print(f"[{account_key}] Force mashup requested — generating unique mashup script")
+            fallback, template_id = get_fallback_script(account_key, topic_info, force_mashup=True)
+            print(f"[{account_key}] Mashup script loaded ({len(fallback)} chars).")
+            return fallback, template_id
 
         # Get the full persona brief for this channel
         persona_brief = PERSONA_BRIEFS.get(account_key, "")

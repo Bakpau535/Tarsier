@@ -186,14 +186,14 @@ def _save_used_fb_indices(data: dict):
     with open(_USED_FB_IDX_FILE, "w") as f:
         _json.dump(data, f, indent=2)
 
-def get_fallback_script(account_key: str, topic: str) -> tuple:
+def get_fallback_script(account_key: str, topic: str, force_mashup: bool = False) -> tuple:
     """
     Get a unique fallback script based on channel + topic + date.
     Returns: (script_text, template_id) where template_id is stable for dedup.
     
     DEDUP STRATEGY:
     1. If unused templates exist → pick one, mark as used, return stable template_id
-    2. If ALL templates exhausted → create MASHUP from 2 templates + topic
+    2. If ALL templates exhausted OR force_mashup=True → create MASHUP from 2 templates
        Mashup = sentences from template A + sentences from template B
        This creates genuinely new, unique scripts that never repeat
     """
@@ -206,15 +206,19 @@ def get_fallback_script(account_key: str, topic: str) -> tuple:
     topic_hash = int(hashlib.md5(combined.encode()).hexdigest(), 16)
     index = topic_hash % len(scripts)
     
-    # Persistent tracking: load previously used indices for this channel
-    all_used = _load_used_fb_indices()
-    used_set = set(all_used.get(account_key, []))
-    
-    # Try to find an unused template
-    attempts = 0
-    while index in used_set and attempts < len(scripts):
-        index = (index + 1) % len(scripts)
-        attempts += 1
+    # If force_mashup, skip template lookup — go straight to mashup
+    if force_mashup:
+        attempts = len(scripts)  # Force exhaustion path
+    else:
+        # Persistent tracking: load previously used indices for this channel
+        all_used = _load_used_fb_indices()
+        used_set = set(all_used.get(account_key, []))
+        
+        # Try to find an unused template
+        attempts = 0
+        while index in used_set and attempts < len(scripts):
+            index = (index + 1) % len(scripts)
+            attempts += 1
     
     if attempts < len(scripts):
         # ========================================

@@ -160,10 +160,16 @@ class Pipeline:
             # DEDUP CHECK: Reject scripts that have EVER been used before (any channel)
             if template_id:
                 # Fallback script: dedup by stable template_id (not text hash)
-                # because topic injection + excerpt position changes the hash every time
+                # because topic injection changes the hash every time
                 if self.db.is_script_duplicate(template_id):
-                    self._log("WARN", account_key, f"Fallback template {template_id} already used! But no alternative available.")
-                # Record the template_id so it's tracked
+                    # ENFORCE: Do NOT use this duplicate — generate a unique MASHUP instead
+                    self._log("WARN", account_key, f"Fallback template {template_id} already used! Generating unique MASHUP...")
+                    script, template_id = self.script_engine.generate_script(
+                        topic_info['raw_facts'], account_key, force_mashup=True
+                    )
+                    if not script:
+                        raise ValueError("Mashup script generation failed.")
+                # Record the template_id so it can never be reused by any channel
                 self.db.record_script_hash(template_id, account_key, topic_name)
             else:
                 # Gemini script: dedup by content hash (text is unique each time)
@@ -177,10 +183,15 @@ class Pipeline:
                     if not script:
                         raise ValueError("Script regeneration failed.")
                     if template_id:
-                        break  # Fell back to template — stop regenerating
+                        # Fell back to template — check THAT for duplicates too
+                        if self.db.is_script_duplicate(template_id):
+                            script, template_id = self.script_engine.generate_script(
+                                topic_info['raw_facts'], account_key, force_mashup=True
+                            )
+                        break
                 
-                # Record script hash so it can never be reused
-                self.db.record_script_hash(script, account_key, topic_name)
+                # Record script hash so it can never be reused by any channel
+                self.db.record_script_hash(script if not template_id else template_id, account_key, topic_name)
             
             self._log("INFO", account_key, "Script generated successfully.")
 
