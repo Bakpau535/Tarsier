@@ -7648,5 +7648,299 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-03-26T12:14:41.008784",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-26T12:14:44.147673",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:14:44.148543",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:14:44.332884",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Fallback template fb_yt_documenter_1 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T12:14:44.333315",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:14:44.468803",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T12:39:03.875130",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:39:22.459809",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T12:39:22.472334",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T12:39:33.366610",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T12:39:33.367433",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:39:33.549787",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_3 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T12:39:33.550226",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:39:33.689147",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T12:39:45.891821",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T12:40:28.508650",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-26T12:40:33.509841",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-03-26T12:40:33.510847",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:40:33.511249",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_4 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T12:40:33.511678",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:40:33.511699",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T12:40:45.513956",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T12:41:28.470723",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-26T12:41:33.471823",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-03-26T12:41:33.472858",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:41:33.473318",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_0 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T12:41:33.473756",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:41:33.473782",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T12:41:45.475920",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-26T12:42:27.831535",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-03-26T12:42:32.832464",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-03-26T12:42:34.172456",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:42:34.327144",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Fallback template fb_yt_anthro_0 already used! But no alternative available."
+    },
+    {
+        "timestamp": "2026-03-26T12:42:34.327618",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:42:34.456512",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-26T12:46:56.861245",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:46:59.935412",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T12:46:59.942973",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T12:47:03.067131",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T12:47:03.067265",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T12:47:03.068053",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-26T12:47:16.050502",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:47:25.645517",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 2: The Hum That Shattered Rest"
+    },
+    {
+        "timestamp": "2026-03-26T12:53:42.541216",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-26T12:53:47.373531",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-26T12:53:47.381243",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-26T12:53:52.628027",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-26T12:53:52.628172",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-26T12:53:52.628177",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
