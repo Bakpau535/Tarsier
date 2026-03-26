@@ -49,14 +49,26 @@ class MediaGenerator:
             "tarsier primate", "tarsier animal",
         ]
         
-        # Support/environment search terms — for downloading habitat B-roll
-        # These clips are tracked in used_footage.json and NEVER reused
+        # Support/environment search terms — SCENERY ONLY, NO ANIMALS
+        # CRITICAL: terms must NOT return videos with monkeys/primates/birds/animals
+        # REMOVED: 'tropical birds', 'jungle night', 'indonesia jungle' (return monkey videos)
+        # KEPT: water, plants, sky, mist, trees — pure scenery
         self.support_search_terms = [
-            "tropical rainforest", "jungle night", "sulawesi forest",
-            "indonesia jungle", "tropical canopy", "forest stream",
-            "jungle waterfall", "tropical birds", "fireflies night",
-            "mossy tree branch", "tropical flowers", "forest mist",
-            "jungle dawn", "rainforest floor", "tropical sunset",
+            "tropical waterfall", "forest stream", "rainforest mist",
+            "tropical flowers close up", "mossy tree bark", "forest canopy leaves",
+            "tropical rain drops", "jungle fog morning", "fern leaves close up",
+            "tropical sunset ocean", "forest path empty", "green moss rocks",
+            "tropical river", "bamboo forest", "palm tree wind",
+        ]
+        
+        # Blocked words — reject any support video with these in URL/metadata
+        self.support_blocked_words = [
+            "monkey", "primate", "ape", "orangutan", "gorilla", "chimpanzee",
+            "lemur", "macaque", "baboon", "gibbon", "marmoset",
+            "bird", "parrot", "eagle", "owl", "hawk",
+            "snake", "lizard", "frog", "spider", "scorpion",
+            "cat", "dog", "bear", "tiger", "lion", "elephant",
+            "animal", "wildlife", "creature", "pet",
         ]
         
         # Per-account AI prompts
@@ -376,6 +388,20 @@ class MediaGenerator:
                     # STRICT DEDUP: support clips NEVER reused
                     if self._is_footage_used(vid_id):
                         continue
+                    
+                    # ANIMAL FILTER: reject videos that contain animals in metadata
+                    video_url = video.get("url", "").lower()
+                    video_tags = " ".join(str(t) for t in video.get("tags", [])).lower() if video.get("tags") else ""
+                    video_meta = f"{video_url} {video_tags}"
+                    has_animal = False
+                    for blocked in self.support_blocked_words:
+                        if blocked in video_meta:
+                            print(f"[{account_key}] REJECTED support clip {vid_id}: contains '{blocked}'")
+                            has_animal = True
+                            break
+                    if has_animal:
+                        continue
+                    
                     best_file = None
                     for vf in video.get("video_files", []):
                         if vf.get("width", 0) >= 720 and vf.get("file_type") == "video/mp4":
