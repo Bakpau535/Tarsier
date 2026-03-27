@@ -8536,5 +8536,107 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:52.815911",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.964992",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.965019",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): yt_pov → yt_anthro → yt_drama → yt_documenter → fb_fanspage → yt_funny"
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.965143",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.965246",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.965344",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.965440",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.965528",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Tarsier sleeping habits' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:57.966416",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier sleeping habits"
+    },
+    {
+        "timestamp": "2026-03-27T11:22:58.255184",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T11:22:58.500302",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T11:23:29.598232",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-27T11:29:43.014305",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T11:29:49.642742",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T11:29:49.668792",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T11:29:56.613892",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T11:29:56.613918",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
