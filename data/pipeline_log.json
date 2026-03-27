@@ -8242,5 +8242,299 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-27T07:54:40.283228",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-27T07:54:43.209486",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Tarsier and human interaction' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-27T07:54:45.174006",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-27T07:54:45.174028",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): yt_drama → yt_documenter → yt_pov → yt_funny → yt_anthro → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-03-27T07:54:45.174911",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-27T07:54:54.636066",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T07:55:06.240302",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 4: The Hunt Intensifies"
+    },
+    {
+        "timestamp": "2026-03-27T08:03:07.071458",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:03:16.586055",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T08:03:16.610444",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T08:03:26.502317",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T08:03:26.502458",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 454s (~7min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-27T08:11:00.503629",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-27T08:11:00.727130",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Fallback template fb_yt_documenter_2 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-03-27T08:11:00.727730",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:11:00.856977",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T08:21:33.213384",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:21:43.617766",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T08:21:43.624684",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T08:21:52.169805",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T08:21:52.169948",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 139s (~2min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-27T08:24:11.171071",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-27T08:24:11.347409",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Fallback template fb_yt_pov_2 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-03-27T08:24:11.348016",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:24:11.489630",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T08:31:28.287059",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:31:37.829982",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T08:31:37.837374",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T08:31:49.193117",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T08:31:49.193280",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 240s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-27T08:35:49.194527",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-27T08:35:49.356489",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:35:49.493679",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T08:36:15.197091",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-27T08:39:38.666746",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:39:41.483875",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T08:39:41.491290",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T08:39:44.761974",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T08:39:44.762118",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 280s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-27T08:44:24.763360",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Predators and threats"
+    },
+    {
+        "timestamp": "2026-03-27T08:44:24.990288",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Fallback template fb_yt_anthro_2 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-03-27T08:44:24.990873",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:44:25.134879",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T08:50:07.025169",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T08:50:15.206204",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T08:50:15.213646",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T08:50:23.657735",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T08:50:23.657854",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Predators and threats' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T08:50:23.657860",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
