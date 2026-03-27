@@ -8638,5 +8638,107 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:17.648223",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.476391",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier brain and neuroscience"
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.476423",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): yt_pov → yt_drama → yt_anthro → fb_fanspage → yt_funny → yt_documenter"
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.476559",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Topic 'Tarsier Tarsier brain and neuroscience' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.476655",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Topic 'Tarsier Tarsier brain and neuroscience' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.476742",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier brain and neuroscience' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.476822",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Tarsier brain and neuroscience' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.477755",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier brain and neuroscience"
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.697789",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T16:05:20.845383",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T16:05:46.192303",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-27T16:12:06.621119",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T16:12:14.149600",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T16:12:14.162235",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T16:12:20.338967",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T16:12:20.339101",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Topic 'Tarsier Tarsier brain and neuroscience' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T16:12:20.339110",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
