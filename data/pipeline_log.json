@@ -8050,5 +8050,197 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-27T06:11:05.818916",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.212500",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Tarsier and human interaction"
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.212521",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): yt_anthro → fb_fanspage → yt_funny → yt_drama → yt_documenter → yt_pov"
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.212618",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier and human interaction' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.212707",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Tarsier and human interaction' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.213578",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier and human interaction"
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.418535",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T06:11:08.596053",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T06:11:34.604610",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-27T06:15:55.905654",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T06:16:00.277243",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T06:16:00.312094",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T06:16:04.622226",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T06:16:04.622363",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 321s (~5min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-27T06:21:25.623524",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier and human interaction"
+    },
+    {
+        "timestamp": "2026-03-27T06:21:41.199086",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T06:21:52.203185",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 2: Tarsier Survival - Forest's Final Whispers"
+    },
+    {
+        "timestamp": "2026-03-27T06:28:38.141560",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T06:28:46.680769",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T06:28:46.688928",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T06:28:58.403342",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T06:28:58.403476",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Topic 'Tarsier Tarsier and human interaction' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-03-27T06:28:58.403587",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 298s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-27T06:33:56.404682",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier and human interaction"
+    },
+    {
+        "timestamp": "2026-03-27T06:33:56.594365",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Fallback template fb_yt_pov_1 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-03-27T06:33:56.594962",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-27T06:33:56.766436",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-27T06:41:00.074660",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-27T06:41:10.269582",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-27T06:41:10.276819",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-27T06:41:30.306705",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-27T06:41:30.306729",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
