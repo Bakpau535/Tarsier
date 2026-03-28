@@ -337,58 +337,56 @@ class Pipeline:
                 self._log("ERROR", "SYSTEM", f"Target account '{self.target}' not found!")
                 return
         
-        # 1. Riset → Script Engine scraping fakta tarsier terbaru (Bagian 4 Step 1)
-        # Try multiple topics until we find one that hasn't been used
-        MAX_TOPIC_RETRIES = 10
-        topic_info = None
-        for topic_attempt in range(MAX_TOPIC_RETRIES):
-            candidate = self.researcher.generate_random_topic()
-            topic_name = candidate['topic_name']
-            
-            # Check if ALL target accounts already completed this topic
-            all_completed = True
-            for ak in accounts_to_process:
-                if not self.db.is_topic_completed(topic_name, ak):
-                    all_completed = False
-                    break
-            
-            if not all_completed:
-                topic_info = candidate
-                self._log("INFO", "SYSTEM", f"Selected Topic: {topic_name}")
-                break
-            else:
-                self._log("INFO", "SYSTEM", f"Topic '{topic_name}' already completed for all accounts. Trying another... ({topic_attempt+1}/{MAX_TOPIC_RETRIES})")
+        # 1. Each channel gets its OWN unique topic — NO sharing
+        # RULE: Every channel must talk about a DIFFERENT subject per run
+        # This prevents "same story, different voice" across channels
+        MAX_TOPIC_RETRIES = 20
         
-        if topic_info is None:
-            self._log("ERROR", "SYSTEM", f"No unused topics found after {MAX_TOPIC_RETRIES} attempts! All topics may be exhausted.")
-            self._save_log()
-            return
-
         all_success = True
         
         # ANTI-BOT: Shuffle channel processing order each run
-        # Fixed order = bot fingerprint. Random order = human-like behavior.
         accounts_list = list(accounts_to_process)
         random.shuffle(accounts_list)
         self._log("INFO", "SYSTEM", f"Channel order (shuffled): {' → '.join(accounts_list)}")
         
-        # Process each account with retry logic
+        # Track topics used in THIS run to prevent cross-channel duplicates
+        topics_used_this_run = set()
+        
+        # Process each account with its OWN topic
         channel_count = 0
         for account_key in accounts_list:
-            # Skip if this specific account already completed this topic
-            if self.db.is_topic_completed(topic_info['topic_name'], account_key):
-                self._log("INFO", account_key, f"Topic '{topic_info['topic_name']}' already completed. Skipping.")
-                continue
-            
             # ANTI-BOT: Random delay between channel uploads (2-8 minutes)
-            # Makes upload pattern unpredictable, mimics human behavior
             if channel_count > 0:
-                delay_sec = random.randint(120, 480)  # 2-8 minutes
+                delay_sec = random.randint(120, 480)
                 self._log("INFO", "SYSTEM", f"Anti-bot delay: waiting {delay_sec}s (~{delay_sec//60}min) before next channel...")
                 time.sleep(delay_sec)
             channel_count += 1
             
-            # Bagian 15 - Error Handling: retry otomatis maksimal 3x
+            # Find a UNIQUE topic for THIS channel (not used by any other channel in this run)
+            topic_info = None
+            for topic_attempt in range(MAX_TOPIC_RETRIES):
+                candidate = self.researcher.generate_random_topic()
+                topic_name = candidate['topic_name']
+                
+                # Skip if this channel already completed this topic
+                if self.db.is_topic_completed(topic_name, account_key):
+                    continue
+                
+                # Skip if another channel in THIS RUN is already using this topic
+                if topic_name in topics_used_this_run:
+                    self._log("INFO", account_key, f"Topic '{topic_name}' already taken by another channel this run. Skipping...")
+                    continue
+                
+                topic_info = candidate
+                topics_used_this_run.add(topic_name)
+                self._log("INFO", account_key, f"Selected UNIQUE topic: {topic_name}")
+                break
+            
+            if topic_info is None:
+                self._log("ERROR", account_key, f"No unique topic found after {MAX_TOPIC_RETRIES} attempts! Skipping channel.")
+                continue
+            
+            # Retry logic
             success = False
             last_error = ""
             for attempt in range(MAX_RETRIES):
@@ -417,7 +415,8 @@ class Pipeline:
         self._save_log()
         
         # Send summary email with all upload results
-        self._send_summary_email(topic_info['topic_name'])
+        topics_str = ", ".join(topics_used_this_run) if topics_used_this_run else "No topics processed"
+        self._send_summary_email(topics_str)
 
     def _send_summary_email(self, topic_name: str):
         """
