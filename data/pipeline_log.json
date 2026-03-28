@@ -9004,5 +9004,329 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-28T10:09:06.431144",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-28T10:09:11.794187",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T10:09:11.794213",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): fb_fanspage → yt_documenter → yt_funny → yt_pov → yt_anthro → yt_drama"
+    },
+    {
+        "timestamp": "2026-03-28T10:09:11.795143",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T10:09:22.035301",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:09:30.407539",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Baby's Shocking Size: Born 1/3 of Mother's Weight!"
+    },
+    {
+        "timestamp": "2026-03-28T10:14:17.023903",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:14:26.644941",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T10:14:26.681448",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T10:14:28.321526",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T10:14:28.321692",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 373s (~6min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-28T10:20:41.322917",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T10:20:41.539985",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Fallback template fb_yt_documenter_4 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-03-28T10:20:41.540612",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:20:41.734793",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-28T10:38:10.570100",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:38:28.275726",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T10:38:28.283517",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T10:38:41.785926",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T10:38:41.786069",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 401s (~6min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-28T10:45:22.787439",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T10:45:23.024997",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:45:23.224102",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-28T10:45:45.801735",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-03-28T10:49:52.938234",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:49:57.367919",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T10:49:57.375912",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T10:50:01.101354",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T10:50:01.101559",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 248s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-28T10:54:09.102900",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T10:54:09.335652",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T10:54:09.535164",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-28T11:00:06.696557",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T11:00:16.952299",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T11:00:16.959849",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T11:00:37.480936",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T11:00:37.481095",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 301s (~5min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-28T11:05:38.482334",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T11:05:38.717270",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Fallback template fb_yt_anthro_1 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-03-28T11:05:38.717932",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T11:05:38.917910",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-03-28T11:10:27.436363",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T11:10:35.494016",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T11:10:35.501515",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T11:10:43.892723",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T11:10:43.892933",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 305s (~5min) before next channel..."
+    },
+    {
+        "timestamp": "2026-03-28T11:15:48.894200",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Baby tarsier development"
+    },
+    {
+        "timestamp": "2026-03-28T11:15:59.978448",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T11:16:10.154705",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 4: The Forest's Perilous Call"
+    },
+    {
+        "timestamp": "2026-03-28T11:23:37.134053",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T11:23:45.901218",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T11:23:45.909260",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T11:24:06.027867",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T11:24:06.027894",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
