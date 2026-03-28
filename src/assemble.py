@@ -250,12 +250,12 @@ class VideoAssembler:
                     print(f"[{account_key}] VO duration: {voice.duration:.1f}s | Video duration: {final_video.duration:.1f}s")
                     
                     if voice.duration > final_video.duration + 0.5:
-                        # VO longer than video → EXTEND video by looping ALL clips
+                        # VO longer than video → EXTEND video
                         # RULE: VO is NEVER trimmed — it must always play completely
+                        # RULE: NO identical clip repetition — filler uses reversed/different segments
                         target_dur = voice.duration + 1.0  # +1s buffer
                         print(f"[{account_key}] Extending video from {final_video.duration:.1f}s to {target_dur:.1f}s to match VO...")
                         if clips:
-                            # Loop through ALL clips to fill the gap (not just the last one)
                             filler_clips = []
                             filler_dur = 0
                             gap = target_dur - final_video.duration
@@ -264,13 +264,32 @@ class VideoAssembler:
                                 src_clip = clips[clip_idx % len(clips)]
                                 remaining = gap - filler_dur
                                 use_dur = min(src_clip.duration, remaining)
-                                filler_clips.append(src_clip.subclipped(0, use_dur))
+                                
+                                # ANTI-REPEAT: alternate between normal and time-reversed
+                                # So clip 0 plays normal, clip 0 (2nd time) plays reversed
+                                cycle = clip_idx // len(clips)  # How many times we've looped
+                                if cycle > 0 and cycle % 2 == 1:
+                                    # Reverse the clip (plays backwards = looks different)
+                                    try:
+                                        filler = src_clip.time_transform(
+                                            lambda t, d=src_clip.duration: d - t - 1/24,
+                                            apply_to=['mask', 'audio']
+                                        ).subclipped(0, use_dur)
+                                    except Exception:
+                                        # Fallback: use different start point
+                                        offset = min(src_clip.duration * 0.3, src_clip.duration - use_dur)
+                                        filler = src_clip.subclipped(offset, offset + use_dur)
+                                else:
+                                    filler = src_clip.subclipped(0, use_dur)
+                                
+                                filler_clips.append(filler)
                                 filler_dur += use_dur
                                 clip_idx += 1
                             if filler_clips:
                                 extended = concatenate_videoclips([final_video] + filler_clips, method="compose")
                                 final_video = extended
-                                print(f"[{account_key}] Video extended to {final_video.duration:.1f}s (looped {len(filler_clips)} clips)")
+                                cycles_used = clip_idx // max(len(clips), 1)
+                                print(f"[{account_key}] Video extended to {final_video.duration:.1f}s ({len(filler_clips)} filler clips, {cycles_used} cycles)")
                     
                     elif voice.duration < final_video.duration - 2.0:
                         # VO shorter than video → trim video to match VO + 1.5s buffer

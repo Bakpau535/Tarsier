@@ -734,33 +734,31 @@ class MediaGenerator:
         if visual_source == "stock_only":
             # ==========================================
             # FORMAL CHANNELS: 50:50 tarsier:support
-            # TARSIER SOURCE (verified 2026-03-14):
-            #   - Pexels VIDEO search "tarsier" = USELESS (returns maple leaves, fog, NOT tarsier)
-            #   - Pixabay VIDEO search "tarsier" = 0 results
-            #   - Pixabay PHOTO search "tarsier" = ~8 real tarsier photos ✓
-            #   - AI generated (FLUX/SDXL) = reliable with visual-description prompts ✓
-            # STRATEGY: Pixabay real photos + AI tarsier images (primary)
-            # SUPPORT: Pexels/Pixabay forest/nature videos (these work fine)
+            # MINIMUM 5 tarsier photos — request MORE from sources to guarantee this
+            # Photos are INTERLEAVED evenly with support clips
+            # NO photo repetition within 1 video
             # ==========================================
-            HALF = TARGET_CLIPS // 2  # 6 tarsier + 6 support
+            HALF = TARGET_CLIPS // 2  # Target: 6 tarsier + 6 support
+            MIN_TARSIER = 5  # Absolute minimum tarsier photos
             
-            print(f"[{account_key}] Visual source: STOCK ONLY ({HALF} tarsier + {HALF} support)")
-            print(f"[{account_key}] Tarsier strategy: Pixabay PHOTOS + AI images (Pexels VIDEO disabled — returns non-tarsier)")
+            print(f"[{account_key}] Visual source: STOCK ONLY (target {HALF} tarsier + {HALF} support, min {MIN_TARSIER} tarsier)")
             
-            # --- 50% TARSIER: Pixabay real photos + AI-generated images ---
+            # --- TARSIER: real photos + AI fill ---
             tarsier_media = []
             
-            # Step 1: Get real tarsier PHOTOS from Pixabay (max ~8 exist)
-            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
+            # Step 1: Get real tarsier PHOTOS — request MORE than needed to survive dedup
+            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=15)
             for photo in tarsier_photos:
                 tarsier_media.append(("image", photo))
             real_photo_count = len(tarsier_media)
             print(f"[{account_key}] Real tarsier photos: {real_photo_count}")
             
-            # Step 2: Fill remaining slots with AI-generated tarsier images
-            remaining = HALF - len(tarsier_media)
+            # Step 2: Fill remaining with AI-generated tarsier images
+            # Must reach at least MIN_TARSIER
+            target_tarsier = max(HALF, MIN_TARSIER)
+            remaining = target_tarsier - len(tarsier_media)
             if remaining > 0:
-                print(f"[{account_key}] Generating {remaining} AI tarsier images to fill 50% quota...")
+                print(f"[{account_key}] Generating {remaining} AI tarsier images (need {target_tarsier}, have {len(tarsier_media)})...")
                 for i in range(remaining):
                     img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                     if img:
@@ -768,9 +766,13 @@ class MediaGenerator:
                     time.sleep(1)
             
             ai_count = len(tarsier_media) - real_photo_count
-            print(f"[{account_key}] Tarsier total: {len(tarsier_media)}/{HALF} (real_photos:{real_photo_count} AI:{ai_count})")
+            print(f"[{account_key}] Tarsier total: {len(tarsier_media)} (real:{real_photo_count} AI:{ai_count})")
             
-            # --- 50% SUPPORT: stock videos (NEVER reused) ---
+            # HARD CHECK: if still below minimum, log warning
+            if len(tarsier_media) < MIN_TARSIER:
+                print(f"[{account_key}] WARNING: Only {len(tarsier_media)} tarsier photos (minimum {MIN_TARSIER}). Video quality may suffer.")
+            
+            # --- SUPPORT: stock videos ---
             support_clips = self.download_support_clips(account_key, num_clips=HALF)
             support_media = [("video", clip) for clip in support_clips]
             
@@ -782,31 +784,31 @@ class MediaGenerator:
                     if img:
                         support_media.append(("image", img))
                 print(f"[{account_key}] AI environment fallback: {len(support_media)} images")
-            elif len(support_media) < HALF:
-                print(f"[{account_key}] Support stock: {len(support_media)}/{HALF}. Loop engine will expand.")
             
-            # ENFORCE 50:50 RATIO — cap support to never exceed tarsier count
-            # If tarsier=2 and support=6, cap support to 2 so ratio is 2:2 (50:50)
             t_count = len(tarsier_media)
             s_count = len(support_media)
-            if t_count > 0 and s_count > t_count:
-                print(f"[{account_key}] RATIO FIX: Capping support from {s_count} to {t_count} to enforce 50:50")
-                support_media = support_media[:t_count]
-                s_count = t_count
-            elif s_count > 0 and t_count > s_count:
-                print(f"[{account_key}] RATIO FIX: Capping tarsier from {t_count} to {s_count} to enforce 50:50")
-                tarsier_media = tarsier_media[:s_count]
-                t_count = s_count
             
-            # Interleave: tarsier, support, tarsier, support...
+            # INTERLEAVE EVENLY: distribute tarsier photos across all positions
+            # Pattern: T S T S T S ... (not T T T T S S S S)
             all_media = []
-            for i in range(max(len(tarsier_media), len(support_media))):
-                if i < len(tarsier_media):
-                    all_media.append(tarsier_media[i])
-                if i < len(support_media):
-                    all_media.append(support_media[i])
+            ti, si = 0, 0
+            total_slots = t_count + s_count
+            for slot in range(total_slots):
+                # Alternate: even slots = tarsier, odd slots = support
+                if slot % 2 == 0 and ti < t_count:
+                    all_media.append(tarsier_media[ti])
+                    ti += 1
+                elif si < s_count:
+                    all_media.append(support_media[si])
+                    si += 1
+                elif ti < t_count:
+                    all_media.append(tarsier_media[ti])
+                    ti += 1
+                elif si < s_count:
+                    all_media.append(support_media[si])
+                    si += 1
             
-            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} support) — ratio {t_count}:{s_count}")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} support) — interleaved evenly")
             return all_media
         
         elif visual_source == "stock_plus_flux_env":
@@ -817,30 +819,34 @@ class MediaGenerator:
             # Pexels VIDEO search disabled — returns non-tarsier content
             # ==========================================
             HALF = TARGET_CLIPS // 2
+            MIN_TARSIER = 5
             
-            print(f"[{account_key}] Visual source: Stock+AI 50:50 ({HALF} tarsier + {HALF} environment)")
+            print(f"[{account_key}] Visual source: Stock+AI 50:50 (target {HALF} tarsier + {HALF} env, min {MIN_TARSIER} tarsier)")
             
-            # --- 50% TARSIER: real photos + AI tarsier ---
+            # --- TARSIER: real photos + AI tarsier ---
             tarsier_media = []
             
-            # Step 1: Get real tarsier PHOTOS from Pixabay/Wikimedia/Pexels
-            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=HALF)
+            tarsier_photos = self.download_tarsier_photos(account_key, num_photos=15)
             for photo in tarsier_photos:
                 tarsier_media.append(("image", photo))
             real_photo_count = len(tarsier_media)
             
-            # Step 2: Fill remaining slots with AI-generated tarsier
-            if len(tarsier_media) < HALF:
-                for i in range(HALF - len(tarsier_media)):
+            # Fill remaining with AI-generated tarsier (must reach MIN_TARSIER)
+            target_tarsier = max(HALF, MIN_TARSIER)
+            if len(tarsier_media) < target_tarsier:
+                for i in range(target_tarsier - len(tarsier_media)):
                     img = self.generate_tarsier_image(account_key, i, topic, force_tarsier=True)
                     if img:
                         tarsier_media.append(("image", img))
                     time.sleep(1)
             
             ai_tarsier_count = len(tarsier_media) - real_photo_count
-            print(f"[{account_key}] Tarsier: {len(tarsier_media)}/{HALF} (real_photos:{real_photo_count} AI:{ai_tarsier_count})")
+            print(f"[{account_key}] Tarsier: {len(tarsier_media)} (real:{real_photo_count} AI:{ai_tarsier_count})")
             
-            # --- 50% ENVIRONMENT (AI generated, always new) ---
+            if len(tarsier_media) < MIN_TARSIER:
+                print(f"[{account_key}] WARNING: Only {len(tarsier_media)} tarsier photos (minimum {MIN_TARSIER})")
+            
+            # --- ENVIRONMENT (AI generated, always new) ---
             support_media = []
             for i in range(HALF):
                 img = self.generate_tarsier_image(account_key, HALF + i, topic, force_tarsier=False)
@@ -848,27 +854,28 @@ class MediaGenerator:
                     support_media.append(("image", img))
                 time.sleep(1)
             
-            # ENFORCE 50:50 RATIO — cap whichever side has more
             t_count = len(tarsier_media)
             s_count = len(support_media)
-            if t_count > 0 and s_count > t_count:
-                print(f"[{account_key}] RATIO FIX: Capping environment from {s_count} to {t_count} to enforce 50:50")
-                support_media = support_media[:t_count]
-                s_count = t_count
-            elif s_count > 0 and t_count > s_count:
-                print(f"[{account_key}] RATIO FIX: Capping tarsier from {t_count} to {s_count} to enforce 50:50")
-                tarsier_media = tarsier_media[:s_count]
-                t_count = s_count
             
-            # Interleave
+            # INTERLEAVE EVENLY: T S T S T S ...
             all_media = []
-            for i in range(max(len(tarsier_media), len(support_media))):
-                if i < len(tarsier_media):
-                    all_media.append(tarsier_media[i])
-                if i < len(support_media):
-                    all_media.append(support_media[i])
+            ti, si = 0, 0
+            total_slots = t_count + s_count
+            for slot in range(total_slots):
+                if slot % 2 == 0 and ti < t_count:
+                    all_media.append(tarsier_media[ti])
+                    ti += 1
+                elif si < s_count:
+                    all_media.append(support_media[si])
+                    si += 1
+                elif ti < t_count:
+                    all_media.append(tarsier_media[ti])
+                    ti += 1
+                elif si < s_count:
+                    all_media.append(support_media[si])
+                    si += 1
             
-            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} environment) — ratio {t_count}:{s_count}")
+            print(f"[{account_key}] Final: {len(all_media)} clips ({t_count} tarsier + {s_count} env) — interleaved evenly")
             return all_media
         
         elif visual_source == "ai_only":
