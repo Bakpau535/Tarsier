@@ -681,7 +681,7 @@ class MediaGenerator:
         print(f"[{account_key}] AI {img_type} image {index}: {base_prompt[:60]}... (seed:{seed})")
         payload = {"inputs": prompt}
         
-        # Try key pool: own key first, then backups from unused channels
+        # Try key pool: own primary + own backup ONLY (NO cross-channel borrowing)
         key_pool = self._get_key_pool(account_key)
         if not key_pool:
             print(f"[{account_key}] ALL HF keys depleted! Cannot generate AI image.")
