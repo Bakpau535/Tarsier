@@ -8740,5 +8740,77 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-03-28T06:51:43.207587",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-03-28T06:51:48.256525",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Topic 'Tarsier Tarsier intelligence and cognition' already completed for all accounts. Trying another... (1/10)"
+    },
+    {
+        "timestamp": "2026-03-28T06:51:53.018197",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Selected Topic: Tarsier Captivity and rescue programs"
+    },
+    {
+        "timestamp": "2026-03-28T06:51:53.018214",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): fb_fanspage"
+    },
+    {
+        "timestamp": "2026-03-28T06:51:53.019184",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Captivity and rescue programs"
+    },
+    {
+        "timestamp": "2026-03-28T06:52:02.613055",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-03-28T06:52:09.473592",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Captivity: Why Most Die Within Weeks"
+    },
+    {
+        "timestamp": "2026-03-28T06:57:08.763412",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-03-28T06:57:19.406633",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-03-28T06:57:19.441745",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-03-28T06:57:21.367313",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-03-28T06:57:21.367338",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
