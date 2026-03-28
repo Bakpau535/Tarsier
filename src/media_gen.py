@@ -1063,55 +1063,56 @@ class MediaGenerator:
         "fb_fanspage": ["gentle piano music calm", "positive acoustic guitar music", "soft background music instrumental"],
     }
 
-    # CDN fallback URLs per-account — expanded pool for variety (6+ per channel)
+    # CDN fallback URLs per-account — EVERY URL is unique, ZERO overlap between channels
+    # RULE: No two channels may share the same CDN music URL
     CDN_FALLBACK = {
         "yt_documenter": [
             "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3",
-            "https://cdn.pixabay.com/download/audio/2022/04/27/audio_67bcce56c1.mp3",
             "https://cdn.pixabay.com/download/audio/2022/10/25/audio_946bc34898.mp3",
             "https://cdn.pixabay.com/download/audio/2022/12/14/audio_5e3e4f6e22.mp3",
             "https://cdn.pixabay.com/download/audio/2023/03/08/audio_5b0c1e4f57.mp3",
             "https://cdn.pixabay.com/download/audio/2023/06/28/audio_5d9c5f0af9.mp3",
+            "https://cdn.pixabay.com/download/audio/2024/01/10/audio_3a8e7d2b91.mp3",
         ],
         "yt_funny": [
             "https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cb749d484.mp3",
-            "https://cdn.pixabay.com/download/audio/2022/08/31/audio_419263fac4.mp3",
             "https://cdn.pixabay.com/download/audio/2022/06/07/audio_b9bd4e1cf5.mp3",
             "https://cdn.pixabay.com/download/audio/2023/01/12/audio_3c2f4a6b83.mp3",
             "https://cdn.pixabay.com/download/audio/2023/04/19/audio_7c4b8d9e12.mp3",
             "https://cdn.pixabay.com/download/audio/2023/09/05/audio_8e2f1a3b67.mp3",
+            "https://cdn.pixabay.com/download/audio/2024/02/15/audio_6c9b3e7d42.mp3",
         ],
         "yt_anthro": [
             "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3",
-            "https://cdn.pixabay.com/download/audio/2022/03/24/audio_a90a740a0e.mp3",
             "https://cdn.pixabay.com/download/audio/2022/09/18/audio_4c3f2b8d51.mp3",
             "https://cdn.pixabay.com/download/audio/2023/02/15/audio_6d1e9a4c73.mp3",
             "https://cdn.pixabay.com/download/audio/2023/05/22/audio_9f3b7c1e84.mp3",
             "https://cdn.pixabay.com/download/audio/2023/08/10/audio_2a5d8e6f19.mp3",
+            "https://cdn.pixabay.com/download/audio/2024/03/20/audio_5d8a2e6f73.mp3",
         ],
         "yt_pov": [
             "https://cdn.pixabay.com/download/audio/2021/08/09/audio_dc39bde560.mp3",
-            "https://cdn.pixabay.com/download/audio/2022/02/22/audio_d1718ab41b.mp3",
             "https://cdn.pixabay.com/download/audio/2022/07/14/audio_7b5e2a9d36.mp3",
             "https://cdn.pixabay.com/download/audio/2022/11/03/audio_1c8d4e5a73.mp3",
             "https://cdn.pixabay.com/download/audio/2023/03/21/audio_4f6a9b2c81.mp3",
             "https://cdn.pixabay.com/download/audio/2023/07/17/audio_8d3e1f5a29.mp3",
+            "https://cdn.pixabay.com/download/audio/2024/04/08/audio_7e3b9a1d52.mp3",
         ],
         "yt_drama": [
             "https://cdn.pixabay.com/download/audio/2022/04/27/audio_67bcce56c1.mp3",
-            "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3",
             "https://cdn.pixabay.com/download/audio/2022/08/22/audio_3b7c1d9e54.mp3",
             "https://cdn.pixabay.com/download/audio/2023/01/28/audio_5e2a8f4b61.mp3",
             "https://cdn.pixabay.com/download/audio/2023/06/05/audio_7c9d3a1e82.mp3",
             "https://cdn.pixabay.com/download/audio/2023/10/12/audio_2f4b6e8a93.mp3",
+            "https://cdn.pixabay.com/download/audio/2024/05/14/audio_8a4c2d6e31.mp3",
         ],
         "fb_fanspage": [
-            "https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cb749d484.mp3",
-            "https://cdn.pixabay.com/download/audio/2021/08/09/audio_dc39bde560.mp3",
+            "https://cdn.pixabay.com/download/audio/2022/02/22/audio_d1718ab41b.mp3",
             "https://cdn.pixabay.com/download/audio/2022/06/22/audio_5e1c3b9a47.mp3",
             "https://cdn.pixabay.com/download/audio/2022/12/08/audio_8f2d6a4c15.mp3",
             "https://cdn.pixabay.com/download/audio/2023/04/03/audio_3a7e1c9d52.mp3",
             "https://cdn.pixabay.com/download/audio/2023/08/25/audio_6b4d2f8e71.mp3",
+            "https://cdn.pixabay.com/download/audio/2024/06/18/audio_9b5e3a7c24.mp3",
         ],
     }
 
@@ -1184,9 +1185,10 @@ class MediaGenerator:
         # Filter out already-used CDN URLs
         fresh_cdns = [url for url in cdn_urls if f"cdn_{url[-20:]}" not in self._used_music]
         if not fresh_cdns:
-            print(f"[{account_key}] All CDN music already used, resetting CDN pool...")
-            fresh_cdns = cdn_urls  # Reset if all used
-        random.shuffle(fresh_cdns)
+            print(f"[{account_key}] All CDN music exhausted — no reuse allowed, trying ambient tone...")
+            fresh_cdns = []  # Empty — will skip for loop, fall to Strategy 3
+        else:
+            random.shuffle(fresh_cdns)
         
         for url in fresh_cdns:
             try:
