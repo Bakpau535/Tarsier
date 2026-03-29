@@ -301,9 +301,9 @@
     },
     {
         "topik": "Tarsier Captivity and rescue programs",
-        "tanggal": "2026-03-20",
+        "tanggal": "2026-03-29",
         "akun": "yt_funny",
-        "status": "gagal"
+        "status": "selesai"
     },
     {
         "topik": "Tarsier Tarsier sleeping habits",
@@ -724,5 +724,35 @@
         "tanggal": "2026-03-29",
         "akun": "fb_fanspage",
         "status": "selesai"
+    },
+    {
+        "topik": "Tarsier Philippine Tarsier Foundation",
+        "tanggal": "2026-03-29",
+        "akun": "fb_fanspage",
+        "status": "selesai"
+    },
+    {
+        "topik": "Tarsier Sulawesi Tarsier species",
+        "tanggal": "2026-03-29",
+        "akun": "yt_documenter",
+        "status": "selesai"
+    },
+    {
+        "topik": "Tarsier Evolutionary history",
+        "tanggal": "2026-03-29",
+        "akun": "yt_drama",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier dental formula and teeth",
+        "tanggal": "2026-03-29",
+        "akun": "yt_pov",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Habitat and distribution",
+        "tanggal": "2026-03-29",
+        "akun": "yt_anthro",
+        "status": "gagal"
     }
 ]
