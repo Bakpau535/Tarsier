@@ -667,7 +667,7 @@
     },
     {
         "topik": "Tarsier Evolutionary history",
-        "tanggal": "2026-03-29",
+        "tanggal": "2026-03-31",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -859,7 +859,7 @@
     },
     {
         "topik": "Tarsier Habitat and distribution",
-        "tanggal": "2026-03-30",
+        "tanggal": "2026-03-31",
         "akun": "yt_documenter",
         "status": "gagal"
     },
@@ -877,7 +877,7 @@
     },
     {
         "topik": "Tarsier Behavior and social structure",
-        "tanggal": "2026-03-30",
+        "tanggal": "2026-03-31",
         "akun": "yt_pov",
         "status": "gagal"
     },
@@ -939,6 +939,12 @@
         "topik": "Tarsier Tarsier dental formula and teeth",
         "tanggal": "2026-03-31",
         "akun": "yt_drama",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Philippine Tarsier Foundation",
+        "tanggal": "2026-03-31",
+        "akun": "yt_funny",
         "status": "gagal"
     }
 ]
