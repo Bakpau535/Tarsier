@@ -355,9 +355,9 @@
     },
     {
         "topik": "Tarsier Jumping and locomotion mechanics",
-        "tanggal": "2026-03-22",
+        "tanggal": "2026-03-31",
         "akun": "yt_funny",
-        "status": "gagal"
+        "status": "selesai"
     },
     {
         "topik": "Tarsier Ecotourism and tarsier watching",
@@ -853,7 +853,7 @@
     },
     {
         "topik": "Tarsier Tarsier vs other primates",
-        "tanggal": "2026-03-30",
+        "tanggal": "2026-03-31",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -945,6 +945,24 @@
         "topik": "Tarsier Philippine Tarsier Foundation",
         "tanggal": "2026-03-31",
         "akun": "yt_funny",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Threats from deforestation",
+        "tanggal": "2026-03-31",
+        "akun": "yt_documenter",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Ecotourism and tarsier watching",
+        "tanggal": "2026-03-31",
+        "akun": "yt_drama",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier in popular culture",
+        "tanggal": "2026-03-31",
+        "akun": "yt_pov",
         "status": "gagal"
     }
 ]
