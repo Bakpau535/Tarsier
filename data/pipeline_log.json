@@ -17092,5 +17092,71 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-02T09:50:19.446136",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-04-02T09:50:19.446157",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-02T09:50:23.539587",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Selected UNIQUE topic: Tarsier Ecotourism and tarsier watching"
+    },
+    {
+        "timestamp": "2026-04-02T09:50:23.540749",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Ecotourism and tarsier watching"
+    },
+    {
+        "timestamp": "2026-04-02T09:50:37.018324",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-02T09:50:47.287062",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Shocking: One Camera Flash Harms Tarsiers for Days!"
+    },
+    {
+        "timestamp": "2026-04-02T09:56:15.505512",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-02T09:56:24.754455",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-02T09:56:24.769076",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-02T09:56:26.362947",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Upload successful!"
+    },
+    {
+        "timestamp": "2026-04-02T09:56:26.362971",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
