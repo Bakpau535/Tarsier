@@ -895,7 +895,7 @@
     },
     {
         "topik": "Tarsier Tarsier stress and mortality",
-        "tanggal": "2026-04-02",
+        "tanggal": "2026-04-03",
         "akun": "yt_drama",
         "status": "gagal"
     },
@@ -987,6 +987,30 @@
         "topik": "Tarsier Jumping and locomotion mechanics",
         "tanggal": "2026-04-02",
         "akun": "yt_anthro",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier intelligence and cognition",
+        "tanggal": "2026-04-03",
+        "akun": "yt_documenter",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Sulawesi Tarsier species",
+        "tanggal": "2026-04-03",
+        "akun": "yt_anthro",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier vs other primates",
+        "tanggal": "2026-04-03",
+        "akun": "yt_funny",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Habitat and distribution",
+        "tanggal": "2026-04-03",
+        "akun": "yt_pov",
         "status": "gagal"
     }
 ]
