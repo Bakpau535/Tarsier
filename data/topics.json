@@ -229,7 +229,7 @@
     },
     {
         "topik": "Tarsier Tarsier fur and grooming",
-        "tanggal": "2026-03-17",
+        "tanggal": "2026-04-04",
         "akun": "yt_funny",
         "status": "gagal"
     },
@@ -739,7 +739,7 @@
     },
     {
         "topik": "Tarsier Evolutionary history",
-        "tanggal": "2026-03-29",
+        "tanggal": "2026-04-04",
         "akun": "yt_drama",
         "status": "gagal"
     },
@@ -811,7 +811,7 @@
     },
     {
         "topik": "Tarsier Tarsier in popular culture",
-        "tanggal": "2026-03-30",
+        "tanggal": "2026-04-04",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -891,7 +891,7 @@
         "topik": "Tarsier Jumping and locomotion mechanics",
         "tanggal": "2026-04-04",
         "akun": "fb_fanspage",
-        "status": "gagal"
+        "status": "selesai"
     },
     {
         "topik": "Tarsier Tarsier stress and mortality",
@@ -1009,7 +1009,7 @@
     },
     {
         "topik": "Tarsier Habitat and distribution",
-        "tanggal": "2026-04-03",
+        "tanggal": "2026-04-04",
         "akun": "yt_pov",
         "status": "gagal"
     },
@@ -1077,6 +1077,12 @@
         "topik": "Tarsier Nocturnal adaptations",
         "tanggal": "2026-04-04",
         "akun": "yt_drama",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier territorial behavior",
+        "tanggal": "2026-04-04",
+        "akun": "yt_documenter",
         "status": "gagal"
     }
 ]
