@@ -877,7 +877,7 @@
     },
     {
         "topik": "Tarsier Behavior and social structure",
-        "tanggal": "2026-04-04",
+        "tanggal": "2026-04-05",
         "akun": "yt_pov",
         "status": "gagal"
     },
@@ -967,7 +967,7 @@
     },
     {
         "topik": "Tarsier Diet and hunting",
-        "tanggal": "2026-04-02",
+        "tanggal": "2026-04-05",
         "akun": "yt_funny",
         "status": "gagal"
     },
@@ -1107,6 +1107,18 @@
         "topik": "Tarsier Evolutionary history",
         "tanggal": "2026-04-05",
         "akun": "yt_pov",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Habitat and distribution",
+        "tanggal": "2026-04-05",
+        "akun": "yt_drama",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier vs other primates",
+        "tanggal": "2026-04-05",
+        "akun": "yt_documenter",
         "status": "gagal"
     }
 ]
