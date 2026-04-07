@@ -811,7 +811,7 @@
     },
     {
         "topik": "Tarsier Tarsier in popular culture",
-        "tanggal": "2026-04-06",
+        "tanggal": "2026-04-07",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -847,7 +847,7 @@
     },
     {
         "topik": "Tarsier Tarsier stress and mortality",
-        "tanggal": "2026-03-30",
+        "tanggal": "2026-04-07",
         "akun": "yt_documenter",
         "status": "gagal"
     },
@@ -955,7 +955,7 @@
     },
     {
         "topik": "Tarsier Ecotourism and tarsier watching",
-        "tanggal": "2026-03-31",
+        "tanggal": "2026-04-07",
         "akun": "yt_drama",
         "status": "gagal"
     },
@@ -1129,7 +1129,7 @@
     },
     {
         "topik": "Tarsier Tarsier territorial behavior",
-        "tanggal": "2026-04-05",
+        "tanggal": "2026-04-07",
         "akun": "yt_funny",
         "status": "gagal"
     },
@@ -1161,6 +1161,12 @@
         "topik": "Tarsier Captivity and rescue programs",
         "tanggal": "2026-04-06",
         "akun": "yt_anthro",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Night hunting strategies",
+        "tanggal": "2026-04-07",
+        "akun": "yt_pov",
         "status": "gagal"
     }
 ]
