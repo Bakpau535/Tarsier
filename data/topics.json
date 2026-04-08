@@ -835,7 +835,7 @@
     },
     {
         "topik": "Tarsier Diet and hunting",
-        "tanggal": "2026-03-30",
+        "tanggal": "2026-04-08",
         "akun": "yt_drama",
         "status": "gagal"
     },
@@ -931,7 +931,7 @@
     },
     {
         "topik": "Tarsier Ultrasonic communication",
-        "tanggal": "2026-04-03",
+        "tanggal": "2026-04-08",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -949,7 +949,7 @@
     },
     {
         "topik": "Tarsier Threats from deforestation",
-        "tanggal": "2026-04-06",
+        "tanggal": "2026-04-08",
         "akun": "yt_documenter",
         "status": "gagal"
     },
@@ -1129,7 +1129,7 @@
     },
     {
         "topik": "Tarsier Tarsier territorial behavior",
-        "tanggal": "2026-04-07",
+        "tanggal": "2026-04-08",
         "akun": "yt_funny",
         "status": "gagal"
     },
@@ -1185,6 +1185,12 @@
         "topik": "Tarsier Behavior and social structure",
         "tanggal": "2026-04-08",
         "akun": "yt_anthro",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Nocturnal adaptations",
+        "tanggal": "2026-04-08",
+        "akun": "yt_pov",
         "status": "gagal"
     }
 ]
