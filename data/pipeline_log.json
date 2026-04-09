@@ -33070,5 +33070,671 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-04-09T06:02:51.994262",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-04-09T06:02:51.994289",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): yt_drama → yt_funny → yt_anthro → yt_pov → yt_documenter → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-09T06:02:56.846529",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Selected UNIQUE topic: Tarsier Tarsier vs other primates"
+    },
+    {
+        "timestamp": "2026-04-09T06:02:56.847726",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier vs other primates"
+    },
+    {
+        "timestamp": "2026-04-09T06:03:09.400417",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:03:10.211860",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:03:38.673674",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:03:43.675060",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:03:43.676417",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier vs other primates"
+    },
+    {
+        "timestamp": "2026-04-09T06:03:43.680710",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:03:44.849951",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:04:04.129297",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:04:09.130953",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:04:09.132341",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier vs other primates"
+    },
+    {
+        "timestamp": "2026-04-09T06:04:09.136089",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:04:09.331430",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:04:34.492585",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:04:39.493831",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-09T06:04:41.088648",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 170s (~2min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-09T06:07:31.863823",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Selected UNIQUE topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-04-09T06:07:31.864977",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-04-09T06:07:47.840422",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:07:48.159911",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:08:17.014765",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-04-09T06:08:42.308392",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:08:47.309936",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:08:47.311366",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-04-09T06:08:47.315054",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:08:47.315078",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:09:15.893761",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-04-09T06:09:41.072514",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:09:46.074254",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:09:46.075675",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-04-09T06:09:46.079355",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:09:46.079383",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:10:14.830582",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-04-09T06:10:39.864712",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:10:44.866284",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-09T06:10:46.543774",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 247s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-09T06:15:18.096388",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier vs other primates' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-09T06:15:22.562433",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier vs other primates' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-09T06:15:38.241766",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier vs other primates' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-09T06:16:02.000348",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Selected UNIQUE topic: Tarsier Captivity and rescue programs"
+    },
+    {
+        "timestamp": "2026-04-09T06:16:02.001518",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Captivity and rescue programs"
+    },
+    {
+        "timestamp": "2026-04-09T06:16:18.060239",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:16:18.383263",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:17:00.617721",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:17:05.619074",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:17:05.620460",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Captivity and rescue programs"
+    },
+    {
+        "timestamp": "2026-04-09T06:17:05.789221",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:17:05.789250",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:17:51.944746",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:17:56.946142",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:17:56.947477",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Captivity and rescue programs"
+    },
+    {
+        "timestamp": "2026-04-09T06:17:56.951182",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:17:56.951202",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:18:41.659030",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:18:46.660452",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-09T06:18:48.084236",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 269s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-09T06:23:22.287910",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Topic 'Tarsier Captivity and rescue programs' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-09T06:23:27.400191",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Selected UNIQUE topic: Tarsier Local myths and folklore"
+    },
+    {
+        "timestamp": "2026-04-09T06:23:27.401348",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Local myths and folklore"
+    },
+    {
+        "timestamp": "2026-04-09T06:23:48.553279",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:23:48.917775",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:24:43.647035",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:24:48.648412",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:24:48.649840",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Local myths and folklore"
+    },
+    {
+        "timestamp": "2026-04-09T06:24:48.653687",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:24:48.835727",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:25:37.602085",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:25:42.603729",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:25:42.605150",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Local myths and folklore"
+    },
+    {
+        "timestamp": "2026-04-09T06:25:42.608929",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:25:42.608951",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:26:24.856786",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:26:29.858213",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-09T06:26:31.192512",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 273s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-09T06:31:31.514714",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Selected UNIQUE topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-04-09T06:31:31.515864",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-04-09T06:31:52.686024",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:31:53.050425",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:32:20.161365",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:32:25.162733",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:32:25.164149",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-04-09T06:32:25.168406",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:32:25.168429",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:33:03.091859",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:33:08.093520",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:33:08.094932",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-04-09T06:33:08.098696",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:33:08.098718",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:33:48.827644",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:33:53.829307",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-09T06:33:55.186310",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 125s (~2min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-09T06:36:02.447774",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Selected UNIQUE topic: Tarsier Tarsier stress and mortality"
+    },
+    {
+        "timestamp": "2026-04-09T06:36:02.448950",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier stress and mortality"
+    },
+    {
+        "timestamp": "2026-04-09T06:36:13.251903",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:36:13.430420",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:36:28.571152",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:36:33.572570",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 2/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:36:33.573967",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier stress and mortality"
+    },
+    {
+        "timestamp": "2026-04-09T06:36:44.136119",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:36:44.492256",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:36:58.388402",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:37:03.389697",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry attempt 3/3..."
+    },
+    {
+        "timestamp": "2026-04-09T06:37:03.391078",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier stress and mortality"
+    },
+    {
+        "timestamp": "2026-04-09T06:37:03.394904",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-09T06:37:03.394926",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-09T06:37:24.125703",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: No visual media generated (stock video + AI images all failed)."
+    },
+    {
+        "timestamp": "2026-04-09T06:37:29.127203",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-09T06:37:30.879937",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
