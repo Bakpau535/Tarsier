@@ -979,13 +979,13 @@
     },
     {
         "topik": "Tarsier Night hunting strategies",
-        "tanggal": "2026-04-04",
+        "tanggal": "2026-04-10",
         "akun": "yt_documenter",
         "status": "gagal"
     },
     {
         "topik": "Tarsier Jumping and locomotion mechanics",
-        "tanggal": "2026-04-02",
+        "tanggal": "2026-04-10",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -1051,7 +1051,7 @@
     },
     {
         "topik": "Tarsier Threats from deforestation",
-        "tanggal": "2026-04-09",
+        "tanggal": "2026-04-10",
         "akun": "yt_funny",
         "status": "gagal"
     },
@@ -1105,7 +1105,7 @@
     },
     {
         "topik": "Tarsier Evolutionary history",
-        "tanggal": "2026-04-06",
+        "tanggal": "2026-04-10",
         "akun": "yt_pov",
         "status": "gagal"
     },
@@ -1203,6 +1203,12 @@
         "topik": "Tarsier Eye anatomy and vision",
         "tanggal": "2026-04-09",
         "akun": "yt_documenter",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Role in ecosystem",
+        "tanggal": "2026-04-10",
+        "akun": "yt_drama",
         "status": "gagal"
     }
 ]
