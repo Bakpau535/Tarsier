@@ -985,7 +985,7 @@
     },
     {
         "topik": "Tarsier Jumping and locomotion mechanics",
-        "tanggal": "2026-04-10",
+        "tanggal": "2026-04-12",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -1027,7 +1027,7 @@
     },
     {
         "topik": "Tarsier Ultrasonic communication",
-        "tanggal": "2026-04-11",
+        "tanggal": "2026-04-12",
         "akun": "fb_fanspage",
         "status": "gagal"
     },
@@ -1045,7 +1045,7 @@
     },
     {
         "topik": "Tarsier Captivity and rescue programs",
-        "tanggal": "2026-04-10",
+        "tanggal": "2026-04-12",
         "akun": "yt_drama",
         "status": "gagal"
     },
@@ -1147,7 +1147,7 @@
     },
     {
         "topik": "Tarsier Tarsier fur and grooming",
-        "tanggal": "2026-04-11",
+        "tanggal": "2026-04-12",
         "akun": "yt_documenter",
         "status": "gagal"
     },
@@ -1189,7 +1189,7 @@
     },
     {
         "topik": "Tarsier Nocturnal adaptations",
-        "tanggal": "2026-04-10",
+        "tanggal": "2026-04-12",
         "akun": "yt_pov",
         "status": "gagal"
     },
@@ -1215,6 +1215,12 @@
         "topik": "Tarsier Sulawesi Tarsier species",
         "tanggal": "2026-04-11",
         "akun": "yt_drama",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Local myths and folklore",
+        "tanggal": "2026-04-12",
+        "akun": "yt_funny",
         "status": "gagal"
     }
 ]
