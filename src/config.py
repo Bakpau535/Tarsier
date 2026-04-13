@@ -287,6 +287,13 @@ IMPORTANT RULES:
 - Do NOT repeat generic tarsier overview facts — write ONLY about the specific topic
 - Each script must contain facts and angles that are DIFFERENT from any previous script
 - Include at least 3 facts that are SPECIFIC to the topic, not general tarsier information
+
+VOCABULARY RULES:
+- BANNED WORDS (never use): "equal", "equivalent", "roughly", "approximately", "incredible", "amazing", "fascinating"
+- Never repeat the same adjective or comparison word twice in one script
+- Use varied sentence structures — mix short and long sentences
+- Avoid cliche phrases like "did you know", "in fact", "it turns out"
+- Each script must sound naturally different from any other script
 """
 
 METADATA_GENERATION_PROMPT = """
