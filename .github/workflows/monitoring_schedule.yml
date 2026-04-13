@@ -25,24 +25,63 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Restore YouTube OAuth Tokens
+        env:
+          TK1: ${{ secrets.YT_SCIENTIFIC_TOKEN }}
+          TK2: ${{ secrets.YT_FUNNY_TOKEN }}
+          TK3: ${{ secrets.YT_ANTHRO_TOKEN }}
+          TK4: ${{ secrets.YT_POV_TOKEN }}
+          TK5: ${{ secrets.YT_DRAMA_TOKEN }}
+        run: |
+          mkdir -p data/tokens
+          printf '%s' "$TK1" > data/tokens/yt_documenter_token.json
+          printf '%s' "$TK2" > data/tokens/yt_funny_token.json
+          printf '%s' "$TK3" > data/tokens/yt_anthro_token.json
+          printf '%s' "$TK4" > data/tokens/yt_pov_token.json
+          printf '%s' "$TK5" > data/tokens/yt_drama_token.json
+          # Validate token files
+          for f in data/tokens/*.json; do
+            if python -c "import json; json.load(open('$f'))" 2>/dev/null; then
+              echo "✅ $f valid"
+            else
+              echo "❌ $f INVALID"
+            fi
+          done
+
       - name: Run Monitoring Protocol
         env:
+          # Gemini API Keys (per-channel, isolated)
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
           GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
           GEMINI_API_KEY_5: ${{ secrets.GEMINI_API_KEY_5 }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          FB_ADMIN_EMAIL: ${{ secrets.FB_ADMIN_EMAIL }}
+          GEMINI_API_KEY_6: ${{ secrets.GEMINI_API_KEY_6 }}
+          GEMINI_API_KEY_7: ${{ secrets.GEMINI_API_KEY_7 }}
+          GEMINI_API_KEY_8: ${{ secrets.GEMINI_API_KEY_8 }}
+          GEMINI_API_KEY_9: ${{ secrets.GEMINI_API_KEY_9 }}
+          GEMINI_API_KEY_10: ${{ secrets.GEMINI_API_KEY_10 }}
+          GEMINI_API_KEY_11: ${{ secrets.GEMINI_API_KEY_11 }}
+          GEMINI_API_KEY_12: ${{ secrets.GEMINI_API_KEY_12 }}
+          # HF API Keys
           HF_API_KEY_1: ${{ secrets.HF_API_KEY_1 }}
           HF_API_KEY_2: ${{ secrets.HF_API_KEY_2 }}
           HF_API_KEY_3: ${{ secrets.HF_API_KEY_3 }}
           HF_API_KEY_4: ${{ secrets.HF_API_KEY_4 }}
           HF_API_KEY_5: ${{ secrets.HF_API_KEY_5 }}
           HF_API_KEY_6: ${{ secrets.HF_API_KEY_6 }}
+          HF_API_KEY_7: ${{ secrets.HF_API_KEY_7 }}
+          HF_API_KEY_8: ${{ secrets.HF_API_KEY_8 }}
+          HF_API_KEY_9: ${{ secrets.HF_API_KEY_9 }}
+          HF_API_KEY_10: ${{ secrets.HF_API_KEY_10 }}
+          HF_API_KEY_11: ${{ secrets.HF_API_KEY_11 }}
+          HF_API_KEY_12: ${{ secrets.HF_API_KEY_12 }}
+          # Email
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          FB_ADMIN_EMAIL: ${{ secrets.FB_ADMIN_EMAIL }}
         run: |
           python src/monitoring.py
 
@@ -50,8 +89,7 @@ jobs:
         run: |
           git config --global user.name "Tarsier Bot"
           git config --global user.email "bot@tarsier.local"
-          git add data/topics.json || true
-          git add data/pipeline_log.json || true
+          git add data/topics.json data/video_ids.json data/pipeline_log.json 2>/dev/null || true
           git diff-index --quiet HEAD && exit 0
           git commit -m "chore: maintenance auto-optimizations"
           for i in 1 2 3; do
@@ -59,7 +97,7 @@ jobs:
             echo "Rebase conflict on attempt $i. Resolving..."
             git rebase --abort 2>/dev/null || true
             git pull origin main -X ours || true
-            git add data/topics.json data/pipeline_log.json || true
+            git add data/ || true
             git diff-index --quiet HEAD || git commit -m "chore: maintenance (resolved)"
             git push && exit 0
           done

@@ -292,6 +292,11 @@ class Pipeline:
             
             if upload_result["success"]:
                 self.db.mark_completed(topic_name, account_key)
+                # Save video IDs for monitoring system
+                vid = upload_result.get("video_id", "")
+                sid = upload_result.get("short_id", "")
+                if vid:
+                    self.db.save_video_id(account_key, topic_name, vid, sid or "")
                 self._log("INFO", account_key, "Upload successful!")
                 # Track for summary email
                 self.upload_results.append({

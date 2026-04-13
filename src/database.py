@@ -123,3 +123,45 @@ class DatabaseManager:
         self._save_script_hashes(hashes)
         print(f"[DEDUP] Script hash {script_hash} recorded for {account}")
 
+    # === Video ID Tracking ===
+    # Stores YouTube video IDs so monitoring can query real metrics
+    
+    def _get_video_ids_file(self) -> str:
+        return os.path.join(os.path.dirname(self.topics_file), "video_ids.json")
+    
+    def _load_video_ids(self) -> dict:
+        vid_file = self._get_video_ids_file()
+        if not os.path.exists(vid_file):
+            return {}
+        try:
+            with open(vid_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, FileNotFoundError):
+            return {}
+    
+    def _save_video_ids(self, data: dict):
+        vid_file = self._get_video_ids_file()
+        with open(vid_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2)
+    
+    def save_video_id(self, account: str, topic: str, video_id: str, short_id: str = ""):
+        """Save YouTube video ID after successful upload for monitoring."""
+        data = self._load_video_ids()
+        key = f"{account}_{topic}"
+        data[key] = {
+            "account": account,
+            "topic": topic,
+            "video_id": video_id,
+            "short_id": short_id,
+            "upload_date": datetime.now().strftime("%Y-%m-%d"),
+        }
+        self._save_video_ids(data)
+        print(f"[DB] Video ID {video_id} saved for {account}/{topic}")
+    
+    def get_video_ids(self, account: str = "") -> list:
+        """Get all stored video IDs, optionally filtered by account."""
+        data = self._load_video_ids()
+        results = list(data.values())
+        if account:
+            results = [r for r in results if r.get("account") == account]
+        return results
