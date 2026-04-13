@@ -81,11 +81,12 @@ class ScriptEngine:
 
                     if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                         self._depleted_keys.add(key)
-                        print(f"[{account_key}] {key_type} {key_label} EXHAUSTED, trying next key...")
+                        print(f"[{account_key}] {key_type} {key_label} EXHAUSTED, waiting 30s before backup...")
+                        time.sleep(30)  # 30s cooldown before trying backup key
                         break  # Move to next key in pool
                     else:
                         if attempt < MAX_RETRIES - 1:
-                            time.sleep(5)
+                            time.sleep(10)  # 10s between retries
                         continue
 
         print(f"[{account_key}] FINAL FAILURE: All keys exhausted. Last error: {last_error[:300]}")

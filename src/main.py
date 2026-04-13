@@ -196,6 +196,9 @@ class Pipeline:
             
             self._log("INFO", account_key, "Script generated successfully.")
 
+            # RATE LIMIT PROTECTION: 5s cooldown between Gemini calls
+            time.sleep(5)
+
             # 11. Metadata Generator → Gemini API auto-generate judul, deskripsi, hashtag, tags (Bagian 4 Step 11)
             metadata = self.metadata_gen.generate(script, account_key)
             self._log("INFO", account_key, f"Metadata generated: {metadata.get('title', 'N/A')}")

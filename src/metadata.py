@@ -85,7 +85,9 @@ class MetadataGenerator:
                     error_msg = str(e)
                     if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                         self._depleted_keys.add(key)
-                        print(f"[{account_key}] {key_type} key EXHAUSTED for metadata, trying next...")
+                        print(f"[{account_key}] {key_type} key EXHAUSTED for metadata, waiting 30s before backup...")
+                        import time as _time
+                        _time.sleep(30)  # 30s cooldown before trying backup key
                         break  # Move to next key
                     else:
                         print(f"Error calling Gemini for metadata: {e}")
