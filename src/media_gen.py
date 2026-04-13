@@ -951,36 +951,37 @@ class MediaGenerator:
     # ==========================================
     
     # Per-account voice settings: voice, rate, pitch
+    # UPDATED: Fresh, modern voices — no more flat/boring delivery
     VOICE_SETTINGS = {
         "yt_documenter": {
-            "voice": "en-US-GuyNeural",       # Deep, calm male narrator
-            "rate": "-5%",                     # Slightly slower for clarity
-            "pitch": "-5Hz",                   # Deeper tone, authoritative
+            "voice": "en-US-AndrewNeural",       # Modern male, warm & clear (replaces flat GuyNeural)
+            "rate": "+3%",                        # Slightly faster = more confident, not dragging
+            "pitch": "+0Hz",                      # Natural tone, not artificially deep
         },
         "yt_funny": {
-            "voice": "en-US-JennyNeural",      # Cheerful, energetic female
-            "rate": "+5%",                     # Slightly upbeat pace
-            "pitch": "+3Hz",                   # Higher, playful tone
+            "voice": "en-US-AnaNeural",           # Young, bright female — perfect for comedy
+            "rate": "+10%",                       # Fast & punchy = comedy timing
+            "pitch": "+5Hz",                      # Higher, playful energy
         },
         "yt_anthro": {
-            "voice": "en-US-AriaNeural",       # Expressive, quirky storyteller
-            "rate": "+0%",                     # Normal pace
-            "pitch": "+2Hz",                   # Slightly whimsical
+            "voice": "en-US-BrianNeural",         # Expressive male storyteller, natural cadence
+            "rate": "+5%",                        # Upbeat storytelling pace
+            "pitch": "+2Hz",                      # Warm, quirky
         },
         "yt_pov": {
-            "voice": "en-GB-SoniaNeural",      # British, intimate narrator
-            "rate": "-8%",                     # Slower, contemplative
-            "pitch": "-2Hz",                   # Soft, atmospheric
+            "voice": "en-US-MichelleNeural",      # Intimate, emotive female — diary/journal feel
+            "rate": "-3%",                        # Slightly slower for atmosphere (not dragging)
+            "pitch": "-1Hz",                      # Soft but not robotic
         },
         "yt_drama": {
-            "voice": "en-US-DavisNeural",      # Deep, emotional male
-            "rate": "-10%",                    # Dramatic slow pace
-            "pitch": "-8Hz",                   # Deep, intense
+            "voice": "en-US-AndrewNeural",        # Cinematic male — expressive range
+            "rate": "+0%",                        # Normal pace, let drama breathe naturally
+            "pitch": "-3Hz",                      # Slightly deep, but not exaggerated
         },
         "fb_fanspage": {
-            "voice": "en-US-JennyNeural",      # Warm, friendly female
-            "rate": "+0%",                     # Normal pace
-            "pitch": "+0Hz",                   # Neutral, approachable
+            "voice": "en-US-EmmaNeural",          # Energetic, friendly female — scroll-stopper
+            "rate": "+8%",                        # Fast, punchy = Facebook engagement
+            "pitch": "+3Hz",                      # Bright, confident
         },
     }
 
