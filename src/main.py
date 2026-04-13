@@ -389,24 +389,42 @@ class Pipeline:
                 self._log("ERROR", account_key, f"No unique topic found after {MAX_TOPIC_RETRIES} attempts! Skipping channel.")
                 continue
             
-            # Retry logic
+            # Retry logic — each retry picks a NEW topic to avoid duplicate content
             success = False
             last_error = ""
+            topics_tried = {topic_info['topic_name']}  # Track topics tried for this channel
+            current_topic = topic_info
+            
             for attempt in range(MAX_RETRIES):
                 if attempt > 0:
-                    self._log("WARN", account_key, f"Retry attempt {attempt+1}/{MAX_RETRIES}...")
+                    # Pick a DIFFERENT topic for retry (not the same failed one)
+                    self._log("WARN", account_key, f"Retry {attempt+1}/{MAX_RETRIES} — selecting NEW topic...")
+                    new_topic = None
+                    for _ in range(MAX_TOPIC_RETRIES):
+                        candidate = self.researcher.generate_random_topic()
+                        cname = candidate['topic_name']
+                        if cname not in topics_tried and cname not in topics_used_this_run:
+                            if not self.db.is_topic_completed(cname, account_key):
+                                new_topic = candidate
+                                topics_tried.add(cname)
+                                topics_used_this_run.add(cname)
+                                self._log("INFO", account_key, f"Retry with NEW topic: {cname}")
+                                break
+                    if new_topic:
+                        current_topic = new_topic
+                    else:
+                        self._log("WARN", account_key, "No new topic available for retry, reusing last topic")
+                    time.sleep(5)
                     
-                if self.process_account(account_key, topic_info):
+                if self.process_account(account_key, current_topic):
                     success = True
                     break
                 last_error = f"Failed attempt {attempt+1}"
-                time.sleep(5)
                 
             if not success:
                 all_success = False
-                # Bagian 15 - Error Handling: Kalau 3x gagal → log error, notifikasi email, lanjut topik berikutnya
                 self._log("ERROR", account_key, f"Failed after {MAX_RETRIES} attempts. Moving to next account.")
-                self._send_failure_email(account_key, f"Pipeline failed for topic '{topic_info['topic_name']}' after {MAX_RETRIES} retries.")
+                self._send_failure_email(account_key, f"Pipeline failed for {account_key} after {MAX_RETRIES} retries.")
 
         # 13. Cleanup -> hapus file video setelah upload/kirim (Bagian 4 Step 13)
         if all_success:
