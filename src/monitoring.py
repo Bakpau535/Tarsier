@@ -41,8 +41,9 @@ TOKEN_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 class PerformanceMonitor:
     def __init__(self):
         self.db = DatabaseManager(TOPICS_FILE)
-        self.metadata_gen = MetadataGenerator()
-        self.thumbnail_gen = ThumbnailGenerator()
+        # Lazy init — only created when auto-fix needs them (avoids crash if no Gemini keys)
+        self._metadata_gen = None
+        self._thumbnail_gen = None
         
         self.smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
         self.smtp_port = int(os.environ.get("SMTP_PORT", "587"))
@@ -192,12 +193,22 @@ class PerformanceMonitor:
                     snippet = response["items"][0]["snippet"]
                     old_title = snippet.get("title", "")
                     
-                    # Generate fresh metadata via Gemini
-                    fresh_meta = self.metadata_gen.generate(
-                        f"Topic: {topic}. Original title: {old_title}. "
-                        f"This video needs better SEO — it only has {metrics.get('views', 0)} views.",
-                        account_key
-                    )
+                    # Generate fresh metadata via Gemini (lazy init)
+                    if not self._metadata_gen:
+                        try:
+                            self._metadata_gen = MetadataGenerator()
+                        except Exception:
+                            self._metadata_gen = None
+                            actions_taken.append("Gemini unavailable — skipped metadata update")
+                    
+                    if self._metadata_gen:
+                        fresh_meta = self._metadata_gen.generate(
+                            f"Topic: {topic}. Original title: {old_title}. "
+                            f"This video needs better SEO — it only has {metrics.get('views', 0)} views.",
+                            account_key
+                        )
+                    else:
+                        fresh_meta = None
                     
                     if fresh_meta and fresh_meta.get("title"):
                         new_title = fresh_meta["title"]
@@ -233,11 +244,21 @@ class PerformanceMonitor:
         # LOW_LIKE_RATIO → Regenerate and upload new thumbnail
         if "LOW_LIKE_RATIO" in issues:
             try:
-                thumb_path = self.thumbnail_gen.generate(
-                    account_key,
-                    metrics.get("title", topic),
-                    topic
-                )
+                if not self._thumbnail_gen:
+                    try:
+                        self._thumbnail_gen = ThumbnailGenerator()
+                    except Exception:
+                        self._thumbnail_gen = None
+                        actions_taken.append("ThumbnailGen unavailable")
+                
+                if self._thumbnail_gen:
+                    thumb_path = self._thumbnail_gen.generate(
+                        account_key,
+                        metrics.get("title", topic),
+                        topic
+                    )
+                else:
+                    thumb_path = None
                 if thumb_path and os.path.exists(thumb_path):
                     service.thumbnails().set(
                         videoId=video_id,
