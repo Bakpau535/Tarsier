@@ -597,6 +597,12 @@ class MediaGenerator:
                     if title in seen_titles:
                         continue
                     seen_titles.add(title)
+                    
+                    # VALIDATION: reject images without tarsier-related words in title
+                    title_lower = title.lower()
+                    if not any(kw in title_lower for kw in ["tarsier", "tarsius", "tarsiidae", "carlito syrichta"]):
+                        continue
+                    
                     # Persistent dedup — never reuse same photo across channels/runs
                     wiki_id = f"wiki_{title.replace(' ', '_')[:60]}"
                     if self._is_footage_used(wiki_id):
