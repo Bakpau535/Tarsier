@@ -835,7 +835,7 @@
     },
     {
         "topik": "Tarsier Diet and hunting",
-        "tanggal": "2026-04-12",
+        "tanggal": "2026-04-13",
         "akun": "yt_drama",
         "status": "gagal"
     },
@@ -991,7 +991,7 @@
     },
     {
         "topik": "Tarsier Tarsier intelligence and cognition",
-        "tanggal": "2026-04-03",
+        "tanggal": "2026-04-13",
         "akun": "yt_documenter",
         "status": "gagal"
     },
@@ -1069,7 +1069,7 @@
     },
     {
         "topik": "Tarsier Eye anatomy and vision",
-        "tanggal": "2026-04-11",
+        "tanggal": "2026-04-13",
         "akun": "yt_anthro",
         "status": "gagal"
     },
@@ -1227,6 +1227,18 @@
         "topik": "Tarsier Tarsier stress and mortality",
         "tanggal": "2026-04-12",
         "akun": "yt_anthro",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Tarsier territorial behavior",
+        "tanggal": "2026-04-13",
+        "akun": "yt_pov",
+        "status": "gagal"
+    },
+    {
+        "topik": "Tarsier Habitat and distribution",
+        "tanggal": "2026-04-13",
+        "akun": "yt_funny",
         "status": "gagal"
     }
 ]
