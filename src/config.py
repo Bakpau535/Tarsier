@@ -26,7 +26,7 @@ GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
 # DIAGNOSTIC: Print key prefixes to verify secrets are loaded correctly
 print(f"[Config] Gemini keys loaded: {len(GEMINI_API_KEYS)} active")
 for i, k in enumerate(_gemini_keys_raw):
-    label = f"KEY_{i+1}" if i > 0 else "KEY  "
+    label = f"KEY_{i+1}"
     prefix = k[:8] + "..." if k else "*** EMPTY ***"
     print(f"  {label}: {prefix}")
 

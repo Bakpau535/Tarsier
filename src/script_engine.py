@@ -79,14 +79,18 @@ class ScriptEngine:
                     last_error = error_msg
                     print(f"[{account_key}] Gemini error ({key_type} {key_label}): {error_msg[:200]}")
 
-                    if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+                    if "403" in error_msg or "PERMISSION_DENIED" in error_msg:
+                        self._depleted_keys.add(key)
+                        print(f"[{account_key}] {key_type} {key_label} BLOCKED (403) — permanently dead, trying backup...")
+                        break  # Immediately move to next key, no retry
+                    elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                         self._depleted_keys.add(key)
                         print(f"[{account_key}] {key_type} {key_label} EXHAUSTED, waiting 30s before backup...")
-                        time.sleep(30)  # 30s cooldown before trying backup key
+                        time.sleep(30)
                         break  # Move to next key in pool
                     else:
                         if attempt < MAX_RETRIES - 1:
-                            time.sleep(10)  # 10s between retries
+                            time.sleep(10)
                         continue
 
         print(f"[{account_key}] FINAL FAILURE: All keys exhausted. Last error: {last_error[:300]}")
