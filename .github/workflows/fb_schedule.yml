@@ -1,8 +1,8 @@
-name: FB Fanspage Schedule
+name: FB Fanspage (Manual Only - now part of main batch)
 
 on:
-  schedule:
-    - cron: '38 1 * * *' # ~08:38 WIB + random delay
+  # Schedule DISABLED — fb_fanspage is now processed in main batch pipeline (yt_schedule.yml)
+  # Keep workflow_dispatch for manual testing only
   workflow_dispatch:
 
 permissions:

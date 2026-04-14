@@ -14,6 +14,7 @@ from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import ACCOUNTS, MAX_RETRIES, TMP_DIR, TOPICS_FILE, CLIP_DURATION_SEC, VIDEO_PROFILES
+from src.visual_engine import style_batch_for_channel
 from src.database import DatabaseManager
 
 # PREVIEW_MODE: skip YouTube upload, save videos to output/ for review
@@ -130,21 +131,51 @@ class Pipeline:
     def _split_script_to_segments(self, script: str) -> list:
         """
         Splits a narration script into segments for individual clip generation.
-        Bagian 16: 1 video panjang = ±100 clips disambung, setiap clip durasi 6 detik.
-        Each sentence/phrase becomes a prompt for one 6-second clip.
+        Each sentence/phrase becomes a prompt for one scene.
         """
-        # Split by sentences
         import re
         sentences = re.split(r'(?<=[.!?])\s+', script.strip())
-        # Ensure we have enough segments (target ~100 clips for a real video)
-        # In practice, each sentence becomes a visual prompt for a 6-second clip
         return [s.strip() for s in sentences if s.strip()]
 
-    def process_account(self, account_key: str, topic_info: dict) -> bool:
-        """Runs the full 13-step pipeline for a single account (Bagian 4)."""
+    def _download_shared_images(self, topic_name: str, num_images: int = 6) -> list:
+        """Download shared image batch — 1 image per channel distributed.
+        Returns list of raw image paths to be styled per-channel."""
+        self._log("INFO", "BATCH", f"Downloading {num_images} shared images for topic: {topic_name}")
+        
+        raw_images = []
+        
+        # Step 1: Try stock photos first (Pexels/Pixabay/Wikimedia)
+        stock_photos = self.media_gen.download_tarsier_photos("shared_batch", num_photos=num_images + 5)
+        for photo in stock_photos[:num_images]:
+            raw_images.append(photo)
+        
+        stock_count = len(raw_images)
+        self._log("INFO", "BATCH", f"Stock photos: {stock_count}/{num_images}")
+        
+        # Step 2: Fill remaining with AI-generated images (CF → HF)
+        remaining = num_images - len(raw_images)
+        if remaining > 0:
+            self._log("INFO", "BATCH", f"Generating {remaining} AI images to fill batch...")
+            # Distribute AI generation across channel accounts for key isolation
+            channels_for_ai = list(ACCOUNTS.keys())
+            for i in range(remaining):
+                ai_channel = channels_for_ai[i % len(channels_for_ai)]
+                ai_img = self.media_gen.generate_tarsier_image(ai_channel, i, topic_name, force_tarsier=True)
+                if ai_img:
+                    raw_images.append(ai_img)
+                import time
+                time.sleep(1)
+        
+        self._log("INFO", "BATCH", f"Shared batch: {len(raw_images)} images (stock:{stock_count} AI:{len(raw_images)-stock_count})")
+        return raw_images
+
+    def process_account(self, account_key: str, topic_info: dict, 
+                        shared_images: list = None) -> bool:
+        """Runs the full pipeline for a single account.
+        V2: Accepts shared_images from batch pool, applies channel-specific style."""
         topic_name = topic_info['topic_name']
         
-        # 3. Anti Duplikasi → cek database topik sebelum generate (Bagian 4 Step 3, Bagian 11)
+        # Anti Duplikasi
         if self.db.is_topic_completed(topic_name, account_key):
             self._log("INFO", account_key, f"Topic '{topic_name}' already completed. Skipping.")
             return True
@@ -205,28 +236,37 @@ class Pipeline:
 
             if self.test_mode:
                 self._log("INFO", account_key, "TEST MODE: Skipping media generation.")
-                # Generate Thumbnail anyway for testing
                 thumb = self.thumbnail_gen.generate(account_key, metadata.get('title', 'Tarsier Facts'), topic_name)
                 self.db.mark_completed(topic_name, account_key)
                 return True
 
-            # 4. Generate Visual Media — per-channel source rules from VIDEO_PROFILES
+            # 4. Generate Visual Media — V2: SHARED BATCH + PER-CHANNEL STYLING
             script_segments = self._split_script_to_segments(script)
-            media_items = self.media_gen.generate_all_clips(script_segments, account_key, topic_name)
             
-            # 5. Generate Narasi Suara — skip for channels with has_voiceover=False (e.g. yt_funny)
+            if shared_images:
+                # V2 BATCH MODE: Apply channel-specific visual style to shared images
+                self._log("INFO", account_key, f"Styling {len(shared_images)} shared images for {account_key}...")
+                styled_dir = os.path.join(TMP_DIR, f"{account_key}_styled")
+                styled_scenes = style_batch_for_channel(shared_images, account_key, styled_dir)
+                media_items = [("image", scene) for scene in styled_scenes]
+                self._log("INFO", account_key, f"Styled scenes: {len(media_items)}")
+            else:
+                # FALLBACK: Old per-channel image sourcing
+                media_items = self.media_gen.generate_all_clips(script_segments, account_key, topic_name)
+            
+            # 5. Generate Narasi Suara — V2: VO with PAUSES (not continuous)
             profile = VIDEO_PROFILES.get(account_key, {})
             audio_path = None
             if profile.get("has_voiceover", True):
                 audio_path = self.media_gen.generate_voiceover(script, account_key, topic_name)
             else:
-                self._log("INFO", account_key, "SKIP voiceover (has_voiceover=False per correction plan)")
+                self._log("INFO", account_key, "SKIP voiceover (has_voiceover=False)")
             
-            # 6. Generate Musik (non-fatal: video works without it)
+            # 6. Generate Musik + SFX (non-fatal: video works without it)
             music_path = self.media_gen.generate_music(account_key, topic_name)
 
             if not media_items:
-                raise ValueError("No visual media generated (stock video + AI images all failed).")
+                raise ValueError("No visual media generated.")
 
             # 7. Assemble → video clips + images + narasi + musik
             final_video = self.assembler.assemble_final_video(account_key, topic_name, media_items, audio_path, music_path)
@@ -331,13 +371,15 @@ class Pipeline:
 
     def run(self):
         """
-        Executes the pipeline sequentially for all accounts (Bagian 4 - Pipeline Lengkap).
-        Bagian 3: 1 topik/tema tarsier → di-transform otomatis jadi 5 style berbeda sesuai konsep akun.
+        V2 BATCH PIPELINE:
+        1 topic → 6 shared images → 6 visually distinct videos (1 per channel)
+        Each channel applies its own visual style, VO tone, and audio mood.
+        Same ingredients → different flavors (analogi: 1 mie → 6 rasa beda)
         """
-        self._log("INFO", "SYSTEM", "Starting Tarsier Pipeline...")
+        self._log("INFO", "SYSTEM", "Starting Tarsier Pipeline V2 (Batch Mode)...")
         
         # Determine which accounts to process
-        accounts_to_process = ACCOUNTS.keys()
+        accounts_to_process = list(ACCOUNTS.keys())
         if self.target:
             if self.target in ACCOUNTS:
                 accounts_to_process = [self.target]
@@ -345,104 +387,93 @@ class Pipeline:
                 self._log("ERROR", "SYSTEM", f"Target account '{self.target}' not found!")
                 return
         
-        # 1. Each channel gets its OWN unique topic — NO sharing
-        # RULE: Every channel must talk about a DIFFERENT subject per run
-        # This prevents "same story, different voice" across channels
         MAX_TOPIC_RETRIES = 20
-        
         all_success = True
         
-        # ANTI-BOT: Shuffle channel processing order each run
-        accounts_list = list(accounts_to_process)
-        random.shuffle(accounts_list)
-        self._log("INFO", "SYSTEM", f"Channel order (shuffled): {' → '.join(accounts_list)}")
+        # ==========================================
+        # STEP 1: Pick 1 topic for entire batch
+        # ==========================================
+        topic_info = None
+        for topic_attempt in range(MAX_TOPIC_RETRIES):
+            candidate = self.researcher.generate_random_topic()
+            topic_name = candidate['topic_name']
+            # Check that at least 1 channel hasn't completed this topic
+            any_available = any(
+                not self.db.is_topic_completed(topic_name, acc)
+                for acc in accounts_to_process
+            )
+            if any_available:
+                topic_info = candidate
+                self._log("INFO", "BATCH", f"Selected batch topic: {topic_name}")
+                break
         
-        # Track topics used in THIS run to prevent cross-channel duplicates
-        topics_used_this_run = set()
+        if topic_info is None:
+            self._log("ERROR", "BATCH", f"No available topic found after {MAX_TOPIC_RETRIES} attempts!")
+            self._save_log()
+            return
         
-        # Process each account with its OWN topic
+        batch_topic = topic_info['topic_name']
+        
+        # ==========================================
+        # STEP 2: Download shared image pool (6 images)
+        # ==========================================
+        num_images = len(accounts_to_process)
+        shared_images = self._download_shared_images(batch_topic, num_images=num_images)
+        
+        if not shared_images:
+            self._log("ERROR", "BATCH", "Failed to download any shared images!")
+            self._save_log()
+            return
+        
+        self._log("INFO", "BATCH", f"Shared pool: {len(shared_images)} images for {len(accounts_to_process)} channels")
+        
+        # ==========================================
+        # STEP 3: Process each channel with shared images
+        # Each channel gets the SAME images but styles them differently
+        # ==========================================
+        
+        # ANTI-BOT: Shuffle channel processing order
+        random.shuffle(accounts_to_process)
+        self._log("INFO", "BATCH", f"Channel order (shuffled): {' → '.join(accounts_to_process)}")
+        
         channel_count = 0
-        for account_key in accounts_list:
-            # ANTI-BOT: Random delay between channel uploads (2-8 minutes)
+        for account_key in accounts_to_process:
+            # ANTI-BOT: Random delay between channels (2-8 minutes)
             if channel_count > 0:
                 delay_sec = random.randint(120, 480)
-                self._log("INFO", "SYSTEM", f"Anti-bot delay: waiting {delay_sec}s (~{delay_sec//60}min) before next channel...")
+                self._log("INFO", "SYSTEM", f"Anti-bot delay: {delay_sec}s (~{delay_sec//60}min) before {account_key}...")
                 time.sleep(delay_sec)
             channel_count += 1
             
-            # Find a UNIQUE topic for THIS channel (not used by any other channel in this run)
-            topic_info = None
-            for topic_attempt in range(MAX_TOPIC_RETRIES):
-                candidate = self.researcher.generate_random_topic()
-                topic_name = candidate['topic_name']
-                
-                # Skip if this channel already completed this topic
-                if self.db.is_topic_completed(topic_name, account_key):
-                    continue
-                
-                # Skip if another channel in THIS RUN is already using this topic
-                if topic_name in topics_used_this_run:
-                    self._log("INFO", account_key, f"Topic '{topic_name}' already taken by another channel this run. Skipping...")
-                    continue
-                
-                topic_info = candidate
-                topics_used_this_run.add(topic_name)
-                self._log("INFO", account_key, f"Selected UNIQUE topic: {topic_name}")
-                break
-            
-            if topic_info is None:
-                self._log("ERROR", account_key, f"No unique topic found after {MAX_TOPIC_RETRIES} attempts! Skipping channel.")
+            # Skip if this channel already completed this topic
+            if self.db.is_topic_completed(batch_topic, account_key):
+                self._log("INFO", account_key, f"Topic '{batch_topic}' already completed. Skipping.")
                 continue
             
-            # Retry logic — each retry picks a NEW topic to avoid duplicate content
+            # Process with shared images — each channel applies its own visual style
             success = False
-            last_error = ""
-            topics_tried = {topic_info['topic_name']}  # Track topics tried for this channel
-            current_topic = topic_info
-            
             for attempt in range(MAX_RETRIES):
                 if attempt > 0:
-                    # Pick a DIFFERENT topic for retry (not the same failed one)
-                    self._log("WARN", account_key, f"Retry {attempt+1}/{MAX_RETRIES} — selecting NEW topic...")
-                    new_topic = None
-                    for _ in range(MAX_TOPIC_RETRIES):
-                        candidate = self.researcher.generate_random_topic()
-                        cname = candidate['topic_name']
-                        if cname not in topics_tried and cname not in topics_used_this_run:
-                            if not self.db.is_topic_completed(cname, account_key):
-                                new_topic = candidate
-                                topics_tried.add(cname)
-                                topics_used_this_run.add(cname)
-                                self._log("INFO", account_key, f"Retry with NEW topic: {cname}")
-                                break
-                    if new_topic:
-                        current_topic = new_topic
-                    else:
-                        self._log("WARN", account_key, "No new topic available for retry, reusing last topic")
+                    self._log("WARN", account_key, f"Retry {attempt+1}/{MAX_RETRIES}...")
                     time.sleep(5)
-                    
-                if self.process_account(account_key, current_topic):
+                
+                if self.process_account(account_key, topic_info, shared_images=shared_images):
                     success = True
                     break
-                last_error = f"Failed attempt {attempt+1}"
-                
+            
             if not success:
                 all_success = False
-                self._log("ERROR", account_key, f"Failed after {MAX_RETRIES} attempts. Moving to next account.")
+                self._log("ERROR", account_key, f"Failed after {MAX_RETRIES} attempts.")
                 self._send_failure_email(account_key, f"Pipeline failed for {account_key} after {MAX_RETRIES} retries.")
 
-        # 13. Cleanup -> hapus file video setelah upload/kirim (Bagian 4 Step 13)
+        # Cleanup
         if all_success:
             self.cleanup()
         else:
             self._log("WARN", "SYSTEM", "Pipeline finished with errors. Skipping cleanup for debugging.")
         
-        # Save activity log (Bagian 15 - Log System)
         self._save_log()
-        
-        # Send summary email with all upload results
-        topics_str = ", ".join(topics_used_this_run) if topics_used_this_run else "No topics processed"
-        self._send_summary_email(topics_str)
+        self._send_summary_email(batch_topic)
 
     def _send_summary_email(self, topic_name: str):
         """
