@@ -10,22 +10,41 @@ from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, GEMINI_KEY_MAP_BACKUP, M
 from src.persona_prompts import METADATA_TITLE_PROMPTS
 
 class MetadataGenerator:
-    def __init__(self):
-        if not GEMINI_API_KEYS:
+    def __init__(self, dedicated_keys: list = None):
+        """Initialize with Gemini API keys.
+        
+        Args:
+            dedicated_keys: Optional list of [primary, backup] keys for dedicated use (e.g. monitoring).
+                           If provided, ONLY these keys are used — no channel key map.
+        """
+        self._dedicated_keys = dedicated_keys or []
+        if not GEMINI_API_KEYS and not self._dedicated_keys:
             raise ValueError("No GEMINI_API_KEY found in environment variables.")
         self._key_to_client = {}
-        for k in GEMINI_API_KEYS:
-            if k and k not in self._key_to_client:
-                self._key_to_client[k] = genai.Client(api_key=k)
-        # Also add backup keys to client pool
-        for k in GEMINI_KEY_MAP_BACKUP.values():
-            if k and k not in self._key_to_client:
-                self._key_to_client[k] = genai.Client(api_key=k)
+        
+        if self._dedicated_keys:
+            # Monitoring mode — only use dedicated keys
+            for k in self._dedicated_keys:
+                if k and k not in self._key_to_client:
+                    self._key_to_client[k] = genai.Client(api_key=k)
+        else:
+            # Normal mode — use channel key map
+            for k in GEMINI_API_KEYS:
+                if k and k not in self._key_to_client:
+                    self._key_to_client[k] = genai.Client(api_key=k)
+            for k in GEMINI_KEY_MAP_BACKUP.values():
+                if k and k not in self._key_to_client:
+                    self._key_to_client[k] = genai.Client(api_key=k)
         self._depleted_keys = set()
         print(f"[MetadataGen] Initialized with {len(self._key_to_client)} unique Gemini API key(s).")
 
     def _get_key_pool(self, account_key: str) -> list:
-        """Get Gemini keys for this channel ONLY — 2 dedicated keys, NO cross-channel borrowing."""
+        """Get Gemini keys. In monitoring mode, uses dedicated KEY_13/14."""
+        # Monitoring mode — use dedicated keys for ALL channels
+        if self._dedicated_keys:
+            return [k for k in self._dedicated_keys 
+                    if k and k not in self._depleted_keys]
+        # Normal mode — channel-specific keys
         own_key = GEMINI_KEY_MAP.get(account_key, "")
         own_backup = GEMINI_KEY_MAP_BACKUP.get(account_key, "")
         pool = []

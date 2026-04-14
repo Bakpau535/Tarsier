@@ -29,7 +29,8 @@ from googleapiclient.http import MediaFileUpload
 from googleapiclient.errors import HttpError
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import ACCOUNTS, TOPICS_FILE, GEMINI_KEY_MAP, GEMINI_KEY_MAP_BACKUP
+from src.config import (ACCOUNTS, TOPICS_FILE, GEMINI_MONITORING_KEY, 
+                         GEMINI_MONITORING_KEY_BACKUP)
 from src.database import DatabaseManager
 from src.metadata import MetadataGenerator
 from src.thumbnail import ThumbnailGenerator
@@ -193,13 +194,14 @@ class PerformanceMonitor:
                     snippet = response["items"][0]["snippet"]
                     old_title = snippet.get("title", "")
                     
-                    # Generate fresh metadata via Gemini (lazy init)
+                    # Generate fresh metadata via Gemini (lazy init with monitoring keys)
                     if not self._metadata_gen:
                         try:
-                            self._metadata_gen = MetadataGenerator()
+                            mon_keys = [k for k in [GEMINI_MONITORING_KEY, GEMINI_MONITORING_KEY_BACKUP] if k]
+                            self._metadata_gen = MetadataGenerator(dedicated_keys=mon_keys)
                         except Exception:
                             self._metadata_gen = None
-                            actions_taken.append("Gemini unavailable — skipped metadata update")
+                            actions_taken.append("Gemini monitoring keys unavailable")
                     
                     if self._metadata_gen:
                         fresh_meta = self._metadata_gen.generate(

@@ -50,6 +50,10 @@ GEMINI_KEY_MAP_BACKUP = {
     "fb_fanspage":   os.environ.get("GEMINI_API_KEY_12", ""),
 }
 
+# Monitoring/Maintenance dedicated Gemini keys — isolated from all 6 channels
+GEMINI_MONITORING_KEY = os.environ.get("GEMINI_API_KEY_13", "")
+GEMINI_MONITORING_KEY_BACKUP = os.environ.get("GEMINI_API_KEY_14", "")
+
 # Freesound API Key for background music
 FREESOUND_API_KEY = os.environ.get("FREESOUND_API_KEY", "")
 # 12 HF Inference API Keys — 2 per account (primary + backup)

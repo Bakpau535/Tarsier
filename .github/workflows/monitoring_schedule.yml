@@ -51,7 +51,7 @@ jobs:
       - name: Run Monitoring Protocol
         env:
           # Gemini API Keys (per-channel, isolated)
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
           GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
@@ -63,6 +63,9 @@ jobs:
           GEMINI_API_KEY_10: ${{ secrets.GEMINI_API_KEY_10 }}
           GEMINI_API_KEY_11: ${{ secrets.GEMINI_API_KEY_11 }}
           GEMINI_API_KEY_12: ${{ secrets.GEMINI_API_KEY_12 }}
+          # Monitoring dedicated keys (isolated from channels)
+          GEMINI_API_KEY_13: ${{ secrets.GEMINI_API_KEY_13 }}
+          GEMINI_API_KEY_14: ${{ secrets.GEMINI_API_KEY_14 }}
           # HF API Keys
           HF_API_KEY_1: ${{ secrets.HF_API_KEY_1 }}
           HF_API_KEY_2: ${{ secrets.HF_API_KEY_2 }}
