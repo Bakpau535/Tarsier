@@ -45466,5 +45466,641 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-04-14T14:45:53.344899",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline..."
+    },
+    {
+        "timestamp": "2026-04-14T14:45:53.344929",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Channel order (shuffled): yt_funny → yt_drama → fb_fanspage → yt_documenter → yt_pov → yt_anthro"
+    },
+    {
+        "timestamp": "2026-04-14T14:45:55.677878",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Selected UNIQUE topic: Tarsier Tarsier stress and mortality"
+    },
+    {
+        "timestamp": "2026-04-14T14:45:55.679330",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier stress and mortality"
+    },
+    {
+        "timestamp": "2026-04-14T14:45:56.033448",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T14:46:01.493171",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T14:46:33.359613",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-04-14T14:47:16.163749",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T14:47:16.165053",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 2/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T14:47:17.713775",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Retry with NEW topic: Tarsier Role in ecosystem"
+    },
+    {
+        "timestamp": "2026-04-14T14:47:22.715538",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Role in ecosystem"
+    },
+    {
+        "timestamp": "2026-04-14T14:47:22.721680",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T14:47:27.721875",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T14:48:01.338287",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-04-14T14:48:43.933139",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T14:48:43.934409",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 3/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T14:48:47.367508",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Retry with NEW topic: Tarsier Philippine Tarsier Foundation"
+    },
+    {
+        "timestamp": "2026-04-14T14:48:52.369253",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Philippine Tarsier Foundation"
+    },
+    {
+        "timestamp": "2026-04-14T14:48:52.374846",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T14:48:57.375018",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T14:49:27.507524",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False per correction plan)"
+    },
+    {
+        "timestamp": "2026-04-14T14:50:10.036202",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T14:50:10.037495",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-14T14:50:11.101333",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 297s (~4min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-14T14:55:09.668504",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Selected UNIQUE topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-14T14:55:09.669887",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-14T14:55:10.034072",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T14:55:15.355511",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T14:56:32.374284",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T14:56:32.376159",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 2/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T14:56:34.387380",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Retry with NEW topic: Tarsier Jumping and locomotion mechanics"
+    },
+    {
+        "timestamp": "2026-04-14T14:56:39.389148",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics"
+    },
+    {
+        "timestamp": "2026-04-14T14:56:39.455639",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T14:56:44.455863",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T14:58:07.976517",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T14:58:07.977873",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 3/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T14:58:10.426061",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Retry with NEW topic: Tarsier Local myths and folklore"
+    },
+    {
+        "timestamp": "2026-04-14T14:58:15.427808",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Local myths and folklore"
+    },
+    {
+        "timestamp": "2026-04-14T14:58:15.433880",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T14:58:20.434089",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T14:59:38.467761",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T14:59:38.469111",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-14T14:59:39.487535",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 136s (~2min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-14T15:03:03.468139",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "No unique topic found after 20 attempts! Skipping channel."
+    },
+    {
+        "timestamp": "2026-04-14T15:03:03.468160",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 121s (~2min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-14T15:05:08.315235",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Topic 'Tarsier Local myths and folklore' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-14T15:05:25.176492",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Topic 'Tarsier Tarsier stress and mortality' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-14T15:05:32.019358",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Selected UNIQUE topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:05:32.020823",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:05:32.367205",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:05:37.660326",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:07:00.549809",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:07:00.551184",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 2/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T15:07:02.502296",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Retry with NEW topic: Tarsier Night hunting strategies"
+    },
+    {
+        "timestamp": "2026-04-14T15:07:07.504117",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Night hunting strategies"
+    },
+    {
+        "timestamp": "2026-04-14T15:07:07.513214",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:07:12.513421",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:08:31.147824",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:08:31.149186",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 3/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T15:08:32.021801",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Retry with NEW topic: Tarsier Eye anatomy and vision"
+    },
+    {
+        "timestamp": "2026-04-14T15:08:37.023614",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Eye anatomy and vision"
+    },
+    {
+        "timestamp": "2026-04-14T15:08:37.029258",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:08:42.029427",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:09:55.033867",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:09:55.035283",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-14T15:09:55.902648",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 165s (~2min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-14T15:12:46.629177",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Topic 'Tarsier Jumping and locomotion mechanics' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-14T15:12:48.619071",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Selected UNIQUE topic: Tarsier Sulawesi Tarsier species"
+    },
+    {
+        "timestamp": "2026-04-14T15:12:48.620464",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Sulawesi Tarsier species"
+    },
+    {
+        "timestamp": "2026-04-14T15:12:49.004252",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:12:54.334319",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:14:21.938355",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:14:21.939709",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 2/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T15:14:24.198057",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Retry with NEW topic: Tarsier Threats from deforestation"
+    },
+    {
+        "timestamp": "2026-04-14T15:14:29.199865",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Threats from deforestation"
+    },
+    {
+        "timestamp": "2026-04-14T15:14:29.205745",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:14:34.205920",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:16:07.350366",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:16:07.351748",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 3/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T15:16:33.687843",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Retry with NEW topic: Tarsier Habitat and distribution"
+    },
+    {
+        "timestamp": "2026-04-14T15:16:38.689990",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Habitat and distribution"
+    },
+    {
+        "timestamp": "2026-04-14T15:16:38.695592",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:16:43.695769",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:18:00.000891",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:18:00.002942",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-14T15:18:01.116865",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: waiting 228s (~3min) before next channel..."
+    },
+    {
+        "timestamp": "2026-04-14T15:21:51.113516",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Tarsier stress and mortality' already taken by another channel this run. Skipping..."
+    },
+    {
+        "timestamp": "2026-04-14T15:22:09.690760",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Selected UNIQUE topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-04-14T15:22:09.692234",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Unique sensory abilities"
+    },
+    {
+        "timestamp": "2026-04-14T15:22:10.006173",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:22:15.295981",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:23:36.443381",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:23:36.444792",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 2/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T15:24:06.119955",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Retry with NEW topic: Tarsier Evolutionary history"
+    },
+    {
+        "timestamp": "2026-04-14T15:24:11.121814",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Evolutionary history"
+    },
+    {
+        "timestamp": "2026-04-14T15:24:11.127501",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:24:16.127691",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:25:34.539814",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:25:34.541245",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 3/3 — selecting NEW topic..."
+    },
+    {
+        "timestamp": "2026-04-14T15:26:05.079067",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Retry with NEW topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-04-14T15:26:10.081188",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Behavior and social structure"
+    },
+    {
+        "timestamp": "2026-04-14T15:26:10.086698",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:26:15.086863",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:27:37.139402",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Video assembly failed."
+    },
+    {
+        "timestamp": "2026-04-14T15:27:37.140737",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts. Moving to next account."
+    },
+    {
+        "timestamp": "2026-04-14T15:27:37.922501",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
