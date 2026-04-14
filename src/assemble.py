@@ -8,6 +8,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import TMP_DIR, CLIP_DURATION_SEC, VIDEO_PROFILES
 from src.loop_engine import apply_color_grade, generate_clip_variations
+from src.text_overlay import render_text_on_frame
 
 
 class VideoAssembler:
@@ -105,7 +106,7 @@ class VideoAssembler:
 
     def assemble_final_video(self, account_key: str, topic: str,
                              media_items: list, voiceover_file: str,
-                             music_file: str) -> Optional[str]:
+                             music_file: str, script_segments: list = None) -> Optional[str]:
         """
         Per-channel video assembly using VIDEO_PROFILES.
         Each channel gets fundamentally different:
@@ -211,6 +212,10 @@ class VideoAssembler:
                         frames = self._ken_burns_frames(np.array(img), clip_dur, width, height)
                         # Apply per-channel color grade + letterbox to every frame
                         frames = [self._apply_color_grade(f, account_key) for f in frames]
+                        # V2: Apply per-channel TEXT OVERLAY on frames
+                        if script_segments and i < len(script_segments):
+                            overlay_text = script_segments[i]
+                            frames = [render_text_on_frame(f, overlay_text, account_key) for f in frames]
                         if frames:
                             ic = ImageSequenceClip(frames, fps=self.fps)
                             clips.append(ic)

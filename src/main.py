@@ -268,8 +268,11 @@ class Pipeline:
             if not media_items:
                 raise ValueError("No visual media generated.")
 
-            # 7. Assemble → video clips + images + narasi + musik
-            final_video = self.assembler.assemble_final_video(account_key, topic_name, media_items, audio_path, music_path)
+            # 7. Assemble → video clips + images + narasi + musik + TEXT OVERLAY
+            final_video = self.assembler.assemble_final_video(
+                account_key, topic_name, media_items, audio_path, music_path,
+                script_segments=script_segments
+            )
             if not final_video:
                 raise ValueError("Video assembly failed.")
             self._log("INFO", account_key, "Video assembled successfully.")
