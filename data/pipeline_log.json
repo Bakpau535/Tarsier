@@ -46102,5 +46102,863 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-04-14T15:54:32.365229",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-14T15:54:34.196357",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:54:34.196376",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:54:36.912563",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos: 0/6"
+    },
+    {
+        "timestamp": "2026-04-14T15:54:36.912578",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Generating 6 AI images to fill batch..."
+    },
+    {
+        "timestamp": "2026-04-14T15:56:33.999333",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:0 AI:6)"
+    },
+    {
+        "timestamp": "2026-04-14T15:56:33.999370",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-14T15:56:33.999395",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_anthro → yt_drama → yt_documenter → yt_pov → yt_funny → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-14T15:56:34.001209",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:56:34.397173",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:56:39.766475",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:56:39.766516",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-14T15:56:39.792139",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T15:57:25.028871",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T15:57:25.030384",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-14T15:57:30.032057",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:57:30.041349",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:57:35.041545",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:57:35.041604",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-14T15:57:35.045655",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T15:58:22.247953",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T15:58:22.249420",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-14T15:58:27.251178",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T15:58:27.256808",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T15:58:32.256985",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T15:58:32.257042",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-14T15:58:32.261292",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T15:59:19.793370",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T15:59:19.794668",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-14T15:59:20.880551",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 313s (~5min) before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-14T16:04:33.882579",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:04:34.277577",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:04:39.600694",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:04:39.600736",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-14T16:04:39.603958",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:05:25.991037",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:05:25.992439",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:05:30.994235",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:05:30.999882",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:05:36.000082",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:05:36.000138",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-14T16:05:36.004466",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:06:24.523523",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:06:24.524913",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:06:29.526719",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:06:29.532445",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:06:34.532618",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:06:34.532674",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-14T16:06:34.537126",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:07:21.739904",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:07:21.741410",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-14T16:07:23.708426",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 140s (~2min) before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-14T16:09:43.710433",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:09:44.072177",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:09:49.400773",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:09:49.400817",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-14T16:09:49.404101",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:10:40.186731",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:10:40.188299",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:10:45.190101",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:10:45.196018",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:10:50.196228",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:10:50.196281",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-14T16:10:50.200717",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:11:38.147871",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:11:38.149511",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:11:43.151313",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:11:43.156977",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:11:48.157190",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:11:48.157250",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-14T16:11:48.161210",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:12:34.573654",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:12:34.575321",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-14T16:12:35.489348",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 403s (~6min) before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-14T16:19:18.491381",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:19:18.872185",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:19:24.222698",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:19:24.222745",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-14T16:19:24.226888",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:20:26.802396",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:20:26.804162",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:20:31.805903",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:20:31.811718",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:20:36.811885",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:20:36.811938",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-14T16:20:36.816072",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:21:47.725084",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:21:47.726444",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:21:52.728288",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:21:52.733949",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:21:57.734122",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:21:57.734204",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-14T16:21:57.738422",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:22:50.913765",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:22:50.915091",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-14T16:22:51.796584",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 130s (~2min) before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-14T16:25:01.798604",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:25:02.177038",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:25:07.527729",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:25:07.527766",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-14T16:25:07.530983",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:25:07.530992",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-14T16:25:55.691465",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:25:55.693029",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:00.694826",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:00.700609",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:05.700781",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:05.700839",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:05.704945",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:05.704955",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:48.602995",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:48.604545",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:53.606383",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:53.612066",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:58.612255",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:58.612313",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-14T16:26:58.616528",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:26:58.616536",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-14T16:27:41.505104",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:27:41.506556",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-14T16:27:42.361016",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 432s (~7min) before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-14T16:34:54.363030",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:34:54.712672",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:00.040133",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:35:00.040214",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:00.043514",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:35:45.907724",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:45.909170",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:50.910933",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:35:50.916800",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:55.916978",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:35:55.917035",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:55.921066",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:35:59.825809",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:35:59.827237",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-14T16:36:04.829075",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Ultrasonic communication"
+    },
+    {
+        "timestamp": "2026-04-14T16:36:04.834837",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-14T16:36:09.835007",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-14T16:36:09.835057",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-14T16:36:09.839183",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-14T16:37:10.272377",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-14T16:37:10.273818",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-14T16:37:11.161828",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
