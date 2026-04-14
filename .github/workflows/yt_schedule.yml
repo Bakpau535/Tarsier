@@ -100,6 +100,31 @@ jobs:
           HF_API_KEY_10: ${{ secrets.HF_API_KEY_10 }}
           HF_API_KEY_11: ${{ secrets.HF_API_KEY_11 }}
           HF_API_KEY_12: ${{ secrets.HF_API_KEY_12 }}
+          # Cloudflare Workers AI (PRIMARY image generation)
+          CF_ACCOUNT_ID_1: ${{ secrets.CF_ACCOUNT_ID_1 }}
+          CF_ACCOUNT_ID_2: ${{ secrets.CF_ACCOUNT_ID_2 }}
+          CF_ACCOUNT_ID_3: ${{ secrets.CF_ACCOUNT_ID_3 }}
+          CF_ACCOUNT_ID_4: ${{ secrets.CF_ACCOUNT_ID_4 }}
+          CF_ACCOUNT_ID_5: ${{ secrets.CF_ACCOUNT_ID_5 }}
+          CF_ACCOUNT_ID_6: ${{ secrets.CF_ACCOUNT_ID_6 }}
+          CF_ACCOUNT_ID_7: ${{ secrets.CF_ACCOUNT_ID_7 }}
+          CF_ACCOUNT_ID_8: ${{ secrets.CF_ACCOUNT_ID_8 }}
+          CF_ACCOUNT_ID_9: ${{ secrets.CF_ACCOUNT_ID_9 }}
+          CF_ACCOUNT_ID_10: ${{ secrets.CF_ACCOUNT_ID_10 }}
+          CF_ACCOUNT_ID_11: ${{ secrets.CF_ACCOUNT_ID_11 }}
+          CF_ACCOUNT_ID_12: ${{ secrets.CF_ACCOUNT_ID_12 }}
+          CF_API_TOKEN_1: ${{ secrets.CF_API_TOKEN_1 }}
+          CF_API_TOKEN_2: ${{ secrets.CF_API_TOKEN_2 }}
+          CF_API_TOKEN_3: ${{ secrets.CF_API_TOKEN_3 }}
+          CF_API_TOKEN_4: ${{ secrets.CF_API_TOKEN_4 }}
+          CF_API_TOKEN_5: ${{ secrets.CF_API_TOKEN_5 }}
+          CF_API_TOKEN_6: ${{ secrets.CF_API_TOKEN_6 }}
+          CF_API_TOKEN_7: ${{ secrets.CF_API_TOKEN_7 }}
+          CF_API_TOKEN_8: ${{ secrets.CF_API_TOKEN_8 }}
+          CF_API_TOKEN_9: ${{ secrets.CF_API_TOKEN_9 }}
+          CF_API_TOKEN_10: ${{ secrets.CF_API_TOKEN_10 }}
+          CF_API_TOKEN_11: ${{ secrets.CF_API_TOKEN_11 }}
+          CF_API_TOKEN_12: ${{ secrets.CF_API_TOKEN_12 }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}

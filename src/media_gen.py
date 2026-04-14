@@ -6,7 +6,7 @@ from typing import Optional, List
 import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import HF_API_KEYS, ACCOUNTS, TMP_DIR, MAX_RETRIES, CLIP_DURATION_SEC, FREESOUND_API_KEY, VIDEO_PROFILES, DATA_DIR
+from src.config import HF_API_KEYS, ACCOUNTS, TMP_DIR, MAX_RETRIES, CLIP_DURATION_SEC, FREESOUND_API_KEY, VIDEO_PROFILES, DATA_DIR, CF_ACCOUNTS, CF_ACCOUNTS_BACKUP
 from src.ssml_builder import build_ssml, get_edge_tts_params
 
 class MediaGenerator:
@@ -24,6 +24,11 @@ class MediaGenerator:
         self.pexels_key = os.environ.get("PEXELS_API_KEY", "")
         self.pixabay_key = os.environ.get("PIXABAY_API_KEY", "")
         self._depleted_keys = set()  # Track HF keys that returned 402
+        self._depleted_cf = set()   # Track CF accounts that hit quota
+        
+        # Cloudflare Workers AI model
+        self.cf_model = "@cf/black-forest-labs/flux-1-schnell"
+        self.cf_fallback_model = "@cf/bytedance/stable-diffusion-xl-lightning"
         
         # Load persistent footage log — HARD RULE: no footage reused EVER
         self._used_footage = self._load_footage_log()
@@ -34,10 +39,12 @@ class MediaGenerator:
         print(f"[MediaGen] Music log loaded: {len(self._used_music)} tracks already used")
         
         # === DIAGNOSTIC: Print API key status ===
+        cf_count = sum(1 for v in CF_ACCOUNTS.values() if v.get('account_id') and v.get('api_token'))
+        print(f"[MediaGen] CF_ACCOUNTS: {cf_count}/6 primary set (Cloudflare Workers AI)")
         print(f"[MediaGen] PEXELS_API_KEY: {'SET (' + self.pexels_key[:8] + '...)' if self.pexels_key else '*** MISSING ***'}")
         print(f"[MediaGen] PIXABAY_API_KEY: {'SET (' + self.pixabay_key[:8] + '...)' if self.pixabay_key else '*** MISSING ***'}")
         hf_count = sum(1 for v in HF_API_KEYS.values() if v)
-        print(f"[MediaGen] HF_API_KEYS: {hf_count}/6 keys set")
+        print(f"[MediaGen] HF_API_KEYS: {hf_count}/6 keys set (backup for CF)")
         print(f"[MediaGen] ==========================")
         
         # Tarsier-ONLY search terms — STRICT: only terms proven to return real tarsier photos.
@@ -657,11 +664,95 @@ class MediaGenerator:
 
     # ==========================================
     # AI TARSIER IMAGES — Per-account themed
+    # Priority: Cloudflare → HuggingFace (backup)
     # ==========================================
+    
+    def _get_cf_pool(self, account_key: str) -> list:
+        """Get Cloudflare accounts for this channel ONLY — 2 dedicated accounts."""
+        pool = []
+        primary = CF_ACCOUNTS.get(account_key, {})
+        if primary.get('account_id') and primary.get('api_token'):
+            cf_id = f"cf_{primary['account_id'][:8]}"
+            if cf_id not in self._depleted_cf:
+                pool.append(primary)
+        backup = CF_ACCOUNTS_BACKUP.get(account_key, {})
+        if backup.get('account_id') and backup.get('api_token'):
+            cf_id = f"cf_{backup['account_id'][:8]}"
+            if cf_id not in self._depleted_cf:
+                pool.append(backup)
+        return pool
+    
+    def _generate_cf_image(self, account_key: str, prompt: str, model: str = None) -> Optional[bytes]:
+        """Generate image via Cloudflare Workers AI. Returns raw image bytes or None."""
+        if model is None:
+            model = self.cf_model
+        
+        cf_pool = self._get_cf_pool(account_key)
+        if not cf_pool:
+            return None
+        
+        for cf_creds in cf_pool:
+            account_id = cf_creds['account_id']
+            api_token = cf_creds['api_token']
+            cf_id = f"cf_{account_id[:8]}"
+            is_primary = cf_creds == CF_ACCOUNTS.get(account_key, {})
+            key_type = "CF-primary" if is_primary else "CF-backup"
+            
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/{model}"
+            headers = {
+                "Authorization": f"Bearer {api_token}",
+                "Content-Type": "application/json",
+            }
+            payload = {"prompt": prompt}
+            
+            for attempt in range(2):  # 2 attempts per CF account
+                try:
+                    response = requests.post(url, headers=headers, json=payload, timeout=120)
+                    
+                    if response.status_code == 200:
+                        # CF returns raw image bytes for image models
+                        content = response.content
+                        if len(content) > 5000:
+                            return content
+                        else:
+                            print(f"[{account_key}] {key_type} returned small response ({len(content)}B)")
+                            continue
+                    elif response.status_code == 429:
+                        # Rate limited — wait and retry
+                        print(f"[{account_key}] {key_type} rate limited (429), waiting 10s...")
+                        time.sleep(10)
+                        continue
+                    elif response.status_code in [402, 403]:
+                        # Quota exhausted or permission denied
+                        self._depleted_cf.add(cf_id)
+                        print(f"[{account_key}] {key_type} DEPLETED ({response.status_code}) — trying backup...")
+                        break  # Move to next CF account
+                    else:
+                        err = response.text[:200] if response.text else "no details"
+                        print(f"[{account_key}] {key_type} error ({response.status_code}): {err}")
+                        if attempt == 0:
+                            time.sleep(3)
+                            continue
+                        break
+                except requests.exceptions.RequestException as e:
+                    print(f"[{account_key}] {key_type} request error: {e}")
+                    if attempt == 0:
+                        time.sleep(3)
+                        continue
+                    break
+        
+        # Try fallback model if primary model failed
+        if model == self.cf_model and self.cf_fallback_model:
+            cf_pool_retry = self._get_cf_pool(account_key)
+            if cf_pool_retry:
+                print(f"[{account_key}] Trying CF fallback model: {self.cf_fallback_model}")
+                return self._generate_cf_image(account_key, prompt, model=self.cf_fallback_model)
+        
+        return None
     
     def generate_tarsier_image(self, account_key: str, index: int, topic: str,
                                force_tarsier: bool = False) -> Optional[str]:
-        """Generates AI image.
+        """Generates AI image. Priority: Cloudflare → HuggingFace.
         70% chance = tarsier image (dominant)
         30% chance = environment/support image
         force_tarsier=True always generates tarsier.
@@ -685,36 +776,43 @@ class MediaGenerator:
         prompt = f"{base_prompt}, about {topic}, unique:{timestamp}_{seed}"
         
         print(f"[{account_key}] AI {img_type} image {index}: {base_prompt[:60]}... (seed:{seed})")
-        payload = {"inputs": prompt}
         
-        # Try key pool: own primary + own backup ONLY (NO cross-channel borrowing)
+        safe = self._safe_topic(topic)
+        filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_ai_{index}.png")
+        
+        # === PRIORITY 1: Cloudflare Workers AI ===
+        cf_content = self._generate_cf_image(account_key, prompt)
+        if cf_content:
+            with open(filename, "wb") as f:
+                f.write(cf_content)
+            print(f"[{account_key}] AI {img_type} image {index} saved via CLOUDFLARE.")
+            return filename
+        
+        # === PRIORITY 2: HuggingFace (backup) ===
+        print(f"[{account_key}] CF failed, trying HF backup...")
+        payload = {"inputs": prompt}
         key_pool = self._get_key_pool(account_key)
         if not key_pool:
-            print(f"[{account_key}] ALL HF keys depleted! Cannot generate AI image.")
+            print(f"[{account_key}] ALL keys depleted (CF + HF)! Cannot generate AI image.")
             return None
         
         for key in key_pool:
             headers = {"Authorization": f"Bearer {key}"}
             content = self._make_api_request(self.image_model_url, headers, payload)
             if content is None and key not in self._depleted_keys:
-                # Try fallback model with same key
                 content = self._make_api_request(self.image_fallback_url, headers, payload)
             
             if content:
-                safe = self._safe_topic(topic)
-                filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_ai_{index}.png")
                 with open(filename, "wb") as f:
                     f.write(content)
-                which_key = "own" if key == HF_API_KEYS.get(account_key) else "backup"
-                print(f"[{account_key}] AI {img_type} image {index} saved (using {which_key} key).")
+                which_key = "HF-own" if key == HF_API_KEYS.get(account_key) else "HF-backup"
+                print(f"[{account_key}] AI {img_type} image {index} saved via {which_key}.")
                 return filename
             
-            # If key was depleted (402), try next key in pool
             if key in self._depleted_keys:
-                print(f"[{account_key}] Key depleted, trying backup...")
                 continue
             else:
-                break  # Non-402 failure, don't try other keys
+                break
         
         return None
 

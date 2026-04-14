@@ -54,9 +54,28 @@ GEMINI_KEY_MAP_BACKUP = {
 GEMINI_MONITORING_KEY = os.environ.get("GEMINI_API_KEY_13", "")
 GEMINI_MONITORING_KEY_BACKUP = os.environ.get("GEMINI_API_KEY_14", "")
 
+# === Cloudflare Workers AI — PRIMARY image generation ===
+# 12 CF accounts (2 per channel): Account ID + API Token
+CF_ACCOUNTS = {
+    "yt_documenter": {"account_id": os.environ.get("CF_ACCOUNT_ID_1", ""), "api_token": os.environ.get("CF_API_TOKEN_1", "")},
+    "yt_funny":      {"account_id": os.environ.get("CF_ACCOUNT_ID_2", ""), "api_token": os.environ.get("CF_API_TOKEN_2", "")},
+    "yt_anthro":     {"account_id": os.environ.get("CF_ACCOUNT_ID_3", ""), "api_token": os.environ.get("CF_API_TOKEN_3", "")},
+    "yt_pov":        {"account_id": os.environ.get("CF_ACCOUNT_ID_4", ""), "api_token": os.environ.get("CF_API_TOKEN_4", "")},
+    "yt_drama":      {"account_id": os.environ.get("CF_ACCOUNT_ID_5", ""), "api_token": os.environ.get("CF_API_TOKEN_5", "")},
+    "fb_fanspage":   {"account_id": os.environ.get("CF_ACCOUNT_ID_6", ""), "api_token": os.environ.get("CF_API_TOKEN_6", "")},
+}
+CF_ACCOUNTS_BACKUP = {
+    "yt_documenter": {"account_id": os.environ.get("CF_ACCOUNT_ID_7", ""), "api_token": os.environ.get("CF_API_TOKEN_7", "")},
+    "yt_funny":      {"account_id": os.environ.get("CF_ACCOUNT_ID_8", ""), "api_token": os.environ.get("CF_API_TOKEN_8", "")},
+    "yt_anthro":     {"account_id": os.environ.get("CF_ACCOUNT_ID_9", ""), "api_token": os.environ.get("CF_API_TOKEN_9", "")},
+    "yt_pov":        {"account_id": os.environ.get("CF_ACCOUNT_ID_10", ""), "api_token": os.environ.get("CF_API_TOKEN_10", "")},
+    "yt_drama":      {"account_id": os.environ.get("CF_ACCOUNT_ID_11", ""), "api_token": os.environ.get("CF_API_TOKEN_11", "")},
+    "fb_fanspage":   {"account_id": os.environ.get("CF_ACCOUNT_ID_12", ""), "api_token": os.environ.get("CF_API_TOKEN_12", "")},
+}
+
 # Freesound API Key for background music
 FREESOUND_API_KEY = os.environ.get("FREESOUND_API_KEY", "")
-# 12 HF Inference API Keys — 2 per account (primary + backup)
+# 12 HF Inference API Keys — 2 per account (primary + backup) — BACKUP for CF
 HF_API_KEYS = {
     "yt_documenter": os.environ.get("HF_API_KEY_1", ""),
     "yt_funny": os.environ.get("HF_API_KEY_2", ""),
