@@ -136,8 +136,9 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
+          PREVIEW_MODE: "true"
         run: |
-          # Process ALL 5 YouTube channels — each uses its own 2 dedicated API keys
+          # PREVIEW MODE: Videos saved to output/ as artifacts (NOT uploaded to YouTube)
           python src/main.py
 
       # Upload generated videos as downloadable artifacts (PREVIEW_MODE)
