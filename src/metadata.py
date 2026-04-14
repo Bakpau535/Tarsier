@@ -102,14 +102,22 @@ class MetadataGenerator:
 
                 except Exception as e:
                     error_msg = str(e)
-                    if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+                    if "403" in error_msg or "PERMISSION_DENIED" in error_msg:
+                        self._depleted_keys.add(key)
+                        print(f"[{account_key}] {key_type} key BLOCKED (403) for metadata — trying backup...")
+                        break  # Immediately move to next key
+                    elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                         self._depleted_keys.add(key)
                         print(f"[{account_key}] {key_type} key EXHAUSTED for metadata, waiting 30s before backup...")
                         import time as _time
-                        _time.sleep(30)  # 30s cooldown before trying backup key
+                        _time.sleep(30)
                         break  # Move to next key
                     else:
                         print(f"Error calling Gemini for metadata: {e}")
+                        if attempt < MAX_RETRIES - 1:
+                            import time as _time
+                            _time.sleep(10)
+                            continue
                         return self._fallback_metadata(script)
 
         return self._fallback_metadata(script)
