@@ -475,6 +475,13 @@ class Pipeline:
                 all_success = False
                 self._log("ERROR", account_key, f"Failed after {MAX_RETRIES} attempts.")
                 self._send_failure_email(account_key, f"Pipeline failed for {account_key} after {MAX_RETRIES} retries.")
+            
+            # CLEANUP: Remove intermediate styled images to free disk space
+            styled_dir = os.path.join(TMP_DIR, f"{account_key}_styled")
+            if os.path.exists(styled_dir):
+                import shutil
+                shutil.rmtree(styled_dir, ignore_errors=True)
+                self._log("INFO", account_key, f"Cleaned up styled images ({styled_dir})")
 
         # Cleanup
         if all_success:

@@ -1,14 +1,15 @@
 name: Tarsier Batch Pipeline (Long + Shorts)
 
 on:
-  schedule:
-    - cron: '17 1 * * *'   # Batch 1: ~08:17 WIB + random delay
-    - cron: '41 9 * * *'   # Batch 2: ~16:41 WIB + random delay
+  # schedule DISABLED during PREVIEW testing — re-enable when ready
+  # schedule:
+  #   - cron: '17 1 * * *'   # Batch 1: ~08:17 WIB + random delay
+  #   - cron: '41 9 * * *'   # Batch 2: ~16:41 WIB + random delay
   workflow_dispatch:
 
 concurrency:
   group: yt-pipeline
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
