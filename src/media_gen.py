@@ -195,6 +195,23 @@ class MediaGenerator:
     def _safe_topic(self, topic: str) -> str:
         return "".join(c for c in topic if c.isalnum() or c in (' ', '-', '_')).replace(' ', '_')[:50]
 
+    def _validate_image_file(self, filepath: str) -> bool:
+        """Validate that a file is a real, openable image (not corrupt/empty/HTML error)."""
+        try:
+            if not os.path.exists(filepath):
+                return False
+            size = os.path.getsize(filepath)
+            if size < 1000:  # less than 1KB = definitely not a real image
+                print(f"[MediaGen] Image too small ({size} bytes): {filepath}")
+                return False
+            from PIL import Image
+            img = Image.open(filepath)
+            img.verify()  # Verify it's a valid image
+            return True
+        except Exception as e:
+            print(f"[MediaGen] Image validation failed: {e}")
+            return False
+
     # ==========================================
     # FOOTAGE DEDUPLICATION — ALL footage NEVER reused:
     # Tarsier clips, support clips, photos, music
@@ -202,15 +219,31 @@ class MediaGenerator:
     # ==========================================
 
     def _load_footage_log(self) -> set:
-        """Load persistent set of ALL used footage IDs."""
+        """Load persistent set of ALL used footage IDs.
+        V2: Reset log on first run (format change — old images available again)."""
         try:
             if os.path.exists(self.FOOTAGE_LOG_PATH):
                 with open(self.FOOTAGE_LOG_PATH, "r") as f:
                     data = self._json.load(f)
+                # V2 FORMAT CHECK: If log is old format (list of strings without v2 marker),
+                # reset it so all 667 old images become available again
+                if isinstance(data, list) and len(data) > 0:
+                    if isinstance(data[0], str) and not any(d.startswith("v2:") for d in data[:5]):
+                        print(f"[MediaGen] V2 RESET: Clearing {len(data)} v1 footage entries. Old images available again!")
+                        self._save_footage_log_data(set())
+                        return set()
                 return set(data)
         except Exception as e:
             print(f"[MediaGen] Warning: Could not load footage log: {e}")
         return set()
+
+    def _save_footage_log_data(self, data: set):
+        """Save footage log data directly."""
+        try:
+            with open(self.FOOTAGE_LOG_PATH, "w") as f:
+                self._json.dump(sorted(list(data)), f, indent=2)
+        except Exception as e:
+            print(f"[MediaGen] Warning: Could not save footage log: {e}")
 
     def _save_footage_log(self):
         """Save updated footage log to disk."""
@@ -785,8 +818,13 @@ class MediaGenerator:
         if cf_content:
             with open(filename, "wb") as f:
                 f.write(cf_content)
-            print(f"[{account_key}] AI {img_type} image {index} saved via CLOUDFLARE.")
-            return filename
+            # Validate saved file is a real image
+            if self._validate_image_file(filename):
+                print(f"[{account_key}] AI {img_type} image {index} saved via CLOUDFLARE.")
+                return filename
+            else:
+                print(f"[{account_key}] CF image invalid (corrupt data), removing.")
+                os.remove(filename)
         
         # === PRIORITY 2: HuggingFace (backup) ===
         print(f"[{account_key}] CF failed, trying HF backup...")
@@ -805,9 +843,14 @@ class MediaGenerator:
             if content:
                 with open(filename, "wb") as f:
                     f.write(content)
-                which_key = "HF-own" if key == HF_API_KEYS.get(account_key) else "HF-backup"
-                print(f"[{account_key}] AI {img_type} image {index} saved via {which_key}.")
-                return filename
+                # Validate saved file is a real image
+                if self._validate_image_file(filename):
+                    which_key = "HF-own" if key == HF_API_KEYS.get(account_key) else "HF-backup"
+                    print(f"[{account_key}] AI {img_type} image {index} saved via {which_key}.")
+                    return filename
+                else:
+                    print(f"[{account_key}] HF image invalid (corrupt data), removing.")
+                    os.remove(filename)
             
             if key in self._depleted_keys:
                 continue

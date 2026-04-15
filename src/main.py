@@ -139,18 +139,24 @@ class Pipeline:
 
     def _download_shared_images(self, topic_name: str, num_images: int = 6) -> list:
         """Download shared image batch — 1 image per channel distributed.
-        Returns list of raw image paths to be styled per-channel."""
+        Returns list of VALIDATED raw image paths to be styled per-channel."""
         self._log("INFO", "BATCH", f"Downloading {num_images} shared images for topic: {topic_name}")
         
         raw_images = []
         
         # Step 1: Try stock photos first (Pexels/Pixabay/Wikimedia)
         stock_photos = self.media_gen.download_tarsier_photos("shared_batch", num_photos=num_images + 5)
-        for photo in stock_photos[:num_images]:
-            raw_images.append(photo)
+        for photo in stock_photos:
+            if len(raw_images) >= num_images:
+                break
+            # Validate each stock photo is a real image
+            if self.media_gen._validate_image_file(photo):
+                raw_images.append(photo)
+            else:
+                self._log("WARN", "BATCH", f"Stock photo invalid, skipping: {photo}")
         
         stock_count = len(raw_images)
-        self._log("INFO", "BATCH", f"Stock photos: {stock_count}/{num_images}")
+        self._log("INFO", "BATCH", f"Stock photos (validated): {stock_count}/{num_images}")
         
         # Step 2: Fill remaining with AI-generated images (CF → HF)
         remaining = num_images - len(raw_images)
@@ -161,9 +167,10 @@ class Pipeline:
             for i in range(remaining):
                 ai_channel = channels_for_ai[i % len(channels_for_ai)]
                 ai_img = self.media_gen.generate_tarsier_image(ai_channel, i, topic_name, force_tarsier=True)
-                if ai_img:
+                if ai_img:  # generate_tarsier_image now validates internally
                     raw_images.append(ai_img)
-                import time
+                else:
+                    self._log("WARN", "BATCH", f"AI image {i} failed for {ai_channel}")
                 time.sleep(1)
         
         self._log("INFO", "BATCH", f"Shared batch: {len(raw_images)} images (stock:{stock_count} AI:{len(raw_images)-stock_count})")
