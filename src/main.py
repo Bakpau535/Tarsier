@@ -448,10 +448,10 @@ class Pipeline:
         
         channel_count = 0
         for account_key in accounts_to_process:
-            # ANTI-BOT: Random delay between channels (2-8 minutes)
+            # ANTI-BOT: Random delay between channels (30-90 seconds)
             if channel_count > 0:
-                delay_sec = random.randint(120, 480)
-                self._log("INFO", "SYSTEM", f"Anti-bot delay: {delay_sec}s (~{delay_sec//60}min) before {account_key}...")
+                delay_sec = random.randint(30, 90)
+                self._log("INFO", "SYSTEM", f"Anti-bot delay: {delay_sec}s before {account_key}...")
                 time.sleep(delay_sec)
             channel_count += 1
             

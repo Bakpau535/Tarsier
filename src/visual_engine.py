@@ -392,7 +392,7 @@ def style_batch_for_channel(raw_images: List[str], account_key: str,
         apply_channel_style(raw_path, account_key, styled_path)
         
         # Step 2: Generate scene variations from styled image
-        scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=5)
+        scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=3)
         all_scenes.extend(scenes)
     
     print(f"[VisualEngine] {account_key}: {len(all_scenes)} total scenes from {len(raw_images)} raw images")
