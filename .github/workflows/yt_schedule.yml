@@ -73,7 +73,7 @@ jobs:
         env:
           # PREVIEW_MODE: set to "true" to save videos as artifacts instead of uploading to YouTube
           # Change to "false" when ready for auto-posting
-          PREVIEW_MODE: "false"
+          PREVIEW_MODE: "true"
           GEMINI_API_KEY_1: ${{ secrets.GEMINI_API_KEY_1 }}
           GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
           GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
@@ -136,7 +136,6 @@ jobs:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           FREESOUND_API_KEY: ${{ secrets.FREESOUND_API_KEY }}
-          PREVIEW_MODE: "true"
         run: |
           # PREVIEW MODE: Videos saved to output/ as artifacts (NOT uploaded to YouTube)
           python src/main.py
