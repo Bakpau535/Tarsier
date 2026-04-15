@@ -203,23 +203,59 @@ class VideoAssembler:
                         print(f"[{account_key}] Added stock clip {i+1} ({vc.duration:.1f}s)")
 
                     elif media_type == "image":
-                        # --- AI ENVIRONMENT IMAGE → Ken Burns effect ---
+                        # --- AI ENVIRONMENT IMAGE → Ken Burns effect (LAZY) ---
                         img = Image.open(media_path).convert("RGB")
                         # Ensure image is large enough for Ken Burns
                         if img.width < width or img.height < height:
                             ratio = max(width / img.width, height / img.height) * 1.3
                             img = img.resize((int(img.width * ratio), int(img.height * ratio)), Image.LANCZOS)
-                        frames = self._ken_burns_frames(np.array(img), clip_dur, width, height)
-                        # Apply per-channel color grade + letterbox to every frame
-                        frames = [self._apply_color_grade(f, account_key) for f in frames]
-                        # V2: Apply per-channel TEXT OVERLAY on frames
-                        if script_segments and i < len(script_segments):
-                            overlay_text = script_segments[i]
-                            frames = [render_text_on_frame(f, overlay_text, account_key) for f in frames]
-                        if frames:
-                            ic = ImageSequenceClip(frames, fps=self.fps)
-                            clips.append(ic)
-                            print(f"[{account_key}] Added environment image {i+1} (Ken Burns {clip_dur:.1f}s)")
+                        img_arr = np.array(img)
+                        del img  # Free PIL image immediately
+                        
+                        # LAZY Ken Burns — generate 1 frame at a time (saves ~17GB RAM)
+                        kb_effect = random.choice(["zoom_in", "zoom_out", "pan_left", "pan_right"])
+                        overlay = script_segments[i] if (script_segments and i < len(script_segments)) else None
+                        
+                        def make_frame(t, _img=img_arr, _dur=clip_dur, _w=width, _h=height,
+                                       _effect=kb_effect, _ak=account_key, _overlay=overlay):
+                            """Generate a single Ken Burns frame at time t (lazy, 1 at a time)."""
+                            progress = t / max(_dur - 1/24, 0.001)
+                            ih, iw = _img.shape[:2]
+                            
+                            if _effect == "zoom_in":
+                                scale = 1.0 - 0.2 * progress
+                            elif _effect == "zoom_out":
+                                scale = 0.8 + 0.2 * progress
+                            elif _effect in ("pan_left", "pan_right"):
+                                scale = 0.85
+                                cx_off = 0.1 * progress * (-1 if _effect == "pan_left" else 1)
+                                cx = int(iw * (0.5 + cx_off))
+                                cy = ih // 2
+                                cw, ch = int(iw * scale), int(ih * scale)
+                                x1, y1 = max(0, cx - cw // 2), max(0, cy - ch // 2)
+                                x2, y2 = min(iw, x1 + cw), min(ih, y1 + ch)
+                                cropped = _img[y1:y2, x1:x2]
+                                frame = np.array(Image.fromarray(cropped).resize((_w, _h), Image.LANCZOS))
+                                frame = self._apply_color_grade(frame, _ak)
+                                if _overlay:
+                                    frame = render_text_on_frame(frame, _overlay, _ak)
+                                return frame
+                            else:
+                                scale = 1.0
+                            
+                            cw, ch = int(iw * scale), int(ih * scale)
+                            x1, y1 = (iw - cw) // 2, (ih - ch) // 2
+                            cropped = _img[max(0,y1):min(ih,y1+ch), max(0,x1):min(iw,x1+cw)]
+                            frame = np.array(Image.fromarray(cropped).resize((_w, _h), Image.LANCZOS))
+                            frame = self._apply_color_grade(frame, _ak)
+                            if _overlay:
+                                frame = render_text_on_frame(frame, _overlay, _ak)
+                            return frame
+                        
+                        from moviepy import VideoClip
+                        ic = VideoClip(make_frame, duration=clip_dur).with_fps(self.fps)
+                        clips.append(ic)
+                        print(f"[{account_key}] Added environment image {i+1} (Ken Burns {clip_dur:.1f}s)")
 
                 except Exception as e:
                     print(f"[{account_key}] Error processing media {i+1}: {e}")

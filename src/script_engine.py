@@ -85,8 +85,8 @@ class ScriptEngine:
                         break  # Immediately move to next key, no retry
                     elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                         self._depleted_keys.add(key)
-                        print(f"[{account_key}] {key_type} {key_label} EXHAUSTED, waiting 30s before backup...")
-                        time.sleep(30)
+                        print(f"[{account_key}] {key_type} {key_label} EXHAUSTED, trying backup in 5s...")
+                        time.sleep(5)
                         break  # Move to next key in pool
                     else:
                         if attempt < MAX_RETRIES - 1:
