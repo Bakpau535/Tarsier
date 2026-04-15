@@ -46960,5 +46960,623 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-04-15T00:17:29.833792",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-15T00:17:35.806564",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:17:35.806581",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:17:40.850478",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos: 0/6"
+    },
+    {
+        "timestamp": "2026-04-15T00:17:40.850492",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Generating 6 AI images to fill batch..."
+    },
+    {
+        "timestamp": "2026-04-15T00:19:38.949508",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:0 AI:6)"
+    },
+    {
+        "timestamp": "2026-04-15T00:19:38.949536",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-15T00:19:38.949559",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_funny → yt_drama → fb_fanspage → yt_pov → yt_documenter → yt_anthro"
+    },
+    {
+        "timestamp": "2026-04-15T00:19:38.951565",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:19:39.466189",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:19:44.936865",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:19:44.936904",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-15T00:19:44.960756",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:19:44.960767",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:10.682743",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:10.684173",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:15.685887",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:15.691410",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:20.691668",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:20.691723",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:20.695476",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:20.695487",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:46.460515",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:46.461916",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:51.463729",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:51.469026",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:56.469225",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:56.469277",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-15T00:20:56.472992",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:20:56.473002",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-15T00:21:21.917314",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:21:21.918700",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-15T00:21:23.070740",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 456s (~7min) before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-15T00:28:59.072691",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:28:59.687301",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:29:05.187570",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:29:05.187607",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-15T00:29:05.191226",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:29:36.362332",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:29:36.363964",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:29:41.365724",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:29:41.371271",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:29:46.371477",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:29:46.371532",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-15T00:29:46.375090",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:30:13.195436",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:30:13.196659",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:30:18.198408",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:30:18.203653",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:30:23.203834",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:30:23.203885",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-15T00:30:23.207935",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:30:53.169633",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:30:53.170872",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-15T00:30:54.152880",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 382s (~6min) before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-15T00:37:16.153388",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Topic 'Tarsier Diet and hunting' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-04-15T00:37:16.153414",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 151s (~2min) before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-15T00:39:47.155416",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:39:47.760921",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:39:53.310123",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:39:53.310181",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-15T00:39:53.313258",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:40:27.237270",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:40:27.238511",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:40:32.240404",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:40:32.245888",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:40:37.246084",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:40:37.246196",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-15T00:40:37.249845",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:41:11.955168",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:41:11.956689",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:41:16.958533",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:41:16.964135",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:41:21.964342",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:41:21.964401",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-15T00:41:21.967868",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:41:57.492426",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:41:57.493883",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-15T00:41:58.430795",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 251s (~4min) before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:09.432875",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:46:09.974708",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:15.558123",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:46:15.558191",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:15.561322",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:46:44.727882",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:44.729273",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:49.730977",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:46:49.736391",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:54.736654",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:46:54.736701",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-15T00:46:54.740184",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:47:20.656683",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:47:20.657892",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-15T00:47:25.659754",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Diet and hunting"
+    },
+    {
+        "timestamp": "2026-04-15T00:47:25.665032",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-15T00:47:30.665235",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-15T00:47:30.665289",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-15T00:47:30.669092",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 0"
+    },
+    {
+        "timestamp": "2026-04-15T00:48:02.407359",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: No visual media generated."
+    },
+    {
+        "timestamp": "2026-04-15T00:48:02.408631",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-15T00:48:03.276666",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 368s (~6min) before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-15T00:54:11.277243",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Topic 'Tarsier Diet and hunting' already completed. Skipping."
+    },
+    {
+        "timestamp": "2026-04-15T00:54:11.277261",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
