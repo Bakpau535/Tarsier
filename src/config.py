@@ -224,7 +224,7 @@ VIDEO_PROFILES = {
         "aspect_ratio": "16:9",
         "letterbox": False,
         "tarsier_min_pct": 80,
-        "has_voiceover": True,
+        "has_voiceover": False,         # NO VO — POV relies on ambience only (blueprint)
         "visual_source": "stock_plus_flux_env",  # stock tarsier + FLUX atmospheric forests
         "color_grade": "night_vision",  # blue shadows, yellow highlights, film grain +25%
         "loop_style": "drift",          # very slow float movement (1-2% pan over 8s)

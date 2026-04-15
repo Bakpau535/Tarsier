@@ -14,47 +14,75 @@ class ResearchEngine:
         )
         
         # --- Variasi topik tersedia (Bagian 11) ---
-        # habitat, makanan, reproduksi, predator, konservasi, fakta unik,
-        # perbandingan spesies, sejarah, mitos lokal, dll
         self.facets = [
-            # --- Original 12 topics ---
-            "Diet and hunting",                   # makanan
-            "Physical characteristics",           # fakta unik
-            "Habitat and distribution",           # habitat
-            "Reproduction and lifecycle",         # reproduksi
-            "Conservation status",                # konservasi
-            "Evolutionary history",               # sejarah
-            "Behavior and social structure",      # perilaku
-            "Predators and threats",              # predator
-            "Species comparison",                 # perbandingan spesies
-            "Local myths and folklore",           # mitos lokal
-            "Unique sensory abilities",           # fakta unik
-            "Nocturnal adaptations",              # fakta unik
-            # --- NEW: 23 additional topics ---
-            "Ultrasonic communication",           # komunikasi ultrasonik
-            "Eye anatomy and vision",             # mata tarsier
-            "Tarsier and human interaction",      # interaksi dengan manusia
-            "Captivity and rescue programs",      # penyelamatan
-            "Role in ecosystem",                  # peran ekosistem
-            "Tarsier intelligence and cognition", # kecerdasan
-            "Jumping and locomotion mechanics",   # cara bergerak
-            "Tarsier in popular culture",         # budaya populer
-            "Philippine Tarsier Foundation",      # lembaga konservasi
-            "Sulawesi Tarsier species",           # tarsier Sulawesi
-            "Tarsier skeleton and bone structure", # anatomi tulang
-            "Tarsier vs other primates",          # perbandingan primata
-            "Baby tarsier development",           # perkembangan bayi
-            "Tarsier sleeping habits",            # kebiasaan tidur
-            "Tarsier territorial behavior",       # perilaku teritorial
-            "Threats from deforestation",         # ancaman deforestasi
-            "Tarsier brain and neuroscience",     # otak tarsier
-            "Tarsier fur and grooming",           # bulu dan grooming
-            "Fossil record of tarsiers",          # rekaman fosil
-            "Tarsier stress and mortality",       # stres dan kematian
-            "Night hunting strategies",           # strategi berburu malam
-            "Tarsier dental formula and teeth",   # gigi tarsier
-            "Ecotourism and tarsier watching",    # ekowisata
+            "Diet and hunting",
+            "Physical characteristics",
+            "Habitat and distribution",
+            "Reproduction and lifecycle",
+            "Conservation status",
+            "Evolutionary history",
+            "Behavior and social structure",
+            "Predators and threats",
+            "Species comparison",
+            "Local myths and folklore",
+            "Unique sensory abilities",
+            "Nocturnal adaptations",
+            "Ultrasonic communication",
+            "Eye anatomy and vision",
+            "Tarsier and human interaction",
+            "Captivity and rescue programs",
+            "Role in ecosystem",
+            "Tarsier intelligence and cognition",
+            "Jumping and locomotion mechanics",
+            "Tarsier in popular culture",
+            "Philippine Tarsier Foundation",
+            "Sulawesi Tarsier species",
+            "Tarsier skeleton and bone structure",
+            "Tarsier vs other primates",
+            "Baby tarsier development",
+            "Tarsier sleeping habits",
+            "Tarsier territorial behavior",
+            "Threats from deforestation",
+            "Tarsier brain and neuroscience",
+            "Tarsier fur and grooming",
+            "Fossil record of tarsiers",
+            "Tarsier stress and mortality",
+            "Night hunting strategies",
+            "Tarsier dental formula and teeth",
+            "Ecotourism and tarsier watching",
         ]
+        
+        # === THEME BANK (Blueprint Section 9) ===
+        # Each video combines a FACET (fact topic) + THEME (emotional angle)
+        # This creates unique content angles and prevents repetition
+        self.theme_bank = {
+            "emotion": [
+                "loneliness", "exhaustion", "fear", "hope",
+                "determination", "grief", "wonder", "anxiety",
+                "peace", "rage", "nostalgia", "resilience",
+            ],
+            "situation": [
+                "nighttime alone in the forest", "rainy season survival",
+                "first time leaving the nest", "encounter with a predator",
+                "searching for food in silence", "being separated from family",
+                "discovering a new territory", "hiding from danger",
+                "a mother protecting her baby", "the last one of its kind",
+            ],
+            "relatable": [
+                "working overtime with no reward", "Monday morning energy",
+                "overthinking at 3am", "pretending everything is fine",
+                "that one friend who never shows up", "social anxiety",
+                "trying to adult but failing", "procrastination master",
+                "when the wifi goes down", "resting face that scares people",
+            ],
+            "fact": [
+                "eyes bigger than brain", "nocturnal hunter",
+                "360 degree head rotation", "ultrasonic communication",
+                "suicide in captivity", "smallest primate in the world",
+                "55 million years of evolution", "each eye weighs more than brain",
+                "can jump 40x body length", "only fully carnivorous primate",
+            ],
+        }
 
     # --- Sumber 1: Wikipedia API → fakta dasar tarsier ---
     def fetch_base_facts(self, target_page: str = "Tarsier") -> str:
@@ -170,30 +198,24 @@ class ResearchEngine:
 
     def generate_random_topic(self) -> Dict[str, str]:
         """
-        Creates a random topic by focusing on a specific aspect of the Tarsier.
-        Pulls data from ALL 4 sources defined in Bagian 10:
-        1. Wikipedia API
-        2. Google Scholar
-        3. IUCN Red List
-        4. News scraping
-        
-        IMPORTANT: The topic name and specific focus MUST be prominently placed
-        at the TOP of raw_facts so Gemini generates truly different scripts
-        per topic, not generic tarsier facts every time.
+        V2: Creates topic by combining FACET (fact) + THEME (emotional angle).
+        35 facets × 42 themes = 1,470 unique combinations.
         """
         facet = random.choice(self.facets)
         
-        # Source 1: Wikipedia — try to get topic-specific section first
+        # Pick random theme category and theme
+        theme_category = random.choice(list(self.theme_bank.keys()))
+        theme = random.choice(self.theme_bank[theme_category])
+        
+        # Source 1: Wikipedia
         section_text = ""
-        # Try multiple keywords from the facet for better section matching
         facet_words = facet.lower().split()
         for keyword in facet_words:
-            if len(keyword) > 3:  # Skip short words like "and", "in"
+            if len(keyword) > 3:
                 section_text = self.fetch_specific_section("Tarsier", keyword)
                 if section_text:
                     break
         
-        # Also try the full facet as a search on related Wikipedia pages
         if not section_text:
             for alt_page in ["Philippine tarsier", "Tarsiidae", "Tarsier"]:
                 for keyword in facet_words:
@@ -204,7 +226,6 @@ class ResearchEngine:
                 if section_text:
                     break
         
-        # Generic Wikipedia summary (kept short — not the main content)
         base_summary = self.fetch_base_facts("Tarsier")
         
         # Source 2: Google Scholar
@@ -216,26 +237,31 @@ class ResearchEngine:
         # Source 4: News
         news_text = self.fetch_tarsier_news(f"tarsier {facet.lower()}")
         
-        # BUILD raw_facts — TOPIC IS FRONT-LOADED for Gemini differentiation
+        # BUILD raw_facts — FACET + THEME front-loaded
         combined_text = f"MAIN TOPIC: {facet.upper()}\n"
-        combined_text += f"You MUST write specifically about: {facet} — do NOT write generic tarsier facts.\n"
-        combined_text += f"Every sentence must relate to the specific topic of '{facet}'.\n\n"
+        combined_text += f"EMOTIONAL THEME: {theme} (category: {theme_category})\n"
+        combined_text += f"You MUST write about '{facet}' through the lens of '{theme}'.\n"
+        combined_text += f"The emotional angle '{theme}' should color every sentence.\n\n"
         
         if section_text:
-            combined_text += f"Topic-Specific Research ({facet}):\n{section_text[:1000]}\n\n"
+            combined_text += f"Topic Research ({facet}):\n{section_text[:1000]}\n\n"
         
         if scholar_text:
-            combined_text += f"Recent Scientific Research on {facet}:\n{scholar_text[:500]}\n\n"
+            combined_text += f"Recent Research on {facet}:\n{scholar_text[:500]}\n\n"
         
-        combined_text += f"Background (brief): {base_summary[:200]}...\n"
-        combined_text += f"Conservation Status: {iucn_text[:200]}\n"
+        combined_text += f"Background: {base_summary[:200]}...\n"
+        combined_text += f"Conservation: {iucn_text[:200]}\n"
         
         if news_text:
-            combined_text += f"Recent News: {news_text[:300]}\n"
+            combined_text += f"News: {news_text[:300]}\n"
+        
+        topic_name = f"Tarsier {facet} x {theme}"
         
         return {
-            "topic_name": f"Tarsier {facet}",
-            "raw_facts": combined_text
+            "topic_name": topic_name,
+            "raw_facts": combined_text,
+            "theme": theme,
+            "theme_category": theme_category,
         }
 
 if __name__ == "__main__":
