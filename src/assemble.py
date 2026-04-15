@@ -336,12 +336,24 @@ class VideoAssembler:
                 logger=None
             )
 
-            # Cleanup clips
+            # Cleanup clips — release ALL MoviePy memory
             for c in clips:
                 try:
                     c.close()
                 except:
                     pass
+            try:
+                final_video.close()
+            except:
+                pass
+            for ac in audio_clips:
+                try:
+                    ac.close()
+                except:
+                    pass
+            del clips, final_video, audio_clips
+            import gc
+            gc.collect()
 
             print(f"[{account_key}] Final video: {output}")
             return output

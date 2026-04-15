@@ -476,12 +476,21 @@ class Pipeline:
                 self._log("ERROR", account_key, f"Failed after {MAX_RETRIES} attempts.")
                 self._send_failure_email(account_key, f"Pipeline failed for {account_key} after {MAX_RETRIES} retries.")
             
-            # CLEANUP: Remove intermediate styled images to free disk space
+            # CLEANUP: Free RAM aggressively between channels (7GB runner limit)
+            import gc
+            import shutil
             styled_dir = os.path.join(TMP_DIR, f"{account_key}_styled")
             if os.path.exists(styled_dir):
-                import shutil
                 shutil.rmtree(styled_dir, ignore_errors=True)
-                self._log("INFO", account_key, f"Cleaned up styled images ({styled_dir})")
+            # Remove intermediate Ken Burns frames and styled PNGs
+            for tmp_file in os.listdir(TMP_DIR):
+                if tmp_file.startswith(f"{account_key}_styled") and tmp_file.endswith(".png"):
+                    try:
+                        os.remove(os.path.join(TMP_DIR, tmp_file))
+                    except Exception:
+                        pass
+            gc.collect()
+            self._log("INFO", account_key, f"Memory cleanup done (gc.collect)")
 
         # Cleanup
         if all_success:
