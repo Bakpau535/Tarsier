@@ -54,11 +54,34 @@ class VideoAssembler:
 
     def _ken_burns_frames(self, img_array: np.ndarray, duration: float,
                           width: int, height: int,
-                          effect: str = None) -> List[np.ndarray]:
-        """Creates Ken Burns (zoom/pan) frames from a single image."""
+                          effect: str = None, account_key: str = None) -> List[np.ndarray]:
+        """Creates Ken Burns (zoom/pan) frames from a single image.
+        Per-channel behavior:
+          yt_documenter: slow steady pans (NatGeo feel)
+          yt_funny:      fast zoom + quick pans (attention grab)
+          yt_pov:        slow creepy zoom-in (horror immersion)
+          yt_drama:      cinematic slow push-in
+          yt_anthro:     medium speed varied
+          fb_fanspage:   standard smooth zoom
+        """
         h, w = img_array.shape[:2]
+        
+        # Channel-specific effect + speed selection
+        CHANNEL_KB = {
+            "yt_documenter": {"effects": ["pan_left", "pan_right", "zoom_in"], "zoom_range": 0.12, "pan_range": 0.08},
+            "yt_funny":      {"effects": ["zoom_in", "zoom_out", "zoom_in"], "zoom_range": 0.30, "pan_range": 0.15},
+            "yt_anthro":     {"effects": ["zoom_in", "zoom_out", "pan_left", "pan_right"], "zoom_range": 0.18, "pan_range": 0.10},
+            "yt_pov":        {"effects": ["zoom_in", "zoom_in", "zoom_in", "pan_left"], "zoom_range": 0.15, "pan_range": 0.06},
+            "yt_drama":      {"effects": ["zoom_in", "pan_left", "pan_right"], "zoom_range": 0.15, "pan_range": 0.08},
+            "fb_fanspage":   {"effects": ["zoom_in", "zoom_out", "pan_left", "pan_right"], "zoom_range": 0.20, "pan_range": 0.10},
+        }
+        
+        kb_config = CHANNEL_KB.get(account_key, CHANNEL_KB["fb_fanspage"])
         if effect is None:
-            effect = random.choice(["zoom_in", "zoom_out", "pan_left", "pan_right"])
+            effect = random.choice(kb_config["effects"])
+        
+        zoom_range = kb_config["zoom_range"]
+        pan_range = kb_config["pan_range"]
         total_frames = int(duration * self.fps)
         frames = []
 
@@ -66,12 +89,12 @@ class VideoAssembler:
             progress = i / max(total_frames - 1, 1)
 
             if effect == "zoom_in":
-                scale = 1.0 - 0.2 * progress
+                scale = 1.0 - zoom_range * progress
             elif effect == "zoom_out":
-                scale = 0.8 + 0.2 * progress
+                scale = (1.0 - zoom_range) + zoom_range * progress
             elif effect in ("pan_left", "pan_right"):
-                scale = 0.85
-                cx_offset = 0.1 * progress * (-1 if effect == "pan_left" else 1)
+                scale = 1.0 - (zoom_range * 0.5)  # Slight zoom during pan
+                cx_offset = pan_range * progress * (-1 if effect == "pan_left" else 1)
                 cx = int(w * (0.5 + cx_offset))
                 cy = h // 2
                 cw, ch = int(w * scale), int(h * scale)
@@ -146,6 +169,23 @@ class VideoAssembler:
             clips = []
             last_variation = None  # Track to prevent consecutive same variations
 
+            # === SPREAD text overlays across ALL scenes (not just first N) ===
+            # Creates a map: scene_index → segment_text
+            overlay_map = {}
+            if script_segments and len(media_items) > 0:
+                n_segments = len(script_segments)
+                n_scenes = len(media_items)
+                if n_segments >= n_scenes:
+                    # More segments than scenes → assign 1 per scene
+                    overlay_map = {i: script_segments[i] for i in range(n_scenes)}
+                else:
+                    # Fewer segments than scenes → spread evenly with gaps
+                    step = max(1, n_scenes // (n_segments + 1))  # +1 to avoid last scene
+                    for seg_idx in range(n_segments):
+                        scene_idx = min((seg_idx + 1) * step - 1, n_scenes - 1)
+                        overlay_map[scene_idx] = script_segments[seg_idx]
+                print(f"[{account_key}] Text overlay spread: {n_segments} segments across {n_scenes} scenes")
+
             for i, (media_type, media_path) in enumerate(media_items):
                 if not os.path.exists(media_path):
                     continue
@@ -213,22 +253,35 @@ class VideoAssembler:
                         del img  # Free PIL image immediately
                         
                         # LAZY Ken Burns — generate 1 frame at a time (saves ~17GB RAM)
-                        kb_effect = random.choice(["zoom_in", "zoom_out", "pan_left", "pan_right"])
-                        overlay = script_segments[i] if (script_segments and i < len(script_segments)) else None
+                        # Channel-specific effect + speed
+                        CHANNEL_KB = {
+                            "yt_documenter": {"effects": ["pan_left", "pan_right", "zoom_in"], "zoom_range": 0.12, "pan_range": 0.08},
+                            "yt_funny":      {"effects": ["zoom_in", "zoom_out", "zoom_in"], "zoom_range": 0.30, "pan_range": 0.15},
+                            "yt_anthro":     {"effects": ["zoom_in", "zoom_out", "pan_left", "pan_right"], "zoom_range": 0.18, "pan_range": 0.10},
+                            "yt_pov":        {"effects": ["zoom_in", "zoom_in", "zoom_in", "pan_left"], "zoom_range": 0.15, "pan_range": 0.06},
+                            "yt_drama":      {"effects": ["zoom_in", "pan_left", "pan_right"], "zoom_range": 0.15, "pan_range": 0.08},
+                            "fb_fanspage":   {"effects": ["zoom_in", "zoom_out", "pan_left", "pan_right"], "zoom_range": 0.20, "pan_range": 0.10},
+                        }
+                        kb_cfg = CHANNEL_KB.get(account_key, CHANNEL_KB["fb_fanspage"])
+                        kb_effect = random.choice(kb_cfg["effects"])
+                        kb_zoom = kb_cfg["zoom_range"]
+                        kb_pan = kb_cfg["pan_range"]
+                        overlay = overlay_map.get(i)  # Spread across scenes via map
                         
                         def make_frame(t, _img=img_arr, _dur=clip_dur, _w=width, _h=height,
-                                       _effect=kb_effect, _ak=account_key, _overlay=overlay):
+                                       _effect=kb_effect, _ak=account_key, _overlay=overlay,
+                                       _zr=kb_zoom, _pr=kb_pan):
                             """Generate a single Ken Burns frame at time t (lazy, 1 at a time)."""
                             progress = t / max(_dur - 1/24, 0.001)
                             ih, iw = _img.shape[:2]
                             
                             if _effect == "zoom_in":
-                                scale = 1.0 - 0.2 * progress
+                                scale = 1.0 - _zr * progress
                             elif _effect == "zoom_out":
-                                scale = 0.8 + 0.2 * progress
+                                scale = (1.0 - _zr) + _zr * progress
                             elif _effect in ("pan_left", "pan_right"):
-                                scale = 0.85
-                                cx_off = 0.1 * progress * (-1 if _effect == "pan_left" else 1)
+                                scale = 1.0 - (_zr * 0.5)
+                                cx_off = _pr * progress * (-1 if _effect == "pan_left" else 1)
                                 cx = int(iw * (0.5 + cx_off))
                                 cy = ih // 2
                                 cw, ch = int(iw * scale), int(ih * scale)
@@ -345,7 +398,14 @@ class VideoAssembler:
             if processed_music and os.path.exists(processed_music):
                 try:
                     music = AudioFileClip(processed_music)
-                    music = music.with_volume_scaled(0.5)
+                    # Per-channel music volume — VO channels get lower music so voice is clear
+                    MUSIC_VOL = {
+                        "yt_documenter": 0.20,  "yt_funny": 0.40,  "yt_anthro": 0.30,
+                        "yt_pov": 0.45,  "yt_drama": 0.25,  "fb_fanspage": 0.20,
+                    }
+                    vol = MUSIC_VOL.get(account_key, 0.30)
+                    music = music.with_volume_scaled(vol)
+                    print(f"[{account_key}] Music volume: {vol:.0%}")
                     if music.duration < final_video.duration:
                         from moviepy import concatenate_audioclips
                         loops = int(final_video.duration / music.duration) + 1

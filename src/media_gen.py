@@ -556,8 +556,13 @@ class MediaGenerator:
                     # Persistent dedup — never reuse same photo
                     if self._is_footage_used(photo_id):
                         continue
-                    # VALIDATION: reject photos without 'tarsier' or 'tarsius' in tags
+                    # VALIDATION: reject non-tarsier & irrelevant photos
                     tags = (photo.get("tags", "") or "").lower()
+                    REJECT_TAGS = ["graffiti", "street art", "mural", "painting", "map", 
+                                   "chart", "diagram", "toy", "plush", "figurine", "statue",
+                                   "drawing", "illustration", "cartoon character", "anime"]
+                    if any(bad in tags for bad in REJECT_TAGS):
+                        continue
                     if "tarsier" not in tags and "tarsius" not in tags:
                         continue
                     photo_url = photo.get("largeImageURL") or photo.get("webformatURL")
@@ -1201,14 +1206,24 @@ class MediaGenerator:
         return None
 
     # Per-account music search keywords for Freesound API
-    # IMPORTANT: queries MUST include "music" to avoid ambient/nature sounds (crickets, rain, etc)
+    # ALL channels use music, tipe sesuai tema masing-masing channel
     MUSIC_SEARCH = {
         "yt_documenter": ["cinematic piano music", "documentary orchestral music", "nature film music instrumental"],
         "yt_funny": ["upbeat ukulele music", "happy comedy music instrumental", "cheerful fun music"],
-        "yt_anthro": ["whimsical piano music", "storytelling guitar music", "adventure music instrumental"],
-        "yt_pov": ["ambient piano music dark", "mysterious cello music", "suspense music instrumental"],
-        "yt_drama": ["emotional piano music", "dramatic orchestral music sad", "cinematic strings music"],
+        "yt_anthro": ["lofi chill music instrumental", "whimsical piano music", "storytelling guitar music"],
+        "yt_pov": ["dark atmospheric music", "suspense horror music instrumental", "mysterious ambient music"],
+        "yt_drama": ["emotional piano music sad", "dramatic orchestral music", "cinematic strings music"],
         "fb_fanspage": ["gentle piano music calm", "positive acoustic guitar music", "soft background music instrumental"],
+    }
+
+    # Per-channel music volume — lower for VO channels so voice is clear
+    MUSIC_VOLUME = {
+        "yt_documenter": 0.20,   # VO ON → music very low
+        "yt_funny": 0.40,       # VO OFF → music medium
+        "yt_anthro": 0.30,      # VO optional → music low-medium
+        "yt_pov": 0.45,         # VO OFF → music for immersion
+        "yt_drama": 0.25,       # VO ON → music low for drama feel
+        "fb_fanspage": 0.20,    # VO ON → music very low
     }
 
     # CDN fallback URLs per-account — EVERY URL is unique, ZERO overlap between channels

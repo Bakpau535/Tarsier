@@ -168,11 +168,16 @@ def apply_channel_style(image_path: str, account_key: str, output_path: str) -> 
 
 def generate_scene_variations(image_path: str, account_key: str, 
                                output_dir: str, num_scenes: int = 5) -> List[str]:
-    """Generate multiple scene variations from one styled image.
-    Each variation is a different crop/zoom/pan that will become a Ken Burns scene.
+    """Generate CHANNEL-SPECIFIC scene variations from one styled image.
+    Same image → different framing per channel (bahan sama, rasa beda).
     
-    Returns:
-        List of paths to scene variation images
+    Blueprint visual per channel:
+      yt_documenter: wide shots, steady pans (NatGeo style)
+      yt_funny:      absurd zooms, extreme close-up, tilts
+      yt_anthro:     medium shots, varied framing (cartoon already applied)
+      yt_pov:        EXTREME close-up mata, dark tight crops
+      yt_drama:      cinematic wide + medium (letterbox already applied)
+      fb_fanspage:   clean center crops, professional framing
     """
     try:
         img = Image.open(image_path).convert("RGB")
@@ -180,31 +185,64 @@ def generate_scene_variations(image_path: str, account_key: str,
         scenes = []
         basename = os.path.splitext(os.path.basename(image_path))[0]
         
-        # Define variation techniques
-        variations = [
-            ("full", None),           # Full frame (Ken Burns zoom in)
-            ("center_zoom", 0.65),    # Center crop 65%
-            ("eyes_close", 0.40),     # Extreme close-up (center top)
-            ("left_pan", "left"),      # Left third crop
-            ("right_pan", "right"),    # Right third crop
-        ]
+        # ========================================
+        # CHANNEL-SPECIFIC CROP/FRAMING SETS
+        # ========================================
+        CHANNEL_VARIATIONS = {
+            "yt_documenter": [
+                ("full", None),              # Wide full frame (documentary establishing shot)
+                ("left_pan", "left"),         # Slow left pan crop
+                ("right_pan", "right"),       # Slow right pan crop
+                ("center_zoom", 0.70),       # Medium zoom (subject detail)
+                ("bottom_half", "bottom"),   # Lower portion (habitat view)
+            ],
+            "yt_funny": [
+                ("extreme_zoom", 0.25),      # ABSURD close-up (zoom muka)
+                ("center_zoom", 0.40),       # Tight zoom on subject
+                ("tilt_left", "tilt_l"),      # Tilted angle (meme style)
+                ("tilt_right", "tilt_r"),     # Opposite tilt
+                ("random_crop", 0.35),       # Random area extreme zoom
+            ],
+            "yt_anthro": [
+                ("center_zoom", 0.60),       # Medium close-up
+                ("full", None),              # Full frame with cartoon effect
+                ("left_pan", "left"),         # Left portion
+                ("eyes_close", 0.45),        # Face area
+                ("right_pan", "right"),       # Right portion
+            ],
+            "yt_pov": [
+                ("eyes_close", 0.30),        # EXTREME close-up mata (horror POV)
+                ("center_zoom", 0.35),       # Very tight crop (claustrophobic)
+                ("dark_corner", "corner"),    # Corner crop (peeking feel)
+                ("extreme_zoom", 0.25),      # Maximum zoom (immersive)
+                ("top_half", "top"),          # Upper area (looking up)
+            ],
+            "yt_drama": [
+                ("full", None),              # Establishing wide shot
+                ("center_zoom", 0.60),       # Medium dramatic shot
+                ("left_pan", "left"),         # Cinematic pan left
+                ("eyes_close", 0.45),        # Emotional close-up
+                ("right_pan", "right"),       # Cinematic pan right
+            ],
+            "fb_fanspage": [
+                ("center_zoom", 0.65),       # Clean center crop
+                ("full", None),              # Full frame vivid
+                ("center_zoom", 0.50),       # Tighter center (detail shot)
+                ("left_pan", "left"),         # Left variation
+                ("right_pan", "right"),       # Right variation
+            ],
+        }
         
-        # Add extra variations for channels that need more scenes
-        style = VISUAL_STYLES.get(account_key, {})
-        if style.get("special") == "funny_crop":
-            variations.append(("tilt_left", "tilt_l"))
-            variations.append(("extreme_zoom", 0.30))
+        variations = CHANNEL_VARIATIONS.get(account_key, CHANNEL_VARIATIONS["fb_fanspage"])
         
         for i, (name, param) in enumerate(variations[:num_scenes]):
-            scene_path = os.path.join(output_dir, f"{basename}_scene_{name}.png")
+            scene_path = os.path.join(output_dir, f"{basename}_scene_{i}_{name}.png")
             
             try:
                 if name == "full":
-                    # Full frame — no crop, Ken Burns will handle animation
                     scene_img = img.copy()
                     
                 elif name == "center_zoom":
-                    # Center crop at given scale
                     scale = param
                     cw, ch = int(w * scale), int(h * scale)
                     x1 = (w - cw) // 2
@@ -216,37 +254,79 @@ def generate_scene_variations(image_path: str, account_key: str,
                     scale = param
                     cw, ch = int(w * scale), int(h * scale)
                     x1 = (w - cw) // 2
-                    y1 = int(h * 0.15)  # Upper area
+                    y1 = int(h * 0.10)  # Upper area (eyes)
                     scene_img = img.crop((x1, y1, x1 + cw, min(y1 + ch, h)))
                     
                 elif name == "left_pan":
-                    # Left third
                     cw = int(w * 0.55)
                     scene_img = img.crop((0, 0, cw, h))
                     
                 elif name == "right_pan":
-                    # Right third
                     cw = int(w * 0.55)
                     x1 = w - cw
                     scene_img = img.crop((x1, 0, w, h))
                     
+                elif name == "top_half":
+                    ch = int(h * 0.55)
+                    scene_img = img.crop((0, 0, w, ch))
+                    
+                elif name == "bottom_half":
+                    ch = int(h * 0.55)
+                    y1 = h - ch
+                    scene_img = img.crop((0, y1, w, h))
+                    
                 elif name == "tilt_left":
-                    # Slight rotation for funny channel
-                    scene_img = img.rotate(random.randint(5, 15), 
-                                          fillcolor=(0, 0, 0), expand=False)
+                    angle = random.randint(5, 12)
+                    scene_img = img.rotate(angle, fillcolor=(0, 0, 0), expand=False)
+                    
+                elif name == "tilt_right":
+                    angle = random.randint(-12, -5)
+                    scene_img = img.rotate(angle, fillcolor=(0, 0, 0), expand=False)
                     
                 elif name == "extreme_zoom":
-                    # Extreme close-up
                     scale = param
                     cw, ch = int(w * scale), int(h * scale)
-                    cx = random.randint(cw // 2, w - cw // 2)
-                    cy = random.randint(ch // 2, h - ch // 2)
+                    # Random position for variety
+                    cx = random.randint(cw // 2, max(cw // 2 + 1, w - cw // 2))
+                    cy = random.randint(ch // 2, max(ch // 2 + 1, h - ch // 2))
                     scene_img = img.crop((cx - cw // 2, cy - ch // 2, 
                                          cx + cw // 2, cy + ch // 2))
+                    
+                elif name == "random_crop":
+                    scale = param
+                    cw, ch = int(w * scale), int(h * scale)
+                    cx = random.randint(cw // 2, max(cw // 2 + 1, w - cw // 2))
+                    cy = random.randint(ch // 2, max(ch // 2 + 1, h - ch // 2))
+                    scene_img = img.crop((cx - cw // 2, cy - ch // 2, 
+                                         cx + cw // 2, cy + ch // 2))
+                    
+                elif name == "dark_corner":
+                    # Crop from corner (peeking/stalker POV feel)
+                    cw, ch = int(w * 0.45), int(h * 0.45)
+                    corner = random.choice(["tl", "tr", "bl", "br"])
+                    if corner == "tl":
+                        scene_img = img.crop((0, 0, cw, ch))
+                    elif corner == "tr":
+                        scene_img = img.crop((w - cw, 0, w, ch))
+                    elif corner == "bl":
+                        scene_img = img.crop((0, h - ch, cw, h))
+                    else:
+                        scene_img = img.crop((w - cw, h - ch, w, h))
                 else:
                     scene_img = img.copy()
                 
-                # Resize to standard resolution
+                # QUALITY GUARD: if crop is too small, upscaling to 1080p will be blurry
+                # Minimum source width: 640px (upscale ratio max 3x)
+                MIN_SRC_WIDTH = 640
+                if scene_img.width < MIN_SRC_WIDTH:
+                    # Use center crop at minimum quality scale instead
+                    safe_scale = max(0.50, MIN_SRC_WIDTH / w)
+                    cw, ch = int(w * safe_scale), int(h * safe_scale)
+                    x1, y1 = (w - cw) // 2, (h - ch) // 2
+                    scene_img = img.crop((x1, y1, x1 + cw, y1 + ch))
+                    print(f"[VisualEngine] Quality guard: '{name}' too small ({scene_img.width}px), using {safe_scale:.0%} center crop")
+                
+                # Resize to standard 1080p resolution
                 scene_img = scene_img.resize((1920, 1080), Image.LANCZOS)
                 scene_img.save(scene_path, "PNG")
                 scenes.append(scene_path)
