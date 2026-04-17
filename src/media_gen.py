@@ -26,9 +26,21 @@ class MediaGenerator:
         self._depleted_keys = set()  # Track HF keys that returned 402
         self._depleted_cf = set()   # Track CF accounts that hit quota
         
-        # Cloudflare Workers AI model
-        self.cf_model = "@cf/black-forest-labs/flux-1-schnell"
-        self.cf_fallback_model = "@cf/bytedance/stable-diffusion-xl-lightning"
+        # Cloudflare Workers AI — per-channel model for visual variety
+        # Different models = different art styles = less "bot-like" feel
+        self.cf_channel_models = {
+            "yt_documenter": "@cf/black-forest-labs/flux-1-schnell",     # Realistic (NatGeo)
+            "yt_funny":      "@cf/bytedance/stable-diffusion-xl-lightning",  # Artistic/cartoon
+            "yt_anthro":     "@cf/leonardo/phoenix-1.0",                 # Prompt-adherent
+            "yt_pov":        "@cf/leonardo/lucid-origin",                # Photorealistic dark
+            "yt_drama":      "@cf/black-forest-labs/flux-1-schnell",     # Cinematic realism
+            "fb_fanspage":   "@cf/leonardo/phoenix-1.0",                 # Clean professional
+        }
+        # Fallback chain: if channel model fails, try these in order
+        self.cf_fallback_chain = [
+            "@cf/black-forest-labs/flux-1-schnell",
+            "@cf/bytedance/stable-diffusion-xl-lightning",
+        ]
         
         # Load persistent footage log — HARD RULE: no footage reused EVER
         self._used_footage = self._load_footage_log()
@@ -723,7 +735,7 @@ class MediaGenerator:
     def _generate_cf_image(self, account_key: str, prompt: str, model: str = None) -> Optional[bytes]:
         """Generate image via Cloudflare Workers AI. Returns raw image bytes or None."""
         if model is None:
-            model = self.cf_model
+            model = self.cf_channel_models.get(account_key, "@cf/black-forest-labs/flux-1-schnell")
         
         cf_pool = self._get_cf_pool(account_key)
         if not cf_pool:
@@ -779,12 +791,13 @@ class MediaGenerator:
                         continue
                     break
         
-        # Try fallback model if primary model failed
-        if model == self.cf_model and self.cf_fallback_model:
-            cf_pool_retry = self._get_cf_pool(account_key)
-            if cf_pool_retry:
-                print(f"[{account_key}] Trying CF fallback model: {self.cf_fallback_model}")
-                return self._generate_cf_image(account_key, prompt, model=self.cf_fallback_model)
+        # Try fallback models if primary channel model failed
+        for fb_model in self.cf_fallback_chain:
+            if fb_model != model:
+                cf_pool_retry = self._get_cf_pool(account_key)
+                if cf_pool_retry:
+                    print(f"[{account_key}] Trying CF fallback model: {fb_model}")
+                    return self._generate_cf_image(account_key, prompt, model=fb_model)
         
         return None
     
