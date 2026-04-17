@@ -196,15 +196,29 @@ class ResearchEngine:
             print(f"News scraping error: {e}")
             return ""
 
-    def generate_random_topic(self) -> Dict[str, str]:
+    # Per-channel theme category preference — matches channel personality
+    CHANNEL_THEMES = {
+        "yt_documenter": ["fact", "situation"],              # NatGeo: facts + natural situations
+        "yt_funny":      ["relatable", "fact"],              # Comedy: relatable humor + fun facts
+        "yt_anthro":     ["emotion", "relatable"],           # Storytelling: emotions + relatable
+        "yt_pov":        ["emotion", "situation"],           # Horror/immersive: dark emotion + tense situations
+        "yt_drama":      ["emotion", "situation"],           # Dramatic: heavy emotion + dramatic situations
+        "fb_fanspage":   ["fact", "relatable", "emotion"],   # Engagement: mix of all
+    }
+
+    def generate_random_topic(self, account_key: str = None) -> Dict[str, str]:
         """
         V2: Creates topic by combining FACET (fact) + THEME (emotional angle).
+        Per-channel theme preference ensures each channel gets matching themes.
         35 facets × 42 themes = 1,470 unique combinations.
         """
         facet = random.choice(self.facets)
         
-        # Pick random theme category and theme
-        theme_category = random.choice(list(self.theme_bank.keys()))
+        # Pick theme category based on channel preference
+        if account_key and account_key in self.CHANNEL_THEMES:
+            theme_category = random.choice(self.CHANNEL_THEMES[account_key])
+        else:
+            theme_category = random.choice(list(self.theme_bank.keys()))
         theme = random.choice(self.theme_bank[theme_category])
         
         # Source 1: Wikipedia
