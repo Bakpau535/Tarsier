@@ -64,7 +64,7 @@ class ScriptEngine:
                 try:
                     print(f"[{account_key}] Calling Gemini ({key_type} {key_label}, attempt {attempt+1}/{MAX_RETRIES})...")
                     response = client.models.generate_content(
-                        model="gemini-2.0-flash",
+                        model="gemini-2.5-flash",
                         contents=prompt,
                     )
                     if response and response.text:
