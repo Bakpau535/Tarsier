@@ -48514,5 +48514,491 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-17T14:22:02.621503",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-17T14:22:05.742010",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:05.742027",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.361501",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.361513",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.361518",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.361529",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): fb_fanspage → yt_pov → yt_funny → yt_documenter → yt_anthro → yt_drama"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.363256",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.805772",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Fallback template fb_fb_fanspage_1 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-04-17T14:22:25.810831",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-17T14:22:31.245483",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-17T14:22:31.245525",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-17T14:22:46.228580",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-17T14:32:39.950426",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-17T14:32:57.717810",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-17T14:32:57.728369",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-17T14:32:57.782679",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-17T14:32:57.837561",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-17T14:32:57.837590",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 63s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-17T14:34:00.841115",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T14:34:01.222757",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Fallback template fb_yt_pov_2 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-04-17T14:34:01.227618",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-17T14:34:06.500050",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-17T14:34:06.500089",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-17T14:34:18.632757",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-17T14:34:18.632773",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-17T14:52:49.574506",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-17T14:53:15.018012",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-17T14:53:15.025273",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-17T14:53:15.257576",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "PREVIEW MODE: Files saved to output/yt_pov/"
+    },
+    {
+        "timestamp": "2026-04-17T14:53:15.308863",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-17T14:53:15.308891",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 49s before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-17T14:54:04.311122",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T14:54:04.642156",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Fallback template fb_yt_funny_0 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-04-17T14:54:04.647052",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-17T14:54:09.932506",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-17T14:54:09.932572",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-17T14:54:24.589880",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-17T14:54:24.589895",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-17T15:01:46.815834",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:01:58.997135",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-17T15:01:59.004519",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-17T15:01:59.036679",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "PREVIEW MODE: Files saved to output/yt_funny/"
+    },
+    {
+        "timestamp": "2026-04-17T15:01:59.104545",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-17T15:01:59.104580",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 90s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-17T15:03:29.106799",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T15:03:29.494523",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Fallback template fb_yt_documenter_3 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-04-17T15:03:29.499461",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:03:34.827813",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-17T15:03:34.827846",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-17T15:03:53.950517",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-17T15:12:34.940870",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:12:49.807211",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-17T15:12:49.814993",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-17T15:12:49.853743",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "PREVIEW MODE: Files saved to output/yt_documenter/"
+    },
+    {
+        "timestamp": "2026-04-17T15:12:49.906045",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-17T15:12:49.906075",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 45s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-17T15:13:34.908403",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T15:13:35.227931",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Fallback template fb_yt_anthro_0 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-04-17T15:13:35.232885",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:13:40.535355",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-17T15:13:40.535395",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-17T15:13:51.540863",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-17T15:25:38.450311",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:25:57.538034",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-17T15:25:57.545590",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-17T15:25:57.655534",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "PREVIEW MODE: Files saved to output/yt_anthro/"
+    },
+    {
+        "timestamp": "2026-04-17T15:25:57.723270",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-17T15:25:57.723303",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 41s before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-17T15:26:38.725848",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Species comparison x procrastination master"
+    },
+    {
+        "timestamp": "2026-04-17T15:26:39.043816",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Fallback template fb_yt_drama_1 already used! Generating unique MASHUP..."
+    },
+    {
+        "timestamp": "2026-04-17T15:26:39.049580",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:26:44.460580",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Tarsier Facts"
+    },
+    {
+        "timestamp": "2026-04-17T15:26:44.460628",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-17T15:26:56.121039",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-17T15:40:55.131197",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-17T15:41:12.650417",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Shorts extracted."
+    },
+    {
+        "timestamp": "2026-04-17T15:41:12.657712",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-17T15:41:12.735450",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "PREVIEW MODE: Files saved to output/yt_drama/"
+    },
+    {
+        "timestamp": "2026-04-17T15:41:12.794338",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-17T15:41:12.794358",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
