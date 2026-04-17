@@ -164,32 +164,32 @@ def get_edge_tts_params(account_key: str) -> dict:
     """
     voice_map = {
         "yt_documenter": {
-            "voice": "en-US-GuyNeural",
+            "voice": "en-US-AndrewNeural",
             "rate": "-12%",
             "pitch": "-5Hz",
         },
         "yt_funny": {
-            "voice": "en-US-JennyNeural",
+            "voice": "en-US-AnaNeural",
             "rate": "+5%",
             "pitch": "+3Hz",
         },
         "yt_anthro": {
-            "voice": "en-US-AriaNeural",
+            "voice": "en-US-BrianNeural",
             "rate": "-8%",
             "pitch": "+2Hz",
         },
         "yt_pov": {
-            "voice": "en-GB-RyanNeural",
+            "voice": "en-US-MichelleNeural",
             "rate": "-18%",
             "pitch": "-5Hz",
         },
         "yt_drama": {
-            "voice": "en-US-GuyNeural",
+            "voice": "en-US-AndrewNeural",
             "rate": "-10%",
             "pitch": "-3Hz",
         },
         "fb_fanspage": {
-            "voice": "en-US-JennyNeural",
+            "voice": "en-US-EmmaNeural",
             "rate": "-5%",
             "pitch": "0Hz",
         },
