@@ -1186,9 +1186,12 @@ class MediaGenerator:
                     )
                     await tts.save(filename)
                 except Exception:
-                    # Fallback: plain text with rate/pitch params
+                    # Fallback: plain text with natural pauses (double newlines)
+                    # edge-tts naturally pauses at paragraph breaks
+                    import re as _re
+                    plain_with_pauses = _re.sub(r'(?<=[.!?])\s+', '\n\n', text[:2500])
                     tts = edge_tts.Communicate(
-                        text=text[:1500],
+                        text=plain_with_pauses,
                         voice=voice,
                         rate=rate,
                         pitch=pitch

@@ -315,16 +315,19 @@ def generate_scene_variations(image_path: str, account_key: str,
                 else:
                     scene_img = img.copy()
                 
-                # QUALITY GUARD: if crop is too small, upscaling to 1080p will be blurry
-                # Minimum source width: 640px (upscale ratio max 3x)
-                MIN_SRC_WIDTH = 640
-                if scene_img.width < MIN_SRC_WIDTH:
-                    # Use center crop at minimum quality scale instead
-                    safe_scale = max(0.50, MIN_SRC_WIDTH / w)
+                # QUALITY GUARD: skip extreme crops on small source images
+                # If source < 1280px wide, aggressive crops would all fallback to center crop (identical)
+                if w < 1280 and name in ("extreme_zoom", "eyes_close", "dark_corner", "random_crop"):
+                    # Use full frame instead — preserves quality on small images
+                    scene_img = img.copy()
+                    print(f"[VisualEngine] Skip '{name}' (source {w}px too small) — using full frame")
+                elif scene_img.width < MIN_SRC_WIDTH:
+                    # Larger source but crop still too small — use generous center crop
+                    safe_scale = max(0.75, MIN_SRC_WIDTH / w)
                     cw, ch = int(w * safe_scale), int(h * safe_scale)
                     x1, y1 = (w - cw) // 2, (h - ch) // 2
                     scene_img = img.crop((x1, y1, x1 + cw, y1 + ch))
-                    print(f"[VisualEngine] Quality guard: '{name}' too small ({scene_img.width}px), using {safe_scale:.0%} center crop")
+                    print(f"[VisualEngine] Quality guard: '{name}' too small, using {safe_scale:.0%} center crop")
                 
                 # Resize to standard 1080p resolution
                 scene_img = scene_img.resize((1920, 1080), Image.LANCZOS)
