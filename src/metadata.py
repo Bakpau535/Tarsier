@@ -2,57 +2,24 @@ import os
 import json
 import time
 import re
-from google import genai
+import requests
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import GEMINI_API_KEYS, GEMINI_KEY_MAP, GEMINI_KEY_MAP_BACKUP, METADATA_GENERATION_PROMPT, MAX_RETRIES
+from src.config import GROQ_API_KEY, GROQ_MODEL, GROQ_BASE_URL, METADATA_GENERATION_PROMPT, MAX_RETRIES
 from src.persona_prompts import METADATA_TITLE_PROMPTS
 
 class MetadataGenerator:
     def __init__(self, dedicated_keys: list = None):
-        """Initialize with Gemini API keys.
+        """Initialize with Groq API key.
         
         Args:
-            dedicated_keys: Optional list of [primary, backup] keys for dedicated use (e.g. monitoring).
-                           If provided, ONLY these keys are used — no channel key map.
+            dedicated_keys: Ignored (kept for backward compatibility with monitoring).
         """
-        self._dedicated_keys = dedicated_keys or []
-        if not GEMINI_API_KEYS and not self._dedicated_keys:
-            raise ValueError("No GEMINI_API_KEY found in environment variables.")
-        self._key_to_client = {}
-        
-        if self._dedicated_keys:
-            # Monitoring mode — only use dedicated keys
-            for k in self._dedicated_keys:
-                if k and k not in self._key_to_client:
-                    self._key_to_client[k] = genai.Client(api_key=k)
-        else:
-            # Normal mode — use channel key map
-            for k in GEMINI_API_KEYS:
-                if k and k not in self._key_to_client:
-                    self._key_to_client[k] = genai.Client(api_key=k)
-            for k in GEMINI_KEY_MAP_BACKUP.values():
-                if k and k not in self._key_to_client:
-                    self._key_to_client[k] = genai.Client(api_key=k)
-        self._depleted_keys = set()
-        print(f"[MetadataGen] Initialized with {len(self._key_to_client)} unique Gemini API key(s).")
-
-    def _get_key_pool(self, account_key: str) -> list:
-        """Get Gemini keys. In monitoring mode, uses dedicated KEY_13/14."""
-        # Monitoring mode — use dedicated keys for ALL channels
-        if self._dedicated_keys:
-            return [k for k in self._dedicated_keys 
-                    if k and k not in self._depleted_keys]
-        # Normal mode — channel-specific keys
-        own_key = GEMINI_KEY_MAP.get(account_key, "")
-        own_backup = GEMINI_KEY_MAP_BACKUP.get(account_key, "")
-        pool = []
-        if own_key and own_key not in self._depleted_keys:
-            pool.append(own_key)
-        if own_backup and own_backup not in self._depleted_keys and own_backup not in pool:
-            pool.append(own_backup)
-        return pool
+        self._groq_key = GROQ_API_KEY
+        if not self._groq_key:
+            print("[MetadataGen] WARNING: No GROQ_API_KEY — will use fallback metadata.")
+        print(f"[MetadataGen] Initialized with Groq ({GROQ_MODEL}).")
 
     def _fallback_metadata(self, script: str) -> dict:
         return {
@@ -66,60 +33,68 @@ class MetadataGenerator:
         }
 
     def generate(self, script: str, account_key: str) -> dict:
-        """Uses Gemini with per-channel key assignment to generate SEO metadata."""
+        """Uses Groq (Llama 3.3) to generate SEO metadata."""
         print(f"[{account_key}] Generating metadata...")
+        
+        if not self._groq_key:
+            print(f"[{account_key}] No Groq key for metadata — using fallback")
+            return self._fallback_metadata(script)
+        
         title_formula = METADATA_TITLE_PROMPTS.get(account_key, "")
         prompt = METADATA_GENERATION_PROMPT.replace("{script}", script).replace("{title_formula}", title_formula)
         
-        key_pool = self._get_key_pool(account_key)
-        if not key_pool:
-            print(f"[{account_key}] ALL Gemini keys depleted for metadata!")
-            return self._fallback_metadata(script)
-
-        for key in key_pool:
-            client = self._key_to_client.get(key)
-            if not client:
-                continue
-            
-            is_own = key == GEMINI_KEY_MAP.get(account_key, "")
-            key_type = "own" if is_own else "backup"
-            
-            for attempt in range(MAX_RETRIES):
-                try:
-                    response = client.models.generate_content(
-                        model="gemini-2.5-flash",
-                        contents=prompt,
-                        config=genai.types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                        ),
-                    )
-                    metadata = json.loads(response.text)
+        headers = {
+            "Authorization": f"Bearer {self._groq_key}",
+            "Content-Type": "application/json",
+        }
+        payload = {
+            "model": GROQ_MODEL,
+            "messages": [
+                {"role": "system", "content": "You are an SEO expert for YouTube wildlife content. Always respond with valid JSON only."},
+                {"role": "user", "content": prompt},
+            ],
+            "temperature": 0.5,
+            "max_tokens": 1024,
+            "response_format": {"type": "json_object"},
+        }
+        
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = requests.post(
+                    GROQ_BASE_URL, headers=headers, json=payload, timeout=60
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    text = data["choices"][0]["message"]["content"].strip()
+                    metadata = json.loads(text)
+                    print(f"[INFO] [{account_key}] Metadata generated: {metadata.get('title', 'N/A')}")
                     return metadata
-
-                except json.JSONDecodeError as e:
-                    print(f"Error parsing Gemini metadata JSON: {e}")
-                    return self._fallback_metadata(script)
-
-                except Exception as e:
-                    error_msg = str(e)
-                    if "403" in error_msg or "PERMISSION_DENIED" in error_msg:
-                        self._depleted_keys.add(key)
-                        print(f"[{account_key}] {key_type} key BLOCKED (403) for metadata — trying backup...")
-                        break  # Immediately move to next key
-                    elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-                        self._depleted_keys.add(key)
-                        print(f"[{account_key}] {key_type} key EXHAUSTED for metadata, waiting 30s before backup...")
-                        import time as _time
-                        _time.sleep(30)
-                        break  # Move to next key
-                    else:
-                        print(f"Error calling Gemini for metadata: {e}")
-                        if attempt < MAX_RETRIES - 1:
-                            import time as _time
-                            _time.sleep(10)
-                            continue
-                        return self._fallback_metadata(script)
-
+                elif response.status_code == 429:
+                    retry_after = int(response.headers.get("retry-after", "10"))
+                    print(f"[{account_key}] Groq rate limited for metadata, waiting {retry_after}s...")
+                    time.sleep(retry_after)
+                    continue
+                elif response.status_code in [401, 403]:
+                    print(f"[{account_key}] Groq AUTH error for metadata ({response.status_code})")
+                    break
+                else:
+                    err = response.text[:200]
+                    print(f"[{account_key}] Groq metadata error ({response.status_code}): {err}")
+                    if attempt < MAX_RETRIES - 1:
+                        time.sleep(5)
+                        continue
+                    
+            except json.JSONDecodeError as e:
+                print(f"[{account_key}] Error parsing Groq metadata JSON: {e}")
+                return self._fallback_metadata(script)
+                
+            except requests.exceptions.RequestException as e:
+                print(f"[{account_key}] Groq metadata request error: {e}")
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(5)
+                    continue
+        
         return self._fallback_metadata(script)
 
 if __name__ == "__main__":

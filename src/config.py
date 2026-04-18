@@ -5,7 +5,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # --- API Keys ---
-# Gemini 2.5 Flash — 12 key rotasi untuk kapasitas maksimal
+# Groq API — PRIMARY text generation (replaces Gemini)
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
+print(f"[Config] Groq API key: {'SET' if GROQ_API_KEY else 'NOT SET'}")
+
+# Gemini 2.5 Flash — 12 key rotasi (BACKUP, currently blocked)
 _gemini_keys_raw = [
     os.environ.get("GEMINI_API_KEY_1", ""),
     os.environ.get("GEMINI_API_KEY_2", ""),
