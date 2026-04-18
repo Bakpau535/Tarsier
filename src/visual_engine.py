@@ -25,68 +25,68 @@ from typing import List, Tuple, Optional
 VISUAL_STYLES = {
     "yt_documenter": {
         "name": "documentary",
-        "saturation": 0.80,       # desaturate 20%
-        "contrast": 1.10,
+        "saturation": 0.80,         # desaturated = NatGeo real
+        "contrast": 1.20,
         "brightness": 1.0,
-        "sharpness": 1.3,         # slight sharpen
-        "color_tint": (0, 10, 20),  # slight teal/blue
-        "grain": 3,
+        "sharpness": 1.4,
+        "color_tint": (12, 8, -5),  # warm golden tone
+        "grain": 12,               # noticeable film grain
         "vignette": 0.15,
         "special": None,
     },
     "yt_funny": {
         "name": "meme_bright",
-        "saturation": 1.35,       # oversaturate +35%
-        "contrast": 1.15,
-        "brightness": 1.15,       # brighter
-        "sharpness": 1.1,
-        "color_tint": (8, 5, -5),  # warm orange
+        "saturation": 1.80,          # EXTREMELY saturated = meme
+        "contrast": 1.45,
+        "brightness": 1.20,
+        "sharpness": 1.6,
+        "color_tint": (15, 15, -5),  # warm yellow push
         "grain": 0,
-        "vignette": 0.0,
-        "special": "funny_crop",   # random absurd crops/angles
+        "vignette": 0,
+        "special": "funny_crop",
     },
     "yt_anthro": {
         "name": "cartoon",
-        "saturation": 1.10,
-        "contrast": 1.05,
-        "brightness": 1.05,
-        "sharpness": 0.8,         # slightly softer for cartoon
-        "color_tint": (8, 4, -3),  # warm
+        "saturation": 1.60,           # very vivid cartoon
+        "contrast": 1.30,
+        "brightness": 1.15,
+        "sharpness": 0.5,             # soft = illustrated feel
+        "color_tint": (5, 15, 20),    # cool blue-green tint
         "grain": 0,
-        "vignette": 0.10,
-        "special": "cartoon",      # cartoon filter pipeline
+        "vignette": 0,
+        "special": "cartoon",
     },
     "yt_pov": {
         "name": "dark_horror",
-        "saturation": 0.70,       # desaturate
-        "contrast": 1.15,
-        "brightness": 0.55,       # MUCH darker
-        "sharpness": 1.0,
-        "color_tint": (-10, -5, 25),  # strong blue tint
-        "grain": 12,              # heavy grain
-        "vignette": 0.35,         # strong vignette
+        "saturation": 0.20,            # almost B&W
+        "contrast": 1.50,
+        "brightness": 0.55,            # VERY DARK
+        "sharpness": 1.3,
+        "color_tint": (-15, -8, 10),   # cold blue tint
+        "grain": 30,                   # heavy noise grain
+        "vignette": 0.50,              # VERY heavy vignette
         "special": None,
     },
     "yt_drama": {
         "name": "cinematic",
-        "saturation": 0.90,
-        "contrast": 1.20,         # high contrast
-        "brightness": 0.90,       # slightly dark
-        "sharpness": 1.15,
-        "color_tint": (-3, 8, -5),  # teal-green (safe scenes)
-        "grain": 5,
+        "saturation": 0.85,
+        "contrast": 1.25,
+        "brightness": 0.90,
+        "sharpness": 1.1,
+        "color_tint": (15, 8, -8),     # strong warm cinematic
+        "grain": 15,
         "vignette": 0.25,
-        "special": "letterbox",    # cinematic letterbox
+        "special": "letterbox",
     },
     "fb_fanspage": {
         "name": "bold_vivid",
-        "saturation": 1.30,       # vivid
-        "contrast": 1.20,         # high contrast
-        "brightness": 1.08,
-        "sharpness": 1.4,         # extra sharp
-        "color_tint": (5, 5, 0),
+        "saturation": 1.40,       # vivid pop
+        "contrast": 1.25,
+        "brightness": 1.10,
+        "sharpness": 1.5,         # extra sharp
+        "color_tint": (8, 8, 0),
         "grain": 0,
-        "vignette": 0.05,
+        "vignette": 0.08,
         "special": None,
     },
 }
@@ -348,37 +348,41 @@ def generate_scene_variations(image_path: str, account_key: str,
 # ========================================
 
 def _apply_cartoon_filter(img: Image.Image) -> Image.Image:
-    """Cartoon/illustration effect using PIL.
-    Technique: Edge detection + color quantize + smooth + overlay edges.
+    """STRONG cartoon/illustration effect.
+    Technique: Heavy smoothing + extreme color reduction + bold edge overlay.
+    Result should look OBVIOUSLY different from a photo.
     """
-    # Step 1: Smooth the image (reduce detail for cartoon look)
-    smooth = img.filter(ImageFilter.SMOOTH_MORE)
-    smooth = smooth.filter(ImageFilter.SMOOTH_MORE)
+    # Step 1: HEAVY smoothing (destroy photo detail → flat cartoon)
+    smooth = img.copy()
+    for _ in range(4):  # 4 passes = very smooth
+        smooth = smooth.filter(ImageFilter.SMOOTH_MORE)
     
-    # Step 2: Quantize colors (reduce color palette for flat cartoon look)
-    quantized = smooth.quantize(colors=24, method=Image.Quantize.MEDIANCUT)
+    # Step 2: AGGRESSIVE color quantize (10 colors = obvious flat cartoon)
+    quantized = smooth.quantize(colors=10, method=Image.Quantize.MEDIANCUT)
     quantized = quantized.convert("RGB")
     
-    # Step 3: Find edges (for cartoon outlines)
+    # Step 3: BOLD edge detection (thick black outlines)
     gray = img.convert("L")
+    # Double edge detection for thicker lines
     edges = gray.filter(ImageFilter.FIND_EDGES)
-    # Threshold edges to make crisp black lines
-    edges = edges.point(lambda x: 0 if x > 40 else 255)
+    edges = edges.filter(ImageFilter.MaxFilter(3))  # Thicken edges
+    # Lower threshold = more edges = more cartoon-like
+    edges = edges.point(lambda x: 0 if x > 25 else 255)
     edges = edges.convert("RGB")
     
-    # Step 4: Multiply edges onto cartoon (darken where edges are)
+    # Step 4: Multiply bold edges onto flat cartoon colors
     result = np.array(quantized).astype(np.float32)
     edge_arr = np.array(edges).astype(np.float32) / 255.0
     result = (result * edge_arr).astype(np.uint8)
     
-    # Step 5: Slight brightness boost (cartoons are usually bright)
+    # Step 5: Strong brightness boost (cartoons are bright and cheerful)
     cart_img = Image.fromarray(result)
     enhancer = ImageEnhance.Brightness(cart_img)
-    cart_img = enhancer.enhance(1.15)
+    cart_img = enhancer.enhance(1.25)
     
-    # Step 6: Boost saturation (cartoons have vivid colors)
+    # Step 6: VERY vivid colors (cartoon = saturated)
     enhancer = ImageEnhance.Color(cart_img)
-    cart_img = enhancer.enhance(1.3)
+    cart_img = enhancer.enhance(1.6)
     
     return cart_img
 

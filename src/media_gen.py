@@ -660,6 +660,14 @@ class MediaGenerator:
                     if not any(kw in title_lower for kw in ["tarsier", "tarsius", "tarsiidae", "carlito syrichta"]):
                         continue
                     
+                    # REJECT non-photo images (maps, charts, museum, range diagrams)
+                    WIKI_REJECT = ["range", "map", "distribution", "museum", "diagram",
+                                   "chart", "combined", "taxonomy", "cladogram", "skeleton",
+                                   "skull", "stamp", "logo", "icon", "flag", "drawing"]
+                    if any(bad in title_lower for bad in WIKI_REJECT):
+                        print(f"[{account_key}] Wikimedia REJECTED (non-photo): {title[:60]}")
+                        continue
+                    
                     # Persistent dedup — never reuse same photo across channels/runs
                     wiki_id = f"wiki_{title.replace(' ', '_')[:60]}"
                     if self._is_footage_used(wiki_id):
