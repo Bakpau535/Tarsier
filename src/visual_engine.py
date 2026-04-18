@@ -186,150 +186,38 @@ def generate_scene_variations(image_path: str, account_key: str,
         basename = os.path.splitext(os.path.basename(image_path))[0]
         
         # ========================================
-        # CHANNEL-SPECIFIC CROP/FRAMING SETS
+        # FULL FRAME SCENE VARIATIONS (NO CROP)
+        # All scenes are FULL 1920x1080. Differentiation comes from:
+        # - Channel visual STYLES (cartoon, horror, meme, etc.)
+        # - Minor framing tweaks (mirror, slight rotate) for variety
         # ========================================
-        CHANNEL_VARIATIONS = {
-            "yt_documenter": [
-                ("full", None),              # Wide full frame (documentary establishing shot)
-                ("left_pan", "left"),         # Slow left pan crop
-                ("right_pan", "right"),       # Slow right pan crop
-                ("center_zoom", 0.70),       # Medium zoom (subject detail)
-                ("bottom_half", "bottom"),   # Lower portion (habitat view)
-            ],
-            "yt_funny": [
-                ("extreme_zoom", 0.25),      # ABSURD close-up (zoom muka)
-                ("center_zoom", 0.40),       # Tight zoom on subject
-                ("tilt_left", "tilt_l"),      # Tilted angle (meme style)
-                ("tilt_right", "tilt_r"),     # Opposite tilt
-                ("random_crop", 0.35),       # Random area extreme zoom
-            ],
-            "yt_anthro": [
-                ("center_zoom", 0.60),       # Medium close-up
-                ("full", None),              # Full frame with cartoon effect
-                ("left_pan", "left"),         # Left portion
-                ("eyes_close", 0.45),        # Face area
-                ("right_pan", "right"),       # Right portion
-            ],
-            "yt_pov": [
-                ("eyes_close", 0.30),        # EXTREME close-up mata (horror POV)
-                ("center_zoom", 0.35),       # Very tight crop (claustrophobic)
-                ("dark_corner", "corner"),    # Corner crop (peeking feel)
-                ("extreme_zoom", 0.25),      # Maximum zoom (immersive)
-                ("top_half", "top"),          # Upper area (looking up)
-            ],
-            "yt_drama": [
-                ("full", None),              # Establishing wide shot
-                ("center_zoom", 0.60),       # Medium dramatic shot
-                ("left_pan", "left"),         # Cinematic pan left
-                ("eyes_close", 0.45),        # Emotional close-up
-                ("right_pan", "right"),       # Cinematic pan right
-            ],
-            "fb_fanspage": [
-                ("center_zoom", 0.65),       # Clean center crop
-                ("full", None),              # Full frame vivid
-                ("center_zoom", 0.50),       # Tighter center (detail shot)
-                ("left_pan", "left"),         # Left variation
-                ("right_pan", "right"),       # Right variation
-            ],
-        }
+        SCENE_TWEAKS = [
+            ("full", None),              # Original full frame
+            ("mirror", None),            # Horizontal flip
+            ("slight_rotate", 2),        # Very slight CW rotate (fills frame)
+        ]
         
-        variations = CHANNEL_VARIATIONS.get(account_key, CHANNEL_VARIATIONS["fb_fanspage"])
-        
-        for i, (name, param) in enumerate(variations[:num_scenes]):
+        for i, (name, param) in enumerate(SCENE_TWEAKS[:num_scenes]):
             scene_path = os.path.join(output_dir, f"{basename}_scene_{i}_{name}.png")
             
             try:
                 if name == "full":
                     scene_img = img.copy()
-                    
-                elif name == "center_zoom":
-                    scale = param
-                    cw, ch = int(w * scale), int(h * scale)
-                    x1 = (w - cw) // 2
-                    y1 = (h - ch) // 2
-                    scene_img = img.crop((x1, y1, x1 + cw, y1 + ch))
-                    
-                elif name == "eyes_close":
-                    # Close-up of upper center (where eyes typically are)
-                    scale = param
-                    cw, ch = int(w * scale), int(h * scale)
-                    x1 = (w - cw) // 2
-                    y1 = int(h * 0.10)  # Upper area (eyes)
-                    scene_img = img.crop((x1, y1, x1 + cw, min(y1 + ch, h)))
-                    
-                elif name == "left_pan":
-                    cw = int(w * 0.55)
-                    scene_img = img.crop((0, 0, cw, h))
-                    
-                elif name == "right_pan":
-                    cw = int(w * 0.55)
-                    x1 = w - cw
-                    scene_img = img.crop((x1, 0, w, h))
-                    
-                elif name == "top_half":
-                    ch = int(h * 0.55)
-                    scene_img = img.crop((0, 0, w, ch))
-                    
-                elif name == "bottom_half":
-                    ch = int(h * 0.55)
-                    y1 = h - ch
-                    scene_img = img.crop((0, y1, w, h))
-                    
-                elif name == "tilt_left":
-                    angle = random.randint(5, 12)
-                    scene_img = img.rotate(angle, fillcolor=(0, 0, 0), expand=False)
-                    
-                elif name == "tilt_right":
-                    angle = random.randint(-12, -5)
-                    scene_img = img.rotate(angle, fillcolor=(0, 0, 0), expand=False)
-                    
-                elif name == "extreme_zoom":
-                    scale = param
-                    cw, ch = int(w * scale), int(h * scale)
-                    # Random position for variety
-                    cx = random.randint(cw // 2, max(cw // 2 + 1, w - cw // 2))
-                    cy = random.randint(ch // 2, max(ch // 2 + 1, h - ch // 2))
-                    scene_img = img.crop((cx - cw // 2, cy - ch // 2, 
-                                         cx + cw // 2, cy + ch // 2))
-                    
-                elif name == "random_crop":
-                    scale = param
-                    cw, ch = int(w * scale), int(h * scale)
-                    cx = random.randint(cw // 2, max(cw // 2 + 1, w - cw // 2))
-                    cy = random.randint(ch // 2, max(ch // 2 + 1, h - ch // 2))
-                    scene_img = img.crop((cx - cw // 2, cy - ch // 2, 
-                                         cx + cw // 2, cy + ch // 2))
-                    
-                elif name == "dark_corner":
-                    # Crop from corner (peeking/stalker POV feel)
-                    cw, ch = int(w * 0.45), int(h * 0.45)
-                    corner = random.choice(["tl", "tr", "bl", "br"])
-                    if corner == "tl":
-                        scene_img = img.crop((0, 0, cw, ch))
-                    elif corner == "tr":
-                        scene_img = img.crop((w - cw, 0, w, ch))
-                    elif corner == "bl":
-                        scene_img = img.crop((0, h - ch, cw, h))
-                    else:
-                        scene_img = img.crop((w - cw, h - ch, w, h))
+                elif name == "mirror":
+                    scene_img = img.transpose(Image.FLIP_LEFT_RIGHT)
+                elif name == "slight_rotate":
+                    angle = param if param else 2
+                    # Rotate and crop to fill frame (no black borders)
+                    rotated = img.rotate(angle, resample=Image.BICUBIC, expand=True)
+                    # Center crop back to original size to remove borders
+                    rw, rh = rotated.size
+                    left = (rw - w) // 2
+                    top = (rh - h) // 2
+                    scene_img = rotated.crop((left, top, left + w, top + h))
                 else:
                     scene_img = img.copy()
                 
-                # QUALITY GUARD: skip extreme crops on small source images
-                # If source < 1280px wide, aggressive crops would all fallback to center crop (identical)
-                if w < 1280 and name in ("extreme_zoom", "eyes_close", "dark_corner", "random_crop"):
-                    # Use full frame instead — preserves quality on small images
-                    scene_img = img.copy()
-                    print(f"[VisualEngine] Skip '{name}' (source {w}px too small) — using full frame")
-                elif scene_img.width < MIN_SRC_WIDTH:
-                    # Larger source but crop still too small — use generous center crop
-                    safe_scale = max(0.75, MIN_SRC_WIDTH / w)
-                    cw, ch = int(w * safe_scale), int(h * safe_scale)
-                    x1, y1 = (w - cw) // 2, (h - ch) // 2
-                    scene_img = img.crop((x1, y1, x1 + cw, y1 + ch))
-                    print(f"[VisualEngine] Quality guard: '{name}' too small, using {safe_scale:.0%} center crop")
-                
-                # Resize to standard 1080p resolution
+                # Resize to standard 1080p resolution (FULL SCREEN always)
                 scene_img = scene_img.resize((1920, 1080), Image.LANCZOS)
                 scene_img.save(scene_path, "PNG")
                 scenes.append(scene_path)
