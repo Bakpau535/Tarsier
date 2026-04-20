@@ -49450,5 +49450,923 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-20T13:59:33.218566",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-20T13:59:35.128593",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:35.128608",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:56.973083",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:56.973093",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:56.973097",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:56.973106",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_funny → yt_pov → yt_documenter → yt_drama → yt_anthro → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:56.974976",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T13:59:57.626502",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:00:03.952703",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Life Looks Normal But"
+    },
+    {
+        "timestamp": "2026-04-20T14:00:03.953092",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-20T14:01:06.895326",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T14:01:06.895340",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-20T14:06:05.331400",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:06:05.667050",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T14:06:05.668605",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-20T14:06:10.670614",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T14:06:11.162922",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:06:17.137437",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Hiding Truth But Also Tarsier"
+    },
+    {
+        "timestamp": "2026-04-20T14:06:17.137714",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-20T14:06:32.736450",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T14:06:32.736465",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-20T14:11:11.403753",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:11:11.747664",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T14:11:11.749222",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-20T14:11:16.751360",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T14:11:17.140159",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:11:23.216172",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Feeling Anxious But Tarsier"
+    },
+    {
+        "timestamp": "2026-04-20T14:11:23.216266",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-20T14:11:38.722708",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T14:11:38.722722",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-20T14:16:12.817022",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:16:13.162522",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T14:16:13.164141",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-20T14:16:15.504072",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-20T14:16:15.504103",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 42s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-20T14:16:57.506410",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T14:16:58.261233",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:17:04.223772",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Moonlit Deception"
+    },
+    {
+        "timestamp": "2026-04-20T14:17:04.224090",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-20T14:17:24.701998",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T14:17:24.702012",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-20T14:34:04.526506",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:34:04.959968",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T14:34:04.961520",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-20T14:34:09.963648",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T14:34:10.768820",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:34:16.950280",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Secrets Unveiled"
+    },
+    {
+        "timestamp": "2026-04-20T14:34:16.950386",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-20T14:34:37.428076",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T14:34:37.428091",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-20T14:52:05.679991",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:52:06.091749",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T14:52:06.093320",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-20T14:52:11.095428",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T14:52:11.744925",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T14:52:17.684040",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Whispers Unheard"
+    },
+    {
+        "timestamp": "2026-04-20T14:52:17.684240",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-20T14:52:38.161568",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T14:52:38.161582",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-20T15:10:17.038339",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:10:17.468158",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:10:17.469696",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-20T15:10:19.715500",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-20T15:10:19.715530",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 69s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-20T15:11:28.717747",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:11:29.451874",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:11:35.661260",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Ultrasonic Calls — Secret Language"
+    },
+    {
+        "timestamp": "2026-04-20T15:11:35.661364",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-20T15:11:46.158859",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T15:18:04.591175",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:18:05.013411",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:18:05.015015",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-20T15:18:10.017111",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:18:10.778567",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:18:16.771705",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsiers' Secret Calls — Hidden Conversations"
+    },
+    {
+        "timestamp": "2026-04-20T15:18:16.771816",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-20T15:18:27.302402",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T15:25:43.257441",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:25:43.686158",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:25:43.687728",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-20T15:25:48.689784",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:25:49.215653",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:25:55.020160",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Ultrasonic Chats — Secret Tarsier Talks"
+    },
+    {
+        "timestamp": "2026-04-20T15:25:55.020225",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-20T15:26:05.536427",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T15:33:08.263016",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:33:08.662737",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:33:08.664357",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-20T15:33:09.944501",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-20T15:33:09.944532",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 51s before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-20T15:34:00.946958",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:34:01.549350",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:34:07.619761",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Sonic Deceit"
+    },
+    {
+        "timestamp": "2026-04-20T15:34:07.619921",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-20T15:34:22.988026",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T15:40:12.308811",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:40:12.625304",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:40:12.626858",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-20T15:40:17.628997",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:40:18.189643",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:40:24.181586",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Sonic Deceit"
+    },
+    {
+        "timestamp": "2026-04-20T15:40:24.181672",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-20T15:40:39.552652",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T15:46:02.333229",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:46:02.655751",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:46:02.657375",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-20T15:46:07.659697",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:46:08.577526",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:46:14.550144",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Silent Scream"
+    },
+    {
+        "timestamp": "2026-04-20T15:46:14.550397",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-20T15:46:30.024942",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T15:52:36.650336",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:52:36.979856",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T15:52:36.981482",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-20T15:52:38.362728",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-20T15:52:38.362755",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 61s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-20T15:53:39.364999",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T15:53:40.130235",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T15:53:46.046873",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Blind Date ft. Bornean Tarsier"
+    },
+    {
+        "timestamp": "2026-04-20T15:53:46.046949",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-20T15:54:01.842029",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T16:01:02.719088",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:01:03.036690",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T16:01:03.038325",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-20T16:01:08.040358",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T16:01:08.749518",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:01:15.820990",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Blind Dates ft. Tarsius"
+    },
+    {
+        "timestamp": "2026-04-20T16:01:15.821074",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-20T16:01:31.686605",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T16:07:08.119300",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:07:08.438522",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T16:07:08.440130",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-20T16:07:13.442190",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T16:07:14.212851",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:07:20.580062",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Blind Date ft. Gerald"
+    },
+    {
+        "timestamp": "2026-04-20T16:07:20.580134",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-20T16:07:36.369164",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T16:14:05.396823",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:14:05.725485",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-20T16:14:05.727102",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-20T16:14:06.966904",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-20T16:14:06.966933",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 78s before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-20T16:15:24.969179",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Ultrasonic communication x pretending everything is fine"
+    },
+    {
+        "timestamp": "2026-04-20T16:15:25.609276",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:15:31.711516",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Primates Talk Beyond Human Hearing"
+    },
+    {
+        "timestamp": "2026-04-20T16:15:31.711597",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-20T16:15:47.546533",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-20T16:20:52.930916",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-20T16:20:53.168491",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-20T16:20:53.177850",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-20T16:20:53.293003",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-20T16:20:53.293025",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
