@@ -11,52 +11,23 @@ GROQ_MODEL = "llama-3.3-70b-versatile"
 GROQ_BASE_URL = "https://api.groq.com/openai/v1/chat/completions"
 print(f"[Config] Groq API key: {'SET' if GROQ_API_KEY else 'NOT SET'}")
 
-# Gemini 2.5 Flash — 12 key rotasi (BACKUP, currently blocked)
-_gemini_keys_raw = [
-    os.environ.get("GEMINI_API_KEY_1", ""),
-    os.environ.get("GEMINI_API_KEY_2", ""),
-    os.environ.get("GEMINI_API_KEY_3", ""),
-    os.environ.get("GEMINI_API_KEY_4", ""),
-    os.environ.get("GEMINI_API_KEY_5", ""),
-    os.environ.get("GEMINI_API_KEY_6", ""),
-    os.environ.get("GEMINI_API_KEY_7", ""),
-    os.environ.get("GEMINI_API_KEY_8", ""),
-    os.environ.get("GEMINI_API_KEY_9", ""),
-    os.environ.get("GEMINI_API_KEY_10", ""),
-    os.environ.get("GEMINI_API_KEY_11", ""),
-    os.environ.get("GEMINI_API_KEY_12", ""),
-]
-GEMINI_API_KEYS = [k for k in _gemini_keys_raw if k]
-GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
+# Gemini 2.5 Flash — SINGLE KEY (PRIMARY)
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+print(f"[Config] Gemini API key: {'SET' if GEMINI_API_KEY else 'NOT SET'}")
 
-# DIAGNOSTIC: Print key prefixes to verify secrets are loaded correctly
-print(f"[Config] Gemini keys loaded: {len(GEMINI_API_KEYS)} active")
-for i, k in enumerate(_gemini_keys_raw):
-    label = f"KEY_{i+1}"
-    prefix = k[:8] + "..." if k else "*** EMPTY ***"
-    print(f"  {label}: {prefix}")
-
-# Per-channel Gemini key assignment — each channel gets 2 dedicated keys
-# to prevent one channel from exhausting another's quota
+# All channels share the same single Gemini key
 GEMINI_KEY_MAP = {
-    "yt_documenter": os.environ.get("GEMINI_API_KEY_1", ""),
-    "yt_funny":      os.environ.get("GEMINI_API_KEY_2", ""),
-    "yt_anthro":     os.environ.get("GEMINI_API_KEY_3", ""),
-    "yt_pov":        os.environ.get("GEMINI_API_KEY_4", ""),
-    "yt_drama":      os.environ.get("GEMINI_API_KEY_5", ""),
-    "fb_fanspage":   os.environ.get("GEMINI_API_KEY_6", ""),
+    "yt_documenter": GEMINI_API_KEY,
+    "yt_funny":      GEMINI_API_KEY,
+    "yt_anthro":     GEMINI_API_KEY,
+    "yt_pov":        GEMINI_API_KEY,
+    "yt_drama":      GEMINI_API_KEY,
+    "fb_fanspage":   GEMINI_API_KEY,
 }
-# Backup Gemini keys — one extra key per channel
-GEMINI_KEY_MAP_BACKUP = {
-    "yt_documenter": os.environ.get("GEMINI_API_KEY_7", ""),
-    "yt_funny":      os.environ.get("GEMINI_API_KEY_8", ""),
-    "yt_anthro":     os.environ.get("GEMINI_API_KEY_9", ""),
-    "yt_pov":        os.environ.get("GEMINI_API_KEY_10", ""),
-    "yt_drama":      os.environ.get("GEMINI_API_KEY_11", ""),
-    "fb_fanspage":   os.environ.get("GEMINI_API_KEY_12", ""),
-}
+# No backup Gemini keys — Groq is the backup
+GEMINI_KEY_MAP_BACKUP = {k: "" for k in GEMINI_KEY_MAP}
 
-# Monitoring/Maintenance dedicated Gemini keys — isolated from all 6 channels
+# Monitoring uses DEDICATED keys (separate from pipeline)
 GEMINI_MONITORING_KEY = os.environ.get("GEMINI_API_KEY_13", "")
 GEMINI_MONITORING_KEY_BACKUP = os.environ.get("GEMINI_API_KEY_14", "")
 
