@@ -251,10 +251,15 @@ class Pipeline:
             script_segments = self._split_script_to_segments(script)
             
             if shared_images:
-                # V2 BATCH MODE: Apply channel-specific visual style to shared images
-                self._log("INFO", account_key, f"Styling {len(shared_images)} shared images for {account_key}...")
+                # V2 BATCH MODE: SHUFFLE images per channel (different order = looks different)
+                channel_images = list(shared_images)  # copy
+                random.seed(hash(account_key))  # deterministic but unique per channel
+                random.shuffle(channel_images)
+                random.seed()  # reset seed
+                
+                self._log("INFO", account_key, f"Styling {len(channel_images)} shared images for {account_key}...")
                 styled_dir = os.path.join(TMP_DIR, f"{account_key}_styled")
-                styled_scenes = style_batch_for_channel(shared_images, account_key, styled_dir)
+                styled_scenes = style_batch_for_channel(channel_images, account_key, styled_dir)
                 media_items = [("image", scene) for scene in styled_scenes]
                 self._log("INFO", account_key, f"Styled scenes: {len(media_items)}")
             else:

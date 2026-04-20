@@ -16,3 +16,5 @@ google-auth-httplib2
 pydub
 scikit-learn
 imagehash
+rembg[cpu]
+onnxruntime

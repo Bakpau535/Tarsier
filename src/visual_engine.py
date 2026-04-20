@@ -1,21 +1,61 @@
 """
 Visual Engine — Per-Channel Image Styling System
-Transforms raw tarsier images into channel-specific art styles using PIL/OpenCV.
-All processing is LOCAL — zero API cost, unlimited usage.
+Transforms raw tarsier images into channel-specific art styles.
+V3: Background removal (rembg) + themed background per channel via CF Workers AI.
 
-Styles:
-  yt_documenter: Clean NatGeo — slight desaturation, teal grade, sharpening
-  yt_funny:      Meme bright  — oversaturated, bright, high contrast
-  yt_anthro:     Cartoon       — edge detection + bilateral filter + color quantize
-  yt_pov:        Dark horror  — darkness, blue tint, heavy grain, vignette
-  yt_drama:      Cinematic    — contrast, teal-orange split tone, letterbox
-  fb_fanspage:   Bold vivid   — high saturation, sharpening, crisp
+Channels:
+  yt_documenter: REAL photo — slight color grade only (no BG change)
+  yt_funny:      Meme bright — tarsier on colorful abstract BG
+  yt_anthro:     Cartoon     — cartoon tarsier on illustrated world BG
+  yt_pov:        Dark horror — tarsier on dark misty forest BG
+  yt_drama:      Cinematic   — tarsier on dramatic landscape BG
+  fb_fanspage:   Bold vivid  — tarsier on vibrant nature BG
 """
 import os
+import io
 import random
+import requests
 import numpy as np
-from PIL import Image, ImageFilter, ImageEnhance, ImageOps
+from PIL import Image, ImageFilter, ImageEnhance, ImageOps, ImageDraw
 from typing import List, Tuple, Optional
+
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from src.config import ACCOUNTS, TMP_DIR
+
+
+# ========================================
+# THEMED BACKGROUND PROMPTS PER CHANNEL
+# CF Workers AI generates these as backgrounds
+# ========================================
+
+THEMED_BG_PROMPTS = {
+    "yt_funny": [
+        "bright colorful abstract pop art background, vibrant neon colors, comic book style, fun playful",
+        "pastel rainbow gradient background, cute kawaii style, sparkles, cheerful mood",
+        "yellow and orange explosion background, meme style, bold comic burst, internet humor",
+    ],
+    "yt_anthro": [
+        "cartoon illustration of a cozy office interior, warm colors, studio ghibli style, desk and window",
+        "cartoon city street at night, warm streetlights, illustrated, digital painting, anime style",
+        "cartoon living room interior, warm colors, children book illustration, cozy home",
+    ],
+    "yt_pov": [
+        "dark misty tropical forest at night, moonlight through trees, horror atmosphere, fog, eerie",
+        "dark jungle path at midnight, bioluminescent mushrooms, creepy fog, horror movie lighting",
+        "abandoned dark rainforest, twisted trees, heavy fog, blue moonlight, terrifying atmosphere",
+    ],
+    "yt_drama": [
+        "dramatic sunset over tropical forest, golden hour, cinematic lighting, volumetric rays",
+        "stormy sky over dense jungle, dramatic lightning, cinematic wide shot, epic atmosphere",
+        "misty mountain forest at dawn, dramatic clouds, warm golden light breaking through, emotional",
+    ],
+    "fb_fanspage": [
+        "vibrant tropical forest background, lush green leaves, bright sunlight, professional nature photography",
+        "beautiful tropical rainforest canopy, vivid colors, sharp detail, national geographic style",
+        "stunning green jungle background, rays of light, emerald leaves, ultra high quality",
+    ],
+}
 
 
 # ========================================
@@ -92,24 +132,148 @@ VISUAL_STYLES = {
 }
 
 
-def apply_channel_style(image_path: str, account_key: str, output_path: str) -> str:
-    """Apply per-channel visual style to an image.
+def _remove_background(img: Image.Image) -> Image.Image:
+    """Remove background from tarsier photo using rembg AI.
+    Returns RGBA image with transparent background.
+    Falls back to elliptical mask if rembg unavailable."""
+    try:
+        from rembg import remove
+        # Convert to bytes for rembg
+        buf = io.BytesIO()
+        img.save(buf, format="PNG")
+        buf.seek(0)
+        result = remove(buf.read())
+        return Image.open(io.BytesIO(result)).convert("RGBA")
+    except Exception as e:
+        print(f"[VisualEngine] rembg failed ({e}), using elliptical mask fallback")
+        return _elliptical_mask_fallback(img)
+
+
+def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
+    """Create elliptical soft-edge mask (fallback when rembg unavailable)."""
+    w, h = img.size
+    rgba = img.convert("RGBA")
+    mask = Image.new("L", (w, h), 0)
+    draw = ImageDraw.Draw(mask)
+    # Ellipse covers center 70% of image
+    margin_x, margin_y = int(w * 0.15), int(h * 0.10)
+    draw.ellipse([margin_x, margin_y, w - margin_x, h - margin_y], fill=255)
+    # Blur edges for soft transition
+    mask = mask.filter(ImageFilter.GaussianBlur(radius=30))
+    rgba.putalpha(mask)
+    return rgba
+
+
+def _generate_themed_background(account_key: str, width: int, height: int, index: int = 0) -> Image.Image:
+    """Generate a themed background using CF Workers AI.
+    Falls back to solid color gradient if CF unavailable."""
+    prompts = THEMED_BG_PROMPTS.get(account_key, [])
+    if not prompts:
+        return _gradient_fallback(account_key, width, height)
     
-    Args:
-        image_path: Path to raw source image
-        account_key: Channel identifier (e.g. 'yt_documenter')
-        output_path: Where to save the styled image
+    prompt = prompts[index % len(prompts)]
+    
+    # Get CF credentials for this channel
+    cf_config = ACCOUNTS.get(account_key, {})
+    account_id = cf_config.get("account_id", "")
+    api_token = cf_config.get("api_token", "")
+    
+    if not account_id or not api_token:
+        print(f"[VisualEngine] No CF credentials for {account_key}, using gradient fallback")
+        return _gradient_fallback(account_key, width, height)
+    
+    try:
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+        headers = {"Authorization": f"Bearer {api_token}"}
+        payload = {"prompt": prompt, "width": min(width, 1024), "height": min(height, 1024)}
         
-    Returns:
-        Path to styled image, or original if styling fails
+        print(f"[VisualEngine] Generating {account_key} themed BG: {prompt[:60]}...")
+        resp = requests.post(url, headers=headers, json=payload, timeout=60)
+        
+        if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
+            bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+            bg = bg.resize((width, height), Image.LANCZOS)
+            print(f"[VisualEngine] CF themed BG generated for {account_key}")
+            return bg
+        else:
+            print(f"[VisualEngine] CF BG failed ({resp.status_code}), using gradient")
+            return _gradient_fallback(account_key, width, height)
+    except Exception as e:
+        print(f"[VisualEngine] CF BG error: {e}")
+        return _gradient_fallback(account_key, width, height)
+
+
+def _gradient_fallback(account_key: str, width: int, height: int) -> Image.Image:
+    """Generate a solid gradient background as fallback."""
+    GRADIENTS = {
+        "yt_funny":    ((255, 200, 50), (255, 100, 50)),    # Yellow → Orange
+        "yt_anthro":   ((255, 200, 130), (230, 160, 80)),   # Warm peach → Amber
+        "yt_pov":      ((10, 10, 30), (20, 40, 50)),        # Near black → Dark blue
+        "yt_drama":    ((30, 20, 10), (80, 50, 20)),        # Dark → Warm brown
+        "fb_fanspage": ((20, 80, 20), (50, 150, 50)),       # Dark green → Forest
+    }
+    top, bottom = GRADIENTS.get(account_key, ((30, 30, 30), (60, 60, 60)))
+    arr = np.zeros((height, width, 3), dtype=np.uint8)
+    for y in range(height):
+        ratio = y / height
+        arr[y, :] = [int(top[c] + (bottom[c] - top[c]) * ratio) for c in range(3)]
+    return Image.fromarray(arr)
+
+
+def _composite_on_background(tarsier_rgba: Image.Image, background: Image.Image) -> Image.Image:
+    """Place tarsier (with transparent BG) centered on themed background."""
+    bg = background.copy().convert("RGBA")
+    fg = tarsier_rgba.copy()
+    
+    # Resize tarsier to fit ~85% of background
+    bg_w, bg_h = bg.size
+    fg_w, fg_h = fg.size
+    scale = min(bg_w * 0.85 / fg_w, bg_h * 0.85 / fg_h)
+    new_w, new_h = int(fg_w * scale), int(fg_h * scale)
+    fg = fg.resize((new_w, new_h), Image.LANCZOS)
+    
+    # Center position
+    x = (bg_w - new_w) // 2
+    y = (bg_h - new_h) // 2
+    
+    bg.paste(fg, (x, y), fg)  # Use alpha channel as mask
+    return bg.convert("RGB")
+
+
+def apply_channel_style(image_path: str, account_key: str, output_path: str,
+                        image_index: int = 0) -> str:
+    """Apply per-channel visual style to an image.
+    V3: Background removal + themed background + color styling.
+    
+    Flow for non-documenter channels:
+    1. Remove background from tarsier photo (rembg)
+    2. Generate themed background (CF Workers AI)
+    3. Composite tarsier onto themed BG
+    4. Apply channel color filters
+    
+    Documenter keeps original photo (real footage look).
     """
     try:
         img = Image.open(image_path).convert("RGB")
         style = VISUAL_STYLES.get(account_key, VISUAL_STYLES["fb_fanspage"])
+        w, h = img.size
         
         print(f"[VisualEngine] Applying '{style['name']}' style to {os.path.basename(image_path)}")
         
-        # 1. Special effects first (cartoon, letterbox, etc.)
+        # ====== V3: BACKGROUND REPLACEMENT (non-documenter only) ======
+        if account_key != "yt_documenter" and account_key in THEMED_BG_PROMPTS:
+            print(f"[VisualEngine] [{account_key}] Background replacement...")
+            # Step A: Remove background
+            tarsier_rgba = _remove_background(img)
+            # Step B: Generate themed background
+            themed_bg = _generate_themed_background(account_key, w, h, image_index)
+            # Step C: Composite
+            img = _composite_on_background(tarsier_rgba, themed_bg)
+            print(f"[VisualEngine] [{account_key}] Composite done!")
+        
+        # ====== CHANNEL COLOR FILTERS ======
+        
+        # 1. Special effects (cartoon, letterbox, etc.)
         if style["special"] == "cartoon":
             img = _apply_cartoon_filter(img)
         elif style["special"] == "funny_crop":
@@ -157,7 +321,6 @@ def apply_channel_style(image_path: str, account_key: str, output_path: str) -> 
         
     except Exception as e:
         print(f"[VisualEngine] Error applying style: {e}")
-        # Fallback: copy original
         try:
             import shutil
             shutil.copy2(image_path, output_path)
@@ -362,9 +525,9 @@ def style_batch_for_channel(raw_images: List[str], account_key: str,
         if not os.path.exists(raw_path):
             continue
             
-        # Step 1: Apply channel visual style
+        # Step 1: Apply channel visual style (V3: with background replacement)
         styled_path = os.path.join(output_dir, f"{account_key}_styled_{i}.png")
-        apply_channel_style(raw_path, account_key, styled_path)
+        apply_channel_style(raw_path, account_key, styled_path, image_index=i)
         
         # Step 2: Generate scene variations from styled image
         scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=3)
