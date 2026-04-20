@@ -25,13 +25,14 @@ class VideoAssembler:
         self.fps = 24
 
     def _get_dimensions(self, account_key: str) -> Tuple[int, int]:
-        """Per-channel resolution based on aspect_ratio profile."""
+        """Per-channel resolution based on aspect_ratio profile.
+        V3: ALL channels are VERTICAL 9:16 (1080x1920)."""
         profile = VIDEO_PROFILES.get(account_key, VIDEO_PROFILES["fb_fanspage"])
-        ratio = profile.get("aspect_ratio", "16:9")
+        ratio = profile.get("aspect_ratio", "9:16")
         if ratio == "1:1":
             return 1080, 1080  # Square for Facebook
         else:
-            return 1920, 1080  # Standard 16:9
+            return 1080, 1920  # VERTICAL 9:16 (shorts format)
 
     def _apply_letterbox(self, frame: np.ndarray, account_key: str) -> np.ndarray:
         """Apply cinematic letterbox (2.35:1) for drama channel."""

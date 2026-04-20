@@ -381,7 +381,7 @@ def generate_scene_variations(image_path: str, account_key: str,
                     scene_img = img.copy()
                 
                 # Resize to standard 1080p resolution (FULL SCREEN always)
-                scene_img = scene_img.resize((1920, 1080), Image.LANCZOS)
+                scene_img = scene_img.resize((1080, 1920), Image.LANCZOS)
                 scene_img.save(scene_path, "PNG")
                 scenes.append(scene_path)
                 

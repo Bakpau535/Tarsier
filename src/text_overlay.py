@@ -265,7 +265,7 @@ def _render_line(draw: ImageDraw.Draw, text: str, img_width: int, y: int,
 
 
 def generate_title_card(text: str, account_key: str, 
-                        width: int = 1920, height: int = 1080) -> np.ndarray:
+                        width: int = 1080, height: int = 1920) -> np.ndarray:
     """Generate a full-screen title card (used for episode titles, scene cards etc.)"""
     style = TEXT_STYLES.get(account_key, TEXT_STYLES["fb_fanspage"])
     

@@ -23,7 +23,7 @@ from src.research import ResearchEngine
 from src.script_engine import ScriptEngine
 from src.media_gen import MediaGenerator
 from src.assemble import VideoAssembler
-from src.shorts_extractor import ShortsExtractor
+# shorts_extractor removed — all videos are vertical shorts from scratch
 from src.qc import QualityControl
 from src.thumbnail import ThumbnailGenerator
 from src.metadata import MetadataGenerator
@@ -38,7 +38,7 @@ class Pipeline:
         self.script_engine = ScriptEngine()
         self.media_gen = MediaGenerator()
         self.assembler = VideoAssembler()
-        self.shorts_extractor = ShortsExtractor()
+        # self.shorts_extractor removed — all videos are vertical shorts from scratch
         self.qc = QualityControl()
         self.thumbnail_gen = ThumbnailGenerator()
         self.metadata_gen = MetadataGenerator()
@@ -298,9 +298,8 @@ class Pipeline:
             if not self.qc.evaluate(final_video, metadata, target_duration, account_key):
                 raise ValueError("Quality Control failed. Score below 80/100.")
 
-            # 9. Extract Shorts → auto-detect hook terbaik (Bagian 4 Step 9)
-            short_video = self.shorts_extractor.extract_hook(final_video, account_key, topic_name)
-            self._log("INFO", account_key, "Shorts extracted.")
+            # 9. Shorts extraction REMOVED — all videos are already vertical shorts format
+            short_video = None
 
             # 10. Thumbnail → auto-generate sesuai template branding per akun (Bagian 4 Step 10)
             thumbnail_img = self.thumbnail_gen.generate(account_key, metadata.get('title', 'Title'), topic_name)

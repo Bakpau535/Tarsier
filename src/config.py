@@ -188,7 +188,7 @@ VIDEO_PROFILES = {
     "yt_documenter": {
         "cut_duration": (5, 9),        # seconds per shot — slow, documentary pace
         "transition": "dissolve",       # dissolve 0.5s between shots
-        "aspect_ratio": "16:9",
+        "aspect_ratio": "9:16",
         "letterbox": False,
         "tarsier_min_pct": 75,          # tarsier on-screen minimum 75%
         "has_voiceover": True,
@@ -201,7 +201,7 @@ VIDEO_PROFILES = {
     "yt_funny": {
         "cut_duration": (1, 3),         # fast energetic cuts
         "transition": "hard_cut",       # NO dissolve — punchy hard cuts
-        "aspect_ratio": "16:9",
+        "aspect_ratio": "9:16",
         "letterbox": False,
         "tarsier_min_pct": 85,          # tarsier dominant
         "has_voiceover": False,         # ZERO voiceover — captions + sound effects only
@@ -214,7 +214,7 @@ VIDEO_PROFILES = {
     "yt_anthro": {
         "cut_duration": (3, 5),         # medium pace
         "transition": "dissolve",
-        "aspect_ratio": "16:9",
+        "aspect_ratio": "9:16",
         "letterbox": False,
         "tarsier_min_pct": 70,
         "has_voiceover": True,
@@ -227,7 +227,7 @@ VIDEO_PROFILES = {
     "yt_pov": {
         "cut_duration": (6, 12),        # slowest — cinematic breathing room
         "transition": "dissolve",       # dissolve or fade ONLY, NO hard cuts
-        "aspect_ratio": "16:9",
+        "aspect_ratio": "9:16",
         "letterbox": False,
         "tarsier_min_pct": 80,
         "has_voiceover": False,         # NO VO — POV relies on ambience only (blueprint)
@@ -240,7 +240,7 @@ VIDEO_PROFILES = {
     "yt_drama": {
         "cut_duration": (2, 12),        # variable — 2s action, 8-12s emotional moments
         "transition": "dissolve",
-        "aspect_ratio": "16:9",
+        "aspect_ratio": "9:16",
         "letterbox": True,              # black bars top+bottom for cinematic 2.35:1
         "tarsier_min_pct": 65,          # lowest — intentional environment scenes
         "has_voiceover": True,
@@ -268,9 +268,10 @@ VIDEO_PROFILES = {
 # --- Pipeline Constants ---
 MINIMUM_QC_SCORE = 80
 MAX_RETRIES = 3
-VIDEO_RESOLUTION = "1080p"
+VIDEO_WIDTH = 1080
+VIDEO_HEIGHT = 1920
+VIDEO_RESOLUTION = "1080x1920"  # VERTICAL 9:16
 CLIP_DURATION_SEC = 6
-SHORT_DURATIONS_SEC = (15, 30)
 
 # --- YouTube OAuth2 Credentials (per akun) ---
 # Mapping akun YT ke credential JSON dari .env
