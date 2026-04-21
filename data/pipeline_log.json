@@ -50368,5 +50368,923 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-04-21T02:23:02.086635",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-21T02:23:08.013701",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:08.013719",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:31.117996",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:31.118007",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:31.118011",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:31.118018",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_drama → yt_funny → yt_documenter → fb_fanspage → yt_pov → yt_anthro"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:31.119350",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:32.973324",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:23:39.572158",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Tarsier Teeth"
+    },
+    {
+        "timestamp": "2026-04-21T02:23:39.572318",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-21T02:24:36.282518",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T02:30:39.442171",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:30:39.711335",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T02:30:39.712644",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-21T02:30:44.714271",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:30:45.583924",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:30:51.654965",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Nocturnal Hunters"
+    },
+    {
+        "timestamp": "2026-04-21T02:30:51.655095",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-21T02:31:07.597701",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T02:35:53.036690",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:35:53.322176",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T02:35:53.323479",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-21T02:35:58.325147",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:35:59.157038",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:36:05.201165",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Tarsier Tenacity"
+    },
+    {
+        "timestamp": "2026-04-21T02:36:05.201252",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-21T02:36:21.152181",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T02:43:07.868908",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:43:08.156360",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T02:43:08.157687",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-21T02:43:09.726671",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T02:43:09.726709",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 83s before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-21T02:44:32.728523",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:44:33.446249",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:44:39.689680",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: When Hungry But Tarsier"
+    },
+    {
+        "timestamp": "2026-04-21T02:44:39.689827",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-21T02:44:53.360758",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T02:44:53.360777",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T02:48:20.051670",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:48:20.369073",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T02:48:20.370461",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-21T02:48:25.372129",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:48:26.136507",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:48:32.077338",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Surviving Harsh: Tarsier Style"
+    },
+    {
+        "timestamp": "2026-04-21T02:48:32.077418",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-21T02:48:45.836309",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T02:48:45.836329",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T02:52:17.343611",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:52:17.637639",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T02:52:17.639061",
+        "level": "WARN",
+        "account": "yt_funny",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-21T02:52:22.640745",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:52:23.412770",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:52:29.564784",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: When Hungry But Tarsier"
+    },
+    {
+        "timestamp": "2026-04-21T02:52:29.564863",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-21T02:52:43.374242",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T02:52:43.374259",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T02:56:14.631696",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:56:14.955822",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T02:56:14.957193",
+        "level": "ERROR",
+        "account": "yt_funny",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-21T02:56:16.379641",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T02:56:16.379678",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 66s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-21T02:57:22.381522",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T02:57:22.970351",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T02:57:29.198488",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Teeth — Long Canines"
+    },
+    {
+        "timestamp": "2026-04-21T02:57:29.198564",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-21T02:57:42.650380",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:03:11.865098",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:03:12.227055",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T03:03:12.228361",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-21T03:03:17.230091",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T03:03:17.759555",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:03:23.862179",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Teeth Are Unique — 34 Teeth"
+    },
+    {
+        "timestamp": "2026-04-21T03:03:23.862394",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-21T03:03:37.367119",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:09:02.565605",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:09:02.920412",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T03:09:02.921823",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-21T03:09:07.923479",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T03:09:08.840073",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:09:14.708668",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Teeth Are Resilient — Sharp Canines"
+    },
+    {
+        "timestamp": "2026-04-21T03:09:14.708899",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-21T03:09:28.193301",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:14:37.306033",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:14:37.670660",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T03:14:37.671996",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-21T03:14:39.130210",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T03:14:39.130246",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 39s before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-21T03:15:18.132117",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T03:15:18.869359",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:15:24.989928",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsiers Have 34 Teeth"
+    },
+    {
+        "timestamp": "2026-04-21T03:15:24.990146",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-21T03:15:39.285600",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:19:37.497183",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:19:37.713091",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T03:19:37.718025",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-21T03:19:37.895620",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T03:19:37.895657",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 86s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-21T03:21:03.897470",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T03:21:04.531131",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:21:10.606208",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Forest Shadows"
+    },
+    {
+        "timestamp": "2026-04-21T03:21:10.606288",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-21T03:21:29.709127",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:21:29.709144",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T03:34:58.930935",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:34:59.287226",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T03:34:59.288566",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-21T03:35:04.290262",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T03:35:05.132548",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:35:12.352311",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Tarsiers Unleashed"
+    },
+    {
+        "timestamp": "2026-04-21T03:35:12.352388",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-21T03:35:31.389576",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:35:31.389594",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T03:49:22.327743",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:49:22.681227",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T03:49:22.682572",
+        "level": "WARN",
+        "account": "yt_pov",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-21T03:49:27.684250",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T03:49:28.394501",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T03:49:34.399573",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Shadows Bite"
+    },
+    {
+        "timestamp": "2026-04-21T03:49:34.399690",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-21T03:49:53.689689",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T03:49:53.689708",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T04:03:54.223369",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:03:54.573402",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T04:03:54.574803",
+        "level": "ERROR",
+        "account": "yt_pov",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-21T04:03:56.125138",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T04:03:56.125170",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 78s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-21T04:05:14.127051",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T04:05:14.808318",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:05:20.953343",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Morning Commute ft. Gerald"
+    },
+    {
+        "timestamp": "2026-04-21T04:05:20.953568",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-21T04:05:34.391065",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T04:10:45.702556",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:10:46.019333",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T04:10:46.020676",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-21T04:10:51.022384",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T04:10:51.747287",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:10:57.764236",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Morning Routine ft. Tarsius"
+    },
+    {
+        "timestamp": "2026-04-21T04:10:57.764305",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-21T04:11:11.240251",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T04:15:20.091840",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:15:20.400578",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T04:15:20.402002",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-21T04:15:25.403663",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier dental formula and teeth x resilience"
+    },
+    {
+        "timestamp": "2026-04-21T04:15:26.052130",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:15:32.207161",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Morning Routine ft. Tarsius"
+    },
+    {
+        "timestamp": "2026-04-21T04:15:32.207273",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-21T04:15:45.904984",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T04:20:35.226629",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T04:20:35.544077",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: Quality Control failed. Score below 80/100."
+    },
+    {
+        "timestamp": "2026-04-21T04:20:35.545423",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-21T04:20:36.895138",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T04:20:36.895166",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
