@@ -1316,18 +1316,18 @@ class MediaGenerator:
             for query in queries:
                 try:
                     print(f"[{account_key}] Freesound search: '{query}'...")
-                    # Randomize page to get different results each run
-                    rand_page = random.randint(1, 5)
+                    # Use page 1 (higher pages often 404) + random sort for variety
+                    sort_options = ["rating_desc", "downloads_desc", "created_desc"]
                     r = requests.get(
                         "https://freesound.org/apiv2/search/text/",
                         params={
                             "query": query,
                             "token": FREESOUND_API_KEY,
                             "fields": "id,name,duration,previews",
-                            "filter": "duration:[45 TO 300]",  # 45s-5min tracks only (short clips are usually ambient/SFX)
-                            "sort": "rating_desc",
+                            "filter": "duration:[45 TO 300]",
+                            "sort": random.choice(sort_options),
                             "page_size": 15,
-                            "page": rand_page,
+                            "page": 1,
                         },
                         timeout=15
                     )
