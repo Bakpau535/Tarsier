@@ -51286,5 +51286,419 @@
         "level": "WARN",
         "account": "SYSTEM",
         "message": "Pipeline finished with errors. Skipping cleanup for debugging."
+    },
+    {
+        "timestamp": "2026-04-21T19:51:11.296328",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-21T19:51:15.691457",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:15.691475",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:35.909806",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:35.909820",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:35.909824",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:35.909834",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): fb_fanspage → yt_pov → yt_anthro → yt_funny → yt_documenter → yt_drama"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:35.911449",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:38.627747",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T19:51:46.311378",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsiers Leap 5 Feet"
+    },
+    {
+        "timestamp": "2026-04-21T19:51:46.311561",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-21T19:52:43.716161",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T20:00:36.784762",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:00:37.004137",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T20:00:37.020552",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-21T20:00:37.169712",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T20:00:37.169742",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 54s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-21T20:01:31.171699",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T20:01:31.903652",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:01:38.104204",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Tarsier Survival"
+    },
+    {
+        "timestamp": "2026-04-21T20:01:38.104319",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-21T20:01:57.844472",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T20:01:57.844487",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T20:10:41.993352",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:10:42.430387",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T20:10:42.482883",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "PREVIEW MODE: Files saved to output/yt_pov/"
+    },
+    {
+        "timestamp": "2026-04-21T20:10:42.649860",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T20:10:42.649897",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 90s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-21T20:12:12.652199",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T20:12:13.720434",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:12:19.788960",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Rush Hour ft. Tarsius"
+    },
+    {
+        "timestamp": "2026-04-21T20:12:19.789048",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-21T20:12:33.086379",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T20:24:18.744108",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:24:19.068933",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T20:24:19.086829",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "PREVIEW MODE: Files saved to output/yt_anthro/"
+    },
+    {
+        "timestamp": "2026-04-21T20:24:19.240212",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T20:24:19.240242",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 66s before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-21T20:25:25.242242",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T20:25:25.903819",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:25:32.070878",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Under Attack: Tarsier Leaps"
+    },
+    {
+        "timestamp": "2026-04-21T20:25:32.071146",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-21T20:25:44.533799",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T20:25:44.533816",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-21T20:30:25.185321",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:30:25.473059",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T20:30:25.488131",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "PREVIEW MODE: Files saved to output/yt_funny/"
+    },
+    {
+        "timestamp": "2026-04-21T20:30:25.630799",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T20:30:25.630835",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 68s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-21T20:31:33.632830",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T20:31:34.259345",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:31:40.526092",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Jumps — Long Toes Propel"
+    },
+    {
+        "timestamp": "2026-04-21T20:31:40.526200",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-21T20:31:50.164920",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T20:39:34.552198",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:39:35.039318",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T20:39:35.072083",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "PREVIEW MODE: Files saved to output/yt_documenter/"
+    },
+    {
+        "timestamp": "2026-04-21T20:39:35.233552",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T20:39:35.233584",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 46s before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-21T20:40:21.235655",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Jumping and locomotion mechanics x encounter with a predator"
+    },
+    {
+        "timestamp": "2026-04-21T20:40:22.002701",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:40:28.114075",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Tarsier Escapes"
+    },
+    {
+        "timestamp": "2026-04-21T20:40:28.114177",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-21T20:40:42.769490",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 18"
+    },
+    {
+        "timestamp": "2026-04-21T20:49:00.543428",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-21T20:49:00.899055",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-21T20:49:00.935752",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "PREVIEW MODE: Files saved to output/yt_drama/"
+    },
+    {
+        "timestamp": "2026-04-21T20:49:01.085585",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-21T20:49:01.085611",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
