@@ -36,17 +36,23 @@ class QualityControl:
                 if w >= 1080 and h >= 1080:
                     print(f"QC Resolution: {w}x{h} (1:1 square) — PASS")
                     return self.criteria["resolution"]
+            elif aspect == "9:16":
+                # VERTICAL shorts format — 1080x1920 minimum
+                if w >= 1080 and h >= 1920:
+                    print(f"QC Resolution: {w}x{h} (9:16 vertical) — PASS")
+                    return self.criteria["resolution"]
+                # Accept close matches (e.g. 1080x1906 from letterbox)
+                if w >= 1080 and h >= 1800:
+                    print(f"QC Resolution: {w}x{h} (9:16 near-vertical) — PASS")
+                    return self.criteria["resolution"]
             else:
-                # YouTube 16:9 format — 1920x1080 minimum
+                # Standard 16:9 format — 1920x1080 minimum
                 if w >= 1920 and h >= 1080:
                     print(f"QC Resolution: {w}x{h} (16:9) — PASS")
                     return self.criteria["resolution"]
-                # Also accept letterboxed drama (1920xAny with effective 2.35:1)
-                if w >= 1920 and h >= 800:
-                    print(f"QC Resolution: {w}x{h} (letterboxed) — PASS")
-                    return self.criteria["resolution"]
             
-            print(f"QC Resolution: {w}x{h} — FAIL (expected {'1080x1080' if aspect == '1:1' else '1920x1080'})")
+            expected = "1080x1080" if aspect == "1:1" else ("1080x1920" if aspect == "9:16" else "1920x1080")
+            print(f"QC Resolution: {w}x{h} — FAIL (expected {expected})")
             return 0
         except Exception as e:
             print(f"QC Resolution check error: {e}")

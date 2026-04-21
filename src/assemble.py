@@ -395,6 +395,12 @@ class VideoAssembler:
                     audio_clips.append(voice)
                 except Exception as e:
                     print(f"[{account_key}] Voiceover load failed (skipping): {e}")
+            else:
+                # NO VOICEOVER — cap video to max 60s for shorts format
+                MAX_NO_VO_DURATION = 60.0
+                if final_video.duration > MAX_NO_VO_DURATION:
+                    final_video = final_video.subclipped(0, MAX_NO_VO_DURATION)
+                    print(f"[{account_key}] No VO: capped video to {MAX_NO_VO_DURATION:.0f}s")
 
             if processed_music and os.path.exists(processed_music):
                 try:
