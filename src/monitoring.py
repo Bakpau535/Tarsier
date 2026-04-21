@@ -504,5 +504,7 @@ class PerformanceMonitor:
 
 
 if __name__ == "__main__":
+    print(f"[Monitoring] Gemini-13 key: {'SET' if GEMINI_MONITORING_KEY else 'NOT SET'}")
+    print(f"[Monitoring] Groq-2 key: {'SET' if GROQ_MONITORING_KEY else 'NOT SET'}")
     monitor = PerformanceMonitor()
     monitor.run_maintenance()

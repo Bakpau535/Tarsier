@@ -29,10 +29,9 @@ GEMINI_KEY_MAP_BACKUP = {k: "" for k in GEMINI_KEY_MAP}
 
 # Monitoring uses DEDICATED keys (separate from pipeline)
 # PRIMARY: Gemini API Key 13 | SECONDARY: Groq API Key 2
+# These are ONLY injected by monitoring_schedule.yml — NOT by pipeline workflows
 GEMINI_MONITORING_KEY = os.environ.get("GEMINI_API_KEY_13", "")
 GROQ_MONITORING_KEY = os.environ.get("GROQ_API_KEY_2", "")
-print(f"[Config] Monitoring PRIMARY (Gemini-13): {'SET' if GEMINI_MONITORING_KEY else 'NOT SET'}")
-print(f"[Config] Monitoring SECONDARY (Groq-2): {'SET' if GROQ_MONITORING_KEY else 'NOT SET'}")
 
 # === Cloudflare Workers AI — PRIMARY image generation ===
 # 12 CF accounts (2 per channel): Account ID + API Token
