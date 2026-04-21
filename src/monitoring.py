@@ -30,7 +30,7 @@ from googleapiclient.errors import HttpError
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import (ACCOUNTS, TOPICS_FILE, GEMINI_MONITORING_KEY, 
-                         GEMINI_MONITORING_KEY_BACKUP)
+                         GROQ_MONITORING_KEY)
 from src.database import DatabaseManager
 from src.metadata import MetadataGenerator
 from src.thumbnail import ThumbnailGenerator
@@ -194,14 +194,17 @@ class PerformanceMonitor:
                     snippet = response["items"][0]["snippet"]
                     old_title = snippet.get("title", "")
                     
-                    # Generate fresh metadata via Gemini (lazy init with monitoring keys)
+                    # Generate fresh metadata via Gemini primary + Groq secondary
                     if not self._metadata_gen:
                         try:
-                            mon_keys = [k for k in [GEMINI_MONITORING_KEY, GEMINI_MONITORING_KEY_BACKUP] if k]
-                            self._metadata_gen = MetadataGenerator(dedicated_keys=mon_keys)
+                            mon_keys = [k for k in [GEMINI_MONITORING_KEY] if k]
+                            self._metadata_gen = MetadataGenerator(
+                                dedicated_keys=mon_keys,
+                                groq_key_override=GROQ_MONITORING_KEY
+                            )
                         except Exception:
                             self._metadata_gen = None
-                            actions_taken.append("Gemini monitoring keys unavailable")
+                            actions_taken.append("Monitoring API keys unavailable")
                     
                     if self._metadata_gen:
                         fresh_meta = self._metadata_gen.generate(

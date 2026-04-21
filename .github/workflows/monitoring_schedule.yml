@@ -53,8 +53,9 @@ jobs:
           # Gemini API (single key for pipeline)
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           # Monitoring dedicated keys (separate from pipeline)
+          # PRIMARY: Gemini API Key 13 | SECONDARY: Groq API Key 2
           GEMINI_API_KEY_13: ${{ secrets.GEMINI_API_KEY_13 }}
-          GEMINI_API_KEY_14: ${{ secrets.GEMINI_API_KEY_14 }}
+          GROQ_API_KEY_2: ${{ secrets.GROQ_API_KEY_2 }}
           # HF API Keys
           HF_API_KEY_1: ${{ secrets.HF_API_KEY_1 }}
           HF_API_KEY_2: ${{ secrets.HF_API_KEY_2 }}

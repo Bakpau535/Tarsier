@@ -11,18 +11,20 @@ from src.config import (GROQ_API_KEY, GROQ_MODEL, GROQ_BASE_URL,
 from src.persona_prompts import METADATA_TITLE_PROMPTS
 
 class MetadataGenerator:
-    def __init__(self, dedicated_keys: list = None):
+    def __init__(self, dedicated_keys: list = None, groq_key_override: str = None):
         """Initialize with Gemini (primary) + Groq (backup).
         
         Args:
             dedicated_keys: Optional dedicated Gemini keys (for monitoring).
+            groq_key_override: Optional dedicated Groq key (for monitoring).
         """
         # Use dedicated keys if provided, else use global GEMINI_API_KEY
         if dedicated_keys and any(dedicated_keys):
             self._gemini_key = next((k for k in dedicated_keys if k), "")
         else:
             self._gemini_key = GEMINI_API_KEY
-        self._groq_key = GROQ_API_KEY
+        # Use dedicated Groq key if provided, else use global GROQ_API_KEY
+        self._groq_key = groq_key_override if groq_key_override else GROQ_API_KEY
         self._gemini_blocked = False
         
         provider = "Gemini+Groq" if self._gemini_key else "Groq only"
