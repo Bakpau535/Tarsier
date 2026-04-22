@@ -72,6 +72,19 @@ def process_audio(voice_path: Optional[str], music_path: Optional[str],
         try:
             music = AudioSegment.from_file(music_path)
             
+            # Trim leading silence — Freesound previews often have silent intros
+            def _detect_leading_silence(sound, silence_threshold=-40.0, chunk_size=50):
+                """Returns ms of leading silence."""
+                trim_ms = 0
+                while trim_ms < len(sound) and sound[trim_ms:trim_ms+chunk_size].dBFS < silence_threshold:
+                    trim_ms += chunk_size
+                return trim_ms
+            
+            leading_ms = _detect_leading_silence(music)
+            if leading_ms > 200:  # More than 200ms silence = trim it
+                music = music[leading_ms:]
+                print(f"[{account_key}] Trimmed {leading_ms}ms leading silence from music")
+            
             # Apply channel-specific music volume
             music_vol = spec["music_normal"]
             

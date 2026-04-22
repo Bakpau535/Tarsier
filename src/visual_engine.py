@@ -21,7 +21,7 @@ from typing import List, Tuple, Optional
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import ACCOUNTS, TMP_DIR
+from src.config import ACCOUNTS, TMP_DIR, CF_ACCOUNTS, HF_API_KEYS
 
 
 # ========================================
@@ -29,31 +29,39 @@ from src.config import ACCOUNTS, TMP_DIR
 # CF Workers AI generates these as backgrounds
 # ========================================
 
+# NEGATIVE PROMPT appended to all BG generation requests
+_BG_NEGATIVE = "no humans, no people, no person, no face, no hands, no text, no watermark"
+
 THEMED_BG_PROMPTS = {
     "yt_funny": [
-        "bright colorful abstract pop art background, vibrant neon colors, comic book style, fun playful",
-        "pastel rainbow gradient background, cute kawaii style, sparkles, cheerful mood",
-        "yellow and orange explosion background, meme style, bold comic burst, internet humor",
+        "bright colorful abstract pop art background, vibrant neon colors, comic book style, fun playful, empty scene, no characters",
+        "pastel rainbow gradient background with geometric shapes, cute kawaii style, sparkles, cheerful mood, empty background",
+        "yellow and orange comic burst explosion background, meme style, bold rays, internet humor, no characters",
+        "tropical jungle clearing with funny oversized flowers, whimsical cartoon style, bright colors, empty scene",
     ],
     "yt_anthro": [
-        "cartoon illustration of a cozy office interior, warm colors, studio ghibli style, desk and window",
-        "cartoon city street at night, warm streetlights, illustrated, digital painting, anime style",
-        "cartoon living room interior, warm colors, children book illustration, cozy home",
+        "cartoon illustration of a cozy forest treehouse interior, warm colors, studio ghibli style, empty room",
+        "cartoon city street at night, warm streetlights, illustrated, digital painting, anime style, empty scene",
+        "cartoon tropical jungle clearing, warm sunlight, children book illustration, whimsical, empty scene",
+        "illustrated cozy coffee shop interior, warm lighting, cartoon style, empty scene, no characters",
     ],
     "yt_pov": [
-        "dark misty tropical forest at night, moonlight through trees, horror atmosphere, fog, eerie",
-        "dark jungle path at midnight, bioluminescent mushrooms, creepy fog, horror movie lighting",
-        "abandoned dark rainforest, twisted trees, heavy fog, blue moonlight, terrifying atmosphere",
+        "dark misty tropical forest at night, moonlight through trees, horror atmosphere, fog, eerie, empty scene",
+        "dark jungle path at midnight, bioluminescent mushrooms, creepy fog, horror movie lighting, empty path",
+        "abandoned dark rainforest, twisted trees, heavy fog, blue moonlight, terrifying atmosphere, no characters",
+        "dense dark forest with glowing eyes in shadows, horror atmosphere, moonlit clearing, empty scene",
     ],
     "yt_drama": [
-        "dramatic sunset over tropical forest, golden hour, cinematic lighting, volumetric rays",
-        "stormy sky over dense jungle, dramatic lightning, cinematic wide shot, epic atmosphere",
-        "misty mountain forest at dawn, dramatic clouds, warm golden light breaking through, emotional",
+        "dramatic sunset over tropical forest, golden hour, cinematic lighting, volumetric rays, empty landscape",
+        "stormy sky over dense jungle, dramatic lightning, cinematic wide shot, epic atmosphere, no characters",
+        "misty mountain forest at dawn, dramatic clouds, warm golden light breaking through, emotional, empty scene",
+        "tropical rainforest canopy from above, golden hour light rays, cinematic drone shot, empty landscape",
     ],
     "fb_fanspage": [
-        "vibrant tropical forest background, lush green leaves, bright sunlight, professional nature photography",
-        "beautiful tropical rainforest canopy, vivid colors, sharp detail, national geographic style",
-        "stunning green jungle background, rays of light, emerald leaves, ultra high quality",
+        "vibrant tropical forest background, lush green leaves, bright sunlight, professional nature photography, empty scene",
+        "beautiful tropical rainforest canopy, vivid colors, sharp detail, national geographic style, no characters",
+        "stunning green jungle background, rays of light, emerald leaves, ultra high quality, empty scene",
+        "tropical paradise forest clearing, crystal clear stream, lush vegetation, professional photo, empty scene",
     ],
 }
 
@@ -165,42 +173,65 @@ def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
 
 
 def _generate_themed_background(account_key: str, width: int, height: int, index: int = 0) -> Image.Image:
-    """Generate a themed background using CF Workers AI.
-    Falls back to solid color gradient if CF unavailable."""
+    """Generate a themed background.
+    Fallback chain: CF Workers AI → HuggingFace SDXL → gradient."""
     prompts = THEMED_BG_PROMPTS.get(account_key, [])
     if not prompts:
         return _gradient_fallback(account_key, width, height)
     
     prompt = prompts[index % len(prompts)]
     
-    # Get CF credentials for this channel
-    cf_config = ACCOUNTS.get(account_key, {})
+    # === STRATEGY 1: Cloudflare Workers AI ===
+    cf_config = CF_ACCOUNTS.get(account_key, {})
     account_id = cf_config.get("account_id", "")
     api_token = cf_config.get("api_token", "")
     
-    if not account_id or not api_token:
-        print(f"[VisualEngine] No CF credentials for {account_key}, using gradient fallback")
-        return _gradient_fallback(account_key, width, height)
+    if account_id and api_token:
+        try:
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+            headers = {"Authorization": f"Bearer {api_token}"}
+            payload = {"prompt": prompt, "width": min(width, 1024), "height": min(height, 1024)}
+            
+            print(f"[VisualEngine] CF BG for {account_key}: {prompt[:50]}...")
+            resp = requests.post(url, headers=headers, json=payload, timeout=60)
+            
+            if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
+                bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+                bg = bg.resize((width, height), Image.LANCZOS)
+                print(f"[VisualEngine] CF BG SUCCESS for {account_key}")
+                return bg
+            else:
+                print(f"[VisualEngine] CF BG failed ({resp.status_code}), trying HF backup...")
+        except Exception as e:
+            print(f"[VisualEngine] CF BG error: {e}, trying HF backup...")
+    else:
+        print(f"[VisualEngine] No CF credentials for {account_key}, trying HF backup...")
     
-    try:
-        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
-        headers = {"Authorization": f"Bearer {api_token}"}
-        payload = {"prompt": prompt, "width": min(width, 1024), "height": min(height, 1024)}
-        
-        print(f"[VisualEngine] Generating {account_key} themed BG: {prompt[:60]}...")
-        resp = requests.post(url, headers=headers, json=payload, timeout=60)
-        
-        if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
-            bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-            bg = bg.resize((width, height), Image.LANCZOS)
-            print(f"[VisualEngine] CF themed BG generated for {account_key}")
-            return bg
-        else:
-            print(f"[VisualEngine] CF BG failed ({resp.status_code}), using gradient")
-            return _gradient_fallback(account_key, width, height)
-    except Exception as e:
-        print(f"[VisualEngine] CF BG error: {e}")
-        return _gradient_fallback(account_key, width, height)
+    # === STRATEGY 2: HuggingFace SDXL Backup ===
+    hf_key = HF_API_KEYS.get(account_key, "")
+    if hf_key:
+        try:
+            hf_url = "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
+            hf_headers = {"Authorization": f"Bearer {hf_key}"}
+            hf_payload = {"inputs": prompt}
+            
+            print(f"[VisualEngine] HF BG for {account_key}...")
+            resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
+            
+            if resp.status_code == 200 and len(resp.content) > 5000:
+                bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+                bg = bg.resize((width, height), Image.LANCZOS)
+                print(f"[VisualEngine] HF BG SUCCESS for {account_key}")
+                return bg
+            else:
+                print(f"[VisualEngine] HF BG failed ({resp.status_code}), using gradient fallback")
+        except Exception as e:
+            print(f"[VisualEngine] HF BG error: {e}, using gradient fallback")
+    else:
+        print(f"[VisualEngine] No HF key for {account_key}, using gradient fallback")
+    
+    # === STRATEGY 3: Gradient fallback (last resort) ===
+    return _gradient_fallback(account_key, width, height)
 
 
 def _gradient_fallback(account_key: str, width: int, height: int) -> Image.Image:
@@ -330,17 +361,11 @@ def apply_channel_style(image_path: str, account_key: str, output_path: str,
 
 
 def generate_scene_variations(image_path: str, account_key: str, 
-                               output_dir: str, num_scenes: int = 5) -> List[str]:
-    """Generate CHANNEL-SPECIFIC scene variations from one styled image.
-    Same image → different framing per channel (bahan sama, rasa beda).
-    
-    Blueprint visual per channel:
-      yt_documenter: wide shots, steady pans (NatGeo style)
-      yt_funny:      absurd zooms, extreme close-up, tilts
-      yt_anthro:     medium shots, varied framing (cartoon already applied)
-      yt_pov:        EXTREME close-up mata, dark tight crops
-      yt_drama:      cinematic wide + medium (letterbox already applied)
-      fb_fanspage:   clean center crops, professional framing
+                               output_dir: str, num_scenes: int = 8) -> List[str]:
+    """Generate 8 scene variations from one styled image.
+    Blueprint: tiap gambar jadi 5-10 scene.
+    Variations: full, mirror, zoom_in, zoom_out, crop_left, crop_right, close_up_eye, blur.
+    Target: 6 images × 8 variations = 48 scenes → ~4 minutes video.
     """
     try:
         img = Image.open(image_path).convert("RGB")
@@ -348,39 +373,72 @@ def generate_scene_variations(image_path: str, account_key: str,
         scenes = []
         basename = os.path.splitext(os.path.basename(image_path))[0]
         
-        # ========================================
-        # FULL FRAME SCENE VARIATIONS (NO CROP)
-        # All scenes are FULL 1920x1080. Differentiation comes from:
-        # - Channel visual STYLES (cartoon, horror, meme, etc.)
-        # - Minor framing tweaks (mirror, slight rotate) for variety
-        # ========================================
         SCENE_TWEAKS = [
-            ("full", None),              # Original full frame
-            ("mirror", None),            # Horizontal flip
-            ("slight_rotate", 2),        # Very slight CW rotate (fills frame)
+            "full",          # Original full frame
+            "mirror",        # Horizontal flip
+            "zoom_in",       # Center 60% crop (zoom in)
+            "zoom_out",      # Image on padded background (zoom out effect)
+            "crop_left",     # Left 65% crop
+            "crop_right",    # Right 65% crop
+            "close_up_eye",  # Upper center crop (tarsier eyes area)
+            "blur_bg",       # Foreground sharp, background blurred
         ]
         
-        for i, (name, param) in enumerate(SCENE_TWEAKS[:num_scenes]):
+        for i, name in enumerate(SCENE_TWEAKS[:num_scenes]):
             scene_path = os.path.join(output_dir, f"{basename}_scene_{i}_{name}.png")
             
             try:
                 if name == "full":
                     scene_img = img.copy()
+                
                 elif name == "mirror":
                     scene_img = img.transpose(Image.FLIP_LEFT_RIGHT)
-                elif name == "slight_rotate":
-                    angle = param if param else 2
-                    # Rotate and crop to fill frame (no black borders)
-                    rotated = img.rotate(angle, resample=Image.BICUBIC, expand=True)
-                    # Center crop back to original size to remove borders
-                    rw, rh = rotated.size
-                    left = (rw - w) // 2
-                    top = (rh - h) // 2
-                    scene_img = rotated.crop((left, top, left + w, top + h))
+                
+                elif name == "zoom_in":
+                    # Center 60% crop → feels like zoom in
+                    margin_x, margin_y = int(w * 0.20), int(h * 0.20)
+                    scene_img = img.crop((margin_x, margin_y, w - margin_x, h - margin_y))
+                
+                elif name == "zoom_out":
+                    # Place image on blurred+darkened padded canvas
+                    canvas = img.copy().filter(ImageFilter.GaussianBlur(radius=20))
+                    enhancer = ImageEnhance.Brightness(canvas)
+                    canvas = enhancer.enhance(0.4)
+                    small = img.resize((int(w * 0.7), int(h * 0.7)), Image.LANCZOS)
+                    offset_x = (w - small.width) // 2
+                    offset_y = (h - small.height) // 2
+                    canvas.paste(small, (offset_x, offset_y))
+                    scene_img = canvas
+                
+                elif name == "crop_left":
+                    scene_img = img.crop((0, 0, int(w * 0.65), h))
+                
+                elif name == "crop_right":
+                    scene_img = img.crop((int(w * 0.35), 0, w, h))
+                
+                elif name == "close_up_eye":
+                    # Upper center crop (where tarsier eyes typically are)
+                    cx, cy = w // 2, int(h * 0.35)
+                    crop_w, crop_h = int(w * 0.45), int(h * 0.35)
+                    x1 = max(0, cx - crop_w // 2)
+                    y1 = max(0, cy - crop_h // 2)
+                    scene_img = img.crop((x1, y1, min(x1 + crop_w, w), min(y1 + crop_h, h)))
+                
+                elif name == "blur_bg":
+                    # Blur the whole image lightly, keep center sharp (faux depth of field)
+                    blurred = img.filter(ImageFilter.GaussianBlur(radius=8))
+                    mask = Image.new("L", (w, h), 0)
+                    draw_mask = ImageDraw.Draw(mask)
+                    # Sharp ellipse in center
+                    mx, my = int(w * 0.2), int(h * 0.15)
+                    draw_mask.ellipse([mx, my, w - mx, h - my], fill=255)
+                    mask = mask.filter(ImageFilter.GaussianBlur(radius=40))
+                    scene_img = Image.composite(img, blurred, mask)
+                
                 else:
                     scene_img = img.copy()
                 
-                # Resize to standard 1080p resolution (FULL SCREEN always)
+                # Resize to standard vertical resolution
                 scene_img = scene_img.resize((1080, 1920), Image.LANCZOS)
                 scene_img.save(scene_path, "PNG")
                 scenes.append(scene_path)
@@ -389,7 +447,7 @@ def generate_scene_variations(image_path: str, account_key: str,
                 print(f"[VisualEngine] Scene '{name}' failed: {e}")
                 continue
         
-        print(f"[VisualEngine] Generated {len(scenes)} scene variations for {account_key}")
+        print(f"[VisualEngine] {account_key}: {len(scenes)} scene variations from {os.path.basename(image_path)}")
         return scenes
         
     except Exception as e:
@@ -402,41 +460,44 @@ def generate_scene_variations(image_path: str, account_key: str,
 # ========================================
 
 def _apply_cartoon_filter(img: Image.Image) -> Image.Image:
-    """STRONG cartoon/illustration effect.
-    Technique: Heavy smoothing + extreme color reduction + bold edge overlay.
-    Result should look OBVIOUSLY different from a photo.
+    """VERY STRONG cartoon/illustration effect.
+    Must look OBVIOUSLY like a cartoon, not a filtered photo.
+    Technique: Extreme smoothing + 6 colors + bold edges + posterize.
     """
-    # Step 1: HEAVY smoothing (destroy photo detail → flat cartoon)
+    # Step 1: EXTREME smoothing (6 passes — destroy ALL photo detail)
     smooth = img.copy()
-    for _ in range(4):  # 4 passes = very smooth
+    for _ in range(6):
         smooth = smooth.filter(ImageFilter.SMOOTH_MORE)
+    # Extra bilateral-like smooth
+    smooth = smooth.filter(ImageFilter.ModeFilter(size=7))
     
-    # Step 2: AGGRESSIVE color quantize (10 colors = obvious flat cartoon)
-    quantized = smooth.quantize(colors=10, method=Image.Quantize.MEDIANCUT)
+    # Step 2: EXTREME color quantize (6 colors = very flat cartoon)
+    quantized = smooth.quantize(colors=6, method=Image.Quantize.MEDIANCUT)
     quantized = quantized.convert("RGB")
     
-    # Step 3: BOLD edge detection (thick black outlines)
+    # Step 3: Posterize for even flatter color bands
+    quantized = ImageOps.posterize(quantized, 3)
+    
+    # Step 4: VERY BOLD edge detection (thick black outlines)
     gray = img.convert("L")
-    # Double edge detection for thicker lines
     edges = gray.filter(ImageFilter.FIND_EDGES)
-    edges = edges.filter(ImageFilter.MaxFilter(3))  # Thicken edges
-    # Lower threshold = more edges = more cartoon-like
-    edges = edges.point(lambda x: 0 if x > 25 else 255)
+    edges = edges.filter(ImageFilter.MaxFilter(5))  # VERY thick edges
+    edges = edges.point(lambda x: 0 if x > 20 else 255)  # Lower threshold = more edges
     edges = edges.convert("RGB")
     
-    # Step 4: Multiply bold edges onto flat cartoon colors
+    # Step 5: Multiply bold edges onto flat cartoon colors
     result = np.array(quantized).astype(np.float32)
     edge_arr = np.array(edges).astype(np.float32) / 255.0
     result = (result * edge_arr).astype(np.uint8)
     
-    # Step 5: Strong brightness boost (cartoons are bright and cheerful)
+    # Step 6: Strong brightness boost
     cart_img = Image.fromarray(result)
     enhancer = ImageEnhance.Brightness(cart_img)
-    cart_img = enhancer.enhance(1.25)
+    cart_img = enhancer.enhance(1.35)
     
-    # Step 6: VERY vivid colors (cartoon = saturated)
+    # Step 7: VERY vivid saturated colors
     enhancer = ImageEnhance.Color(cart_img)
-    cart_img = enhancer.enhance(1.6)
+    cart_img = enhancer.enhance(1.8)
     
     return cart_img
 

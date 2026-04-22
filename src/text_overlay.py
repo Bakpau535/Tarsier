@@ -21,23 +21,23 @@ TEXT_STYLES = {
         "font_bold": True,
         "color": (255, 255, 255),          # White
         "stroke_color": (0, 0, 0),         # Black stroke
-        "stroke_width": 2,
-        "bg_color": None,                  # No background
+        "stroke_width": 3,
+        "bg_color": (0, 0, 0, 140),        # Semi-transparent black bg
         "position": "bottom_center",
-        "max_chars_per_line": 45,
-        "margin_bottom": 80,
+        "max_chars_per_line": 40,
+        "margin_bottom": 120,
     },
     "yt_funny": {
         "name": "meme_caption",
-        "font_size": 64,                   # LARGE for meme impact
+        "font_size": 58,                   # LARGE for meme impact
         "font_bold": True,
         "color": (255, 255, 255),          # White
         "stroke_color": (0, 0, 0),         # Black stroke
-        "stroke_width": 4,                 # Thick outline
+        "stroke_width": 5,                 # VERY thick outline
         "bg_color": None,
-        "position": "top_and_bottom",      # Meme: text top + bottom
-        "max_chars_per_line": 30,
-        "margin_bottom": 40,
+        "position": "bottom_center",       # Consistent bottom position
+        "max_chars_per_line": 28,
+        "margin_bottom": 100,
     },
     "yt_anthro": {
         "name": "subtitle",
@@ -46,46 +46,46 @@ TEXT_STYLES = {
         "color": (255, 255, 255),
         "stroke_color": None,
         "stroke_width": 0,
-        "bg_color": (0, 0, 0, 160),        # Semi-transparent black bg
+        "bg_color": (0, 0, 0, 180),        # Solid semi-transparent black bg
         "position": "bottom_center",
-        "max_chars_per_line": 50,
-        "margin_bottom": 60,
+        "max_chars_per_line": 42,
+        "margin_bottom": 100,
     },
     "yt_pov": {
         "name": "minimal",
-        "font_size": 32,                   # Small, thin
+        "font_size": 34,
         "font_bold": False,
-        "color": (200, 200, 200, 180),     # Faded white
-        "stroke_color": None,
-        "stroke_width": 0,
+        "color": (180, 180, 180),          # Faded grey
+        "stroke_color": (0, 0, 0),
+        "stroke_width": 2,
         "bg_color": None,
-        "position": "top_left",            # Corner — minimal presence
+        "position": "bottom_center",       # FIXED: was top_left, now consistent
         "max_chars_per_line": 40,
-        "margin_bottom": 40,
+        "margin_bottom": 100,
     },
     "yt_drama": {
         "name": "title_card",
-        "font_size": 56,
+        "font_size": 48,
         "font_bold": True,
         "color": (255, 255, 255),
         "stroke_color": (0, 0, 0),
         "stroke_width": 3,
-        "bg_color": (0, 0, 0, 120),        # Light dark overlay
-        "position": "center",              # Centered (for title cards)
+        "bg_color": (0, 0, 0, 140),        # Semi-transparent overlay
+        "position": "bottom_center",       # FIXED: was center, now consistent
         "max_chars_per_line": 35,
-        "margin_bottom": 0,
+        "margin_bottom": 120,
     },
     "fb_fanspage": {
         "name": "bold_overlay",
-        "font_size": 58,                   # Large, bold
+        "font_size": 52,                   # Large, bold
         "font_bold": True,
         "color": (255, 255, 0),            # Yellow for attention
         "stroke_color": (0, 0, 0),
         "stroke_width": 4,
         "bg_color": None,
-        "position": "center",              # Center — can't miss it
+        "position": "bottom_center",       # FIXED: was center, now consistent
         "max_chars_per_line": 28,
-        "margin_bottom": 0,
+        "margin_bottom": 100,
     },
 }
 

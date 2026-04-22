@@ -660,10 +660,13 @@ class MediaGenerator:
                     if not any(kw in title_lower for kw in ["tarsier", "tarsius", "tarsiidae", "carlito syrichta"]):
                         continue
                     
-                    # REJECT non-photo images (maps, charts, museum, range diagrams)
+                    # REJECT non-photo images AND photos with humans
                     WIKI_REJECT = ["range", "map", "distribution", "museum", "diagram",
                                    "chart", "combined", "taxonomy", "cladogram", "skeleton",
-                                   "skull", "stamp", "logo", "icon", "flag", "drawing"]
+                                   "skull", "stamp", "logo", "icon", "flag", "drawing",
+                                   "shoulder", "human", "person", "people", "tourist",
+                                   "holding", "hand", "child", "woman", "man_",
+                                   "captive", "cage", "pet", "zoo", "sanctuary_visit"]
                     if any(bad in title_lower for bad in WIKI_REJECT):
                         print(f"[{account_key}] Wikimedia REJECTED (non-photo): {title[:60]}")
                         continue
