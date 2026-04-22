@@ -21,7 +21,7 @@ from typing import List, Tuple, Optional
 
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from src.config import ACCOUNTS, TMP_DIR, CF_ACCOUNTS, HF_API_KEYS
+from src.config import ACCOUNTS, TMP_DIR, CF_ACCOUNTS, CF_ACCOUNTS_BACKUP, HF_API_KEYS, HF_API_KEYS_BACKUP
 
 
 # ========================================
@@ -172,65 +172,90 @@ def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
     return rgba
 
 
+def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
+    """Try generating background via Cloudflare Workers AI. Returns Image or None."""
+    try:
+        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+        headers = {"Authorization": f"Bearer {api_token}"}
+        payload = {"prompt": prompt, "width": min(width, 1024), "height": min(height, 1024)}
+        
+        print(f"[VisualEngine] {label}: {prompt[:50]}...")
+        resp = requests.post(url, headers=headers, json=payload, timeout=60)
+        
+        if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
+            bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+            bg = bg.resize((width, height), Image.LANCZOS)
+            print(f"[VisualEngine] {label} SUCCESS")
+            return bg
+        else:
+            print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
+    except Exception as e:
+        print(f"[VisualEngine] {label} error: {e}")
+    return None
+
+
+def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
+    """Try generating background via HuggingFace Inference. Returns Image or None."""
+    try:
+        hf_url = "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
+        hf_headers = {"Authorization": f"Bearer {hf_key}"}
+        hf_payload = {"inputs": prompt}
+        
+        print(f"[VisualEngine] {label}...")
+        resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
+        
+        if resp.status_code == 200 and len(resp.content) > 5000:
+            bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+            bg = bg.resize((width, height), Image.LANCZOS)
+            print(f"[VisualEngine] {label} SUCCESS")
+            return bg
+        else:
+            print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
+    except Exception as e:
+        print(f"[VisualEngine] {label} error: {e}")
+    return None
+
+
 def _generate_themed_background(account_key: str, width: int, height: int, index: int = 0) -> Image.Image:
     """Generate a themed background.
-    Fallback chain: CF Workers AI → HuggingFace SDXL → gradient."""
+    Full 4-layer fallback: CF Primary → CF Backup → HF Primary → HF Backup → gradient.
+    Each channel has 2 CF accounts + 2 HF keys = 4 chances before gradient."""
     prompts = THEMED_BG_PROMPTS.get(account_key, [])
     if not prompts:
         return _gradient_fallback(account_key, width, height)
     
     prompt = prompts[index % len(prompts)]
     
-    # === STRATEGY 1: Cloudflare Workers AI ===
-    cf_config = CF_ACCOUNTS.get(account_key, {})
-    account_id = cf_config.get("account_id", "")
-    api_token = cf_config.get("api_token", "")
+    # === LAYER 1: CF Primary ===
+    cf1 = CF_ACCOUNTS.get(account_key, {})
+    if cf1.get("account_id") and cf1.get("api_token"):
+        result = _try_cf_generate(cf1["account_id"], cf1["api_token"], prompt, width, height, f"CF-1 {account_key}")
+        if result:
+            return result
     
-    if account_id and api_token:
-        try:
-            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
-            headers = {"Authorization": f"Bearer {api_token}"}
-            payload = {"prompt": prompt, "width": min(width, 1024), "height": min(height, 1024)}
-            
-            print(f"[VisualEngine] CF BG for {account_key}: {prompt[:50]}...")
-            resp = requests.post(url, headers=headers, json=payload, timeout=60)
-            
-            if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
-                bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-                bg = bg.resize((width, height), Image.LANCZOS)
-                print(f"[VisualEngine] CF BG SUCCESS for {account_key}")
-                return bg
-            else:
-                print(f"[VisualEngine] CF BG failed ({resp.status_code}), trying HF backup...")
-        except Exception as e:
-            print(f"[VisualEngine] CF BG error: {e}, trying HF backup...")
-    else:
-        print(f"[VisualEngine] No CF credentials for {account_key}, trying HF backup...")
+    # === LAYER 2: CF Backup ===
+    cf2 = CF_ACCOUNTS_BACKUP.get(account_key, {})
+    if cf2.get("account_id") and cf2.get("api_token"):
+        result = _try_cf_generate(cf2["account_id"], cf2["api_token"], prompt, width, height, f"CF-2 {account_key}")
+        if result:
+            return result
     
-    # === STRATEGY 2: HuggingFace SDXL Backup ===
-    hf_key = HF_API_KEYS.get(account_key, "")
-    if hf_key:
-        try:
-            hf_url = "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
-            hf_headers = {"Authorization": f"Bearer {hf_key}"}
-            hf_payload = {"inputs": prompt}
-            
-            print(f"[VisualEngine] HF BG for {account_key}...")
-            resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
-            
-            if resp.status_code == 200 and len(resp.content) > 5000:
-                bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-                bg = bg.resize((width, height), Image.LANCZOS)
-                print(f"[VisualEngine] HF BG SUCCESS for {account_key}")
-                return bg
-            else:
-                print(f"[VisualEngine] HF BG failed ({resp.status_code}), using gradient fallback")
-        except Exception as e:
-            print(f"[VisualEngine] HF BG error: {e}, using gradient fallback")
-    else:
-        print(f"[VisualEngine] No HF key for {account_key}, using gradient fallback")
+    # === LAYER 3: HF Primary ===
+    hf1 = HF_API_KEYS.get(account_key, "")
+    if hf1:
+        result = _try_hf_generate(hf1, prompt, width, height, f"HF-1 {account_key}")
+        if result:
+            return result
     
-    # === STRATEGY 3: Gradient fallback (last resort) ===
+    # === LAYER 4: HF Backup ===
+    hf2 = HF_API_KEYS_BACKUP.get(account_key, "")
+    if hf2:
+        result = _try_hf_generate(hf2, prompt, width, height, f"HF-2 {account_key}")
+        if result:
+            return result
+    
+    # === LAYER 5: Gradient (last resort) ===
+    print(f"[VisualEngine] ALL 4 APIs failed for {account_key}, using gradient fallback")
     return _gradient_fallback(account_key, width, height)
 
 
@@ -571,13 +596,16 @@ def style_batch_for_channel(raw_images: List[str], account_key: str,
                             output_dir: str) -> List[str]:
     """Apply channel style to all raw images and generate scene variations.
     
+    Blueprint: 5-10 gambar → tiap gambar jadi 5-10 scene → total 48+ scenes.
+    Each channel gets SHUFFLED scene order so videos look different.
+    
     Args:
         raw_images: List of raw image paths (shared pool)
         account_key: Channel identifier
         output_dir: Where to save styled images
         
     Returns:
-        List of all scene variation paths (styled + cropped)
+        List of all scene variation paths (styled + cropped), SHUFFLED per channel
     """
     os.makedirs(output_dir, exist_ok=True)
     all_scenes = []
@@ -586,13 +614,19 @@ def style_batch_for_channel(raw_images: List[str], account_key: str,
         if not os.path.exists(raw_path):
             continue
             
-        # Step 1: Apply channel visual style (V3: with background replacement)
+        # Step 1: Apply channel visual style (V3: rembg + themed BG + color filter)
         styled_path = os.path.join(output_dir, f"{account_key}_styled_{i}.png")
         apply_channel_style(raw_path, account_key, styled_path, image_index=i)
         
-        # Step 2: Generate scene variations from styled image
-        scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=3)
+        # Step 2: Generate 8 scene variations from styled image
+        scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=8)
         all_scenes.extend(scenes)
     
-    print(f"[VisualEngine] {account_key}: {len(all_scenes)} total scenes from {len(raw_images)} raw images")
+    # Step 3: SHUFFLE scene order per channel (deterministic but unique)
+    # Same images but different sequence = videos feel different
+    random.seed(hash(account_key) + 42)
+    random.shuffle(all_scenes)
+    random.seed()  # Reset to true random
+    
+    print(f"[VisualEngine] {account_key}: {len(all_scenes)} total scenes from {len(raw_images)} raw images (SHUFFLED)")
     return all_scenes
