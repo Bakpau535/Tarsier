@@ -52114,5 +52114,419 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-22T11:00:05.009231",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-22T11:00:06.279364",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:06.279383",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:29.210916",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:29.210928",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:29.210933",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:29.210942",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_anthro → yt_drama → yt_documenter → yt_pov → yt_funny → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:29.212680",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:31.137888",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:00:37.768556",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Lonely Nights ft. Spectral Tarsier"
+    },
+    {
+        "timestamp": "2026-04-22T11:00:37.768740",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-22T11:02:08.707672",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T11:09:18.731638",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:09:19.013933",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T11:09:19.025855",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "PREVIEW MODE: Files saved to output/yt_anthro/"
+    },
+    {
+        "timestamp": "2026-04-22T11:09:19.166332",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T11:09:19.166371",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 31s before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-22T11:09:50.168540",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:09:51.078787",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:09:57.137326",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Tarsier Solace"
+    },
+    {
+        "timestamp": "2026-04-22T11:09:57.137426",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-22T11:10:45.690142",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T11:18:02.350476",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:18:02.697134",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T11:18:02.729817",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "PREVIEW MODE: Files saved to output/yt_drama/"
+    },
+    {
+        "timestamp": "2026-04-22T11:18:02.895479",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T11:18:02.895516",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 63s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-22T11:19:05.897658",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:19:06.600042",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:19:12.699867",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsiers Are Monogamous — Lonely Defenders"
+    },
+    {
+        "timestamp": "2026-04-22T11:19:12.700013",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-22T11:19:36.569677",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T11:27:27.366813",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:27:27.822103",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T11:27:27.851612",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "PREVIEW MODE: Files saved to output/yt_documenter/"
+    },
+    {
+        "timestamp": "2026-04-22T11:27:28.003823",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T11:27:28.003856",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 58s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-22T11:28:26.005927",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:28:26.761589",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:28:32.731479",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Shadows Watch"
+    },
+    {
+        "timestamp": "2026-04-22T11:28:32.731639",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-22T11:34:05.165298",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T11:34:05.165315",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-22T11:42:36.554617",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:42:36.918152",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T11:42:36.972707",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "PREVIEW MODE: Files saved to output/yt_pov/"
+    },
+    {
+        "timestamp": "2026-04-22T11:42:37.130258",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T11:42:37.130293",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 34s before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-22T11:43:11.132338",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:43:11.782528",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:43:17.905878",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: When Alone But Tarsier"
+    },
+    {
+        "timestamp": "2026-04-22T11:43:17.905966",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-22T11:44:06.825429",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T11:44:06.825446",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-22T11:52:45.774914",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:52:46.146536",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T11:52:46.174400",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "PREVIEW MODE: Files saved to output/yt_funny/"
+    },
+    {
+        "timestamp": "2026-04-22T11:52:46.334917",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T11:52:46.334947",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 50s before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-22T11:53:36.337236",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier territorial behavior x loneliness"
+    },
+    {
+        "timestamp": "2026-04-22T11:53:37.282143",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:53:43.257203",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsiers Are Extreme Loners"
+    },
+    {
+        "timestamp": "2026-04-22T11:53:43.257473",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-22T11:54:39.517917",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T11:59:29.700885",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T11:59:30.029975",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T11:59:30.040618",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-22T11:59:30.197297",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T11:59:30.197325",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
