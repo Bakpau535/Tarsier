@@ -177,7 +177,7 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
     try:
         url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
         headers = {"Authorization": f"Bearer {api_token}"}
-        payload = {"prompt": prompt, "width": min(width, 1024), "height": min(height, 1024)}
+        payload = {"prompt": prompt, "negative_prompt": _BG_NEGATIVE, "width": min(width, 1024), "height": min(height, 1024)}
         
         print(f"[VisualEngine] {label}: {prompt[:50]}...")
         resp = requests.post(url, headers=headers, json=payload, timeout=60)
@@ -199,7 +199,7 @@ def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: s
     try:
         hf_url = "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
         hf_headers = {"Authorization": f"Bearer {hf_key}"}
-        hf_payload = {"inputs": prompt}
+        hf_payload = {"inputs": prompt, "parameters": {"negative_prompt": _BG_NEGATIVE}}
         
         print(f"[VisualEngine] {label}...")
         resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
