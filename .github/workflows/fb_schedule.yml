@@ -115,6 +115,7 @@ jobs:
           git config --global user.email "bot@tarsier.local"
           git add data/topics.json || true
           git add data/pipeline_log.json || true
+          git add data/video_ids.json || true
           git add data/used_footage.json || true
           git add data/used_music.json || true
           git add data/used_scripts.json || true
@@ -125,7 +126,7 @@ jobs:
             echo "Rebase conflict on attempt $i. Resolving..."
             git rebase --abort 2>/dev/null || true
             git pull origin main -X ours || true
-            git add data/topics.json data/pipeline_log.json data/used_footage.json data/used_music.json data/used_scripts.json || true
+            git add data/topics.json data/pipeline_log.json data/video_ids.json data/used_footage.json data/used_music.json data/used_scripts.json || true
             git diff-index --quiet HEAD || git commit -m "chore: auto-update database (FB resolved)"
             git push && exit 0
           done

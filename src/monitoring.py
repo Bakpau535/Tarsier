@@ -389,6 +389,11 @@ class PerformanceMonitor:
         # Print to console always
         print(body)
         
+        # Skip email if nothing was evaluated (no videos yet)
+        if total_evaluated == 0:
+            print("No videos evaluated — skipping email report.")
+            return
+        
         # Send email if SMTP configured
         if self.smtp_user and self.smtp_pass:
             try:
@@ -405,6 +410,16 @@ class PerformanceMonitor:
                 print("Report email sent successfully.")
             except Exception as e:
                 print(f"Failed to send report email: {e}")
+                print("Hint: Gmail requires App Password (not regular password) for SMTP.")
+        
+        # FALLBACK: Always save report to file (even if email works)
+        try:
+            report_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "monitoring_report.txt")
+            with open(report_file, 'w', encoding='utf-8') as f:
+                f.write(body)
+            print(f"Report saved to {report_file}")
+        except Exception as e:
+            print(f"Failed to save report file: {e}")
 
     # =========================================================================
     # Main Entry Point
@@ -443,6 +458,11 @@ class PerformanceMonitor:
             upload_date = video_entry.get("upload_date", "")
             
             if not video_id or account_key not in ACCOUNTS:
+                continue
+            
+            # Skip PREVIEW videos — they're not on YouTube, can't query metrics
+            if video_id.startswith("PREVIEW_"):
+                print(f"[{account_key}] Skipping preview video: {topic}")
                 continue
             
             # Only YT channels (skip fb_fanspage)

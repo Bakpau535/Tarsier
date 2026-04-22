@@ -333,6 +333,9 @@ class Pipeline:
                 
                 self._log("INFO", account_key, f"PREVIEW MODE: Files saved to output/{account_key}/")
                 self.db.mark_completed(topic_name, account_key)
+                # Track preview videos so monitoring can see them
+                preview_id = f"PREVIEW_{account_key}_{topic_name.replace(' ', '_')[:30]}"
+                self.db.save_video_id(account_key, topic_name, preview_id, "")
                 self.upload_results.append({
                     "account": account_key,
                     "channel": ACCOUNTS[account_key]["name"],
