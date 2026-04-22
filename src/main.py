@@ -82,9 +82,9 @@ class Pipeline:
         Bagian 15 - Error Handling:
         Notifikasi email otomatis kalau ada kegagalan kritis
         """
-        smtp_user = os.environ.get("SMTP_USER", "")
-        smtp_pass = os.environ.get("SMTP_PASS", "")
-        admin_email = os.environ.get("FB_ADMIN_EMAIL", "")
+        smtp_user = os.environ.get("SMTP_USER", "").strip()
+        smtp_pass = os.environ.get("SMTP_PASS", "").strip()
+        admin_email = os.environ.get("FB_ADMIN_EMAIL", "").strip()
         
         if not all([smtp_user, smtp_pass, admin_email]):
             print("SMTP credentials missing. Cannot send failure notification email.")
@@ -333,9 +333,6 @@ class Pipeline:
                 
                 self._log("INFO", account_key, f"PREVIEW MODE: Files saved to output/{account_key}/")
                 self.db.mark_completed(topic_name, account_key)
-                # Track preview videos so monitoring can see them
-                preview_id = f"PREVIEW_{account_key}_{topic_name.replace(' ', '_')[:30]}"
-                self.db.save_video_id(account_key, topic_name, preview_id, "")
                 self.upload_results.append({
                     "account": account_key,
                     "channel": ACCOUNTS[account_key]["name"],
@@ -516,9 +513,9 @@ class Pipeline:
         Sends a comprehensive pipeline summary email with all upload results.
         Includes video URLs for easy checking.
         """
-        smtp_user = os.environ.get("SMTP_USER", "")
-        smtp_pass = os.environ.get("SMTP_PASS", "")
-        admin_email = os.environ.get("FB_ADMIN_EMAIL", "")
+        smtp_user = os.environ.get("SMTP_USER", "").strip()
+        smtp_pass = os.environ.get("SMTP_PASS", "").strip()
+        admin_email = os.environ.get("FB_ADMIN_EMAIL", "").strip()
         
         if not all([smtp_user, smtp_pass, admin_email]):
             print("SMTP credentials missing. Cannot send summary email.")

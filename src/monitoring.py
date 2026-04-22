@@ -46,11 +46,11 @@ class PerformanceMonitor:
         self._metadata_gen = None
         self._thumbnail_gen = None
         
-        self.smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-        self.smtp_port = int(os.environ.get("SMTP_PORT", "587"))
-        self.smtp_user = os.environ.get("SMTP_USER", "")
-        self.smtp_pass = os.environ.get("SMTP_PASS", "")
-        self.admin_email = os.environ.get("FB_ADMIN_EMAIL", "admin@example.com")
+        self.smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com").strip()
+        self.smtp_port = int(os.environ.get("SMTP_PORT", "587").strip())
+        self.smtp_user = os.environ.get("SMTP_USER", "").strip()
+        self.smtp_pass = os.environ.get("SMTP_PASS", "").strip()
+        self.admin_email = os.environ.get("FB_ADMIN_EMAIL", "admin@example.com").strip()
 
     # =========================================================================
     # YouTube API Service
@@ -389,10 +389,7 @@ class PerformanceMonitor:
         # Print to console always
         print(body)
         
-        # Skip email if nothing was evaluated (no videos yet)
-        if total_evaluated == 0:
-            print("No videos evaluated — skipping email report.")
-            return
+        # Always attempt to send report (even if 0 videos — owner needs to know pipeline status)
         
         # Send email if SMTP configured
         if self.smtp_user and self.smtp_pass:
@@ -460,9 +457,8 @@ class PerformanceMonitor:
             if not video_id or account_key not in ACCOUNTS:
                 continue
             
-            # Skip PREVIEW videos — they're not on YouTube, can't query metrics
-            if video_id.startswith("PREVIEW_"):
-                print(f"[{account_key}] Skipping preview video: {topic}")
+            # Skip non-YouTube video IDs (e.g. placeholder IDs)
+            if not video_id or len(video_id) < 5 or video_id.startswith("PREVIEW_"):
                 continue
             
             # Only YT channels (skip fb_fanspage)

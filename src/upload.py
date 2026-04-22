@@ -42,11 +42,11 @@ RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 
 class Uploader:
     def __init__(self):
-        self.smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-        self.smtp_port = int(os.environ.get("SMTP_PORT", "587"))
-        self.smtp_user = os.environ.get("SMTP_USER", "")
-        self.smtp_pass = os.environ.get("SMTP_PASS", "")
-        self.fb_target_email = os.environ.get("FB_ADMIN_EMAIL", "")
+        self.smtp_host = os.environ.get("SMTP_HOST", "smtp.gmail.com").strip()
+        self.smtp_port = int(os.environ.get("SMTP_PORT", "587").strip())
+        self.smtp_user = os.environ.get("SMTP_USER", "").strip()
+        self.smtp_pass = os.environ.get("SMTP_PASS", "").strip()
+        self.fb_target_email = os.environ.get("FB_ADMIN_EMAIL", "").strip()
 
     def _get_youtube_service(self, account_key: str):
         """
