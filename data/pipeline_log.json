@@ -51700,5 +51700,419 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-22T03:00:36.506780",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-22T03:08:22.253091",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:22.253106",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:39.974319",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:39.974329",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:39.974333",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:39.974341",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_funny → yt_anthro → yt_documenter → yt_pov → yt_drama → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:39.976197",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:41.670674",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:08:47.890227",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Morning Stretch: Tarsier Twist"
+    },
+    {
+        "timestamp": "2026-04-22T03:08:47.890576",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-22T03:10:35.138790",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T03:10:35.138805",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-22T03:18:11.371264",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:18:11.720547",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T03:18:11.740525",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "PREVIEW MODE: Files saved to output/yt_funny/"
+    },
+    {
+        "timestamp": "2026-04-22T03:18:11.918771",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T03:18:11.918798",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 54s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-22T03:19:05.921375",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:19:06.564929",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:19:12.415846",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Rush Hour ft. Tarsius"
+    },
+    {
+        "timestamp": "2026-04-22T03:19:12.416120",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-22T03:20:01.724069",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T03:26:26.524432",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:26:26.840945",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T03:26:26.854953",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "PREVIEW MODE: Files saved to output/yt_anthro/"
+    },
+    {
+        "timestamp": "2026-04-22T03:26:27.055346",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T03:26:27.055383",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 87s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-22T03:27:54.057880",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:27:54.587117",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:28:00.553794",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Head Rotation — 360 Degrees"
+    },
+    {
+        "timestamp": "2026-04-22T03:28:00.554050",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-22T03:28:26.610274",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T03:35:45.168337",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:35:45.666329",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T03:35:45.697901",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "PREVIEW MODE: Files saved to output/yt_documenter/"
+    },
+    {
+        "timestamp": "2026-04-22T03:35:45.916595",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T03:35:45.916631",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 41s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-22T03:36:26.919080",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:36:27.663828",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:36:33.581337",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Tarsier Secrets"
+    },
+    {
+        "timestamp": "2026-04-22T03:36:33.581490",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-22T03:37:32.669592",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T03:37:32.669609",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-22T03:45:12.279152",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:45:12.699817",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T03:45:12.753458",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "PREVIEW MODE: Files saved to output/yt_pov/"
+    },
+    {
+        "timestamp": "2026-04-22T03:45:12.958973",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T03:45:12.959002",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 61s before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-22T03:46:13.961470",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:46:14.579515",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:46:20.583333",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 7: Tarsier Twist"
+    },
+    {
+        "timestamp": "2026-04-22T03:46:20.583548",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-22T03:47:10.775391",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T03:55:11.928097",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:55:12.256774",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T03:55:12.296923",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "PREVIEW MODE: Files saved to output/yt_drama/"
+    },
+    {
+        "timestamp": "2026-04-22T03:55:12.476104",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T03:55:12.476135",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 42s before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-22T03:55:54.478533",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Tarsier skeleton and bone structure x 360 degree head rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:55:55.039867",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T03:56:00.990988",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsier's Bizarre Head Rotation"
+    },
+    {
+        "timestamp": "2026-04-22T03:56:00.991072",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-22T03:56:54.192740",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T04:02:40.436377",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T04:02:40.742102",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T04:02:40.754401",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-22T04:02:40.915651",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T04:02:40.915674",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
