@@ -173,31 +173,44 @@ def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
 
 
 def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
-    """Try generating background via Cloudflare Workers AI. Returns Image or None."""
-    try:
-        url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
-        headers = {"Authorization": f"Bearer {api_token}"}
-        payload = {"prompt": prompt, "negative_prompt": _BG_NEGATIVE, "width": min(width, 1024), "height": min(height, 1024)}
-        
-        print(f"[VisualEngine] {label}: {prompt[:50]}...")
-        resp = requests.post(url, headers=headers, json=payload, timeout=60)
-        
-        if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
-            bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-            bg = bg.resize((width, height), Image.LANCZOS)
-            print(f"[VisualEngine] {label} SUCCESS")
-            return bg
-        else:
-            print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
-    except Exception as e:
-        print(f"[VisualEngine] {label} error: {e}")
+    """Try generating background via Cloudflare Workers AI. Returns Image or None.
+    Retries once on HTTP 500 (transient server error)."""
+    import time
+    for attempt in range(2):  # Max 2 attempts
+        try:
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+            headers = {"Authorization": f"Bearer {api_token}"}
+            payload = {"prompt": prompt, "negative_prompt": _BG_NEGATIVE, "width": min(width, 1024), "height": min(height, 1024)}
+            
+            if attempt == 0:
+                print(f"[VisualEngine] {label}: {prompt[:50]}...")
+            else:
+                print(f"[VisualEngine] {label}: retry after 500...")
+            resp = requests.post(url, headers=headers, json=payload, timeout=60)
+            
+            if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
+                bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+                bg = bg.resize((width, height), Image.LANCZOS)
+                print(f"[VisualEngine] {label} SUCCESS")
+                return bg
+            elif resp.status_code == 500 and attempt == 0:
+                print(f"[VisualEngine] {label} got HTTP 500, retrying in 5s...")
+                time.sleep(5)
+                continue
+            else:
+                print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
+                return None
+        except Exception as e:
+            print(f"[VisualEngine] {label} error: {e}")
+            return None
     return None
 
 
 def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
-    """Try generating background via HuggingFace Inference. Returns Image or None."""
+    """Try generating background via HuggingFace Inference API. Returns Image or None."""
     try:
-        hf_url = "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
+        # Updated endpoint — old router.huggingface.co returns 410 Gone
+        hf_url = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
         hf_headers = {"Authorization": f"Bearer {hf_key}"}
         hf_payload = {"inputs": prompt, "parameters": {"negative_prompt": _BG_NEGATIVE}}
         
