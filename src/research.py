@@ -1,6 +1,7 @@
 import wikipediaapi
 import requests
 import random
+import time
 from typing import List, Dict
 from bs4 import BeautifulSoup
 
@@ -12,6 +13,10 @@ class ResearchEngine:
             language='en',
             extract_format=wikipediaapi.ExtractFormat.WIKI
         )
+        
+        # Cache Wikipedia pages to avoid hammering the API
+        # Key: page_title, Value: page object (or None if not found)
+        self._page_cache = {}
         
         # --- Variasi topik tersedia (Bagian 11) ---
         self.facets = [
@@ -84,29 +89,46 @@ class ResearchEngine:
             ],
         }
 
+    def _get_cached_page(self, page_title: str):
+        """Fetch a Wikipedia page with caching — each page fetched only ONCE per run."""
+        if page_title in self._page_cache:
+            return self._page_cache[page_title]
+        
+        try:
+            # Respectful delay between Wikipedia API calls
+            if self._page_cache:  # Not first call
+                time.sleep(2)
+            page = self.wiki.page(page_title)
+            if page.exists():
+                self._page_cache[page_title] = page
+                return page
+            else:
+                self._page_cache[page_title] = None
+                return None
+        except Exception as e:
+            print(f"Wikipedia fetch error for '{page_title}': {e}")
+            self._page_cache[page_title] = None
+            return None
+
     # --- Sumber 1: Wikipedia API → fakta dasar tarsier ---
     def fetch_base_facts(self, target_page: str = "Tarsier") -> str:
-        """Fetches the summary from a Wikipedia page."""
-        try:
-            page = self.wiki.page(target_page)
-            if not page.exists():
-                return "Facts could not be found."
+        """Fetches the summary from a Wikipedia page (cached)."""
+        page = self._get_cached_page(target_page)
+        if page:
             return page.summary
-        except Exception as e:
-            print(f"Wikipedia fetch error: {e}")
-            return "Facts could not be fetched due to a network error."
+        return "Facts could not be found."
 
     def fetch_specific_section(self, target_page: str, section_keyword: str) -> str:
-        """Fetches a specific section containing a keyword."""
+        """Fetches a specific section containing a keyword (from cached page)."""
+        page = self._get_cached_page(target_page)
+        if not page:
+            return ""
         try:
-            page = self.wiki.page(target_page)
-            if not page.exists():
-                return ""
             for section in page.sections:
                 if section_keyword.lower() in section.title.lower():
                     return section.text
         except Exception as e:
-            print(f"Wikipedia section fetch error: {e}")
+            print(f"Wikipedia section search error: {e}")
         return ""
 
     # --- Sumber 2: Google Scholar → penelitian terbaru (Bagian 10) ---

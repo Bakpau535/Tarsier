@@ -393,21 +393,34 @@ class PerformanceMonitor:
         
         # Send email if SMTP configured
         if self.smtp_user and self.smtp_pass:
+            msg = EmailMessage()
+            msg['Subject'] = f"Tarsier Monitoring Report — {datetime.now().strftime('%Y-%m-%d')}"
+            msg['From'] = self.smtp_user
+            msg['To'] = self.admin_email
+            msg.set_content(body)
+            
+            sent = False
+            # Attempt 1: STARTTLS (port 587)
             try:
-                msg = EmailMessage()
-                msg['Subject'] = f"Tarsier Monitoring Report — {datetime.now().strftime('%Y-%m-%d')}"
-                msg['From'] = self.smtp_user
-                msg['To'] = self.admin_email
-                msg.set_content(body)
-                
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.starttls()
                     server.login(self.smtp_user, self.smtp_pass)
                     server.send_message(msg)
-                print("Report email sent successfully.")
+                print("Report email sent successfully (STARTTLS).")
+                sent = True
             except Exception as e:
-                print(f"Failed to send report email: {e}")
-                print("Hint: Gmail requires App Password (not regular password) for SMTP.")
+                print(f"STARTTLS email failed: {e}")
+                # Attempt 2: SMTP_SSL fallback (port 465)
+                try:
+                    with smtplib.SMTP_SSL(self.smtp_host, 465) as server:
+                        server.login(self.smtp_user, self.smtp_pass)
+                        server.send_message(msg)
+                    print("Report email sent successfully (SSL fallback).")
+                    sent = True
+                except Exception as e2:
+                    print(f"SSL fallback also failed: {e2}")
+                    print(f"SMTP diag: host={self.smtp_host}, port={self.smtp_port}, user_len={len(self.smtp_user)}, pass_len={len(self.smtp_pass)}")
+                    print("Gmail requires App Password — generate at https://myaccount.google.com/apppasswords")
         
         # FALLBACK: Always save report to file (even if email works)
         try:
