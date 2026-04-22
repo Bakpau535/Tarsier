@@ -1253,6 +1253,84 @@ class MediaGenerator:
         "fb_fanspage": 0.20,    # VO ON → music very low
     }
 
+    # Per-channel AMBIENCE search — additional sound layer ON TOP of music
+    # Blueprint: ambience hutan, suara angin, sound effect ringan
+    AMBIENCE_SEARCH = {
+        "yt_documenter": ["jungle birds ambient", "tropical forest ambience", "nature wildlife sounds"],
+        "yt_funny": ["cartoon sound effects", "comedy boing sound", "funny whoosh sound effect"],
+        "yt_anthro": ["rain on window ambient", "cozy cafe ambience", "lofi background noise"],
+        "yt_pov": ["dark forest night ambience", "horror wind howling", "creepy jungle sounds nocturnal"],
+        "yt_drama": ["rain storm ambient", "emotional wind ambience", "thunder distant ambient"],
+        "fb_fanspage": ["nature ambient relaxing", "birds chirping morning", "gentle stream water"],
+    }
+
+    # Per-channel ambience volume (layered on top of music)
+    AMBIENCE_VOLUME = {
+        "yt_documenter": 0.15,   # Subtle background
+        "yt_funny": 0.25,       # Noticeable SFX
+        "yt_anthro": 0.12,      # Very subtle
+        "yt_pov": 0.35,         # LOUD — immersion is key
+        "yt_drama": 0.20,       # Atmospheric
+        "fb_fanspage": 0.10,    # Very subtle
+    }
+
+    def generate_ambience(self, account_key: str, topic: str) -> Optional[str]:
+        """Download ambient sound layer per channel via Freesound API.
+        This is mixed ON TOP of music for richer audio."""
+        safe = self._safe_topic(topic)
+        filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_ambience.mp3")
+        
+        if not FREESOUND_API_KEY:
+            print(f"[{account_key}] No FREESOUND_API_KEY, skipping ambience")
+            return None
+        
+        queries = self.AMBIENCE_SEARCH.get(account_key, [])
+        if not queries:
+            return None
+        
+        random.shuffle(queries)
+        
+        for query in queries:
+            try:
+                print(f"[{account_key}] Freesound ambience: '{query}'...")
+                r = requests.get(
+                    "https://freesound.org/apiv2/search/text/",
+                    params={
+                        "query": query,
+                        "token": FREESOUND_API_KEY,
+                        "fields": "id,name,duration,previews",
+                        "filter": "duration:[10 TO 180]",
+                        "sort": random.choice(["rating_desc", "downloads_desc"]),
+                        "page_size": 10,
+                        "page": 1,
+                    },
+                    timeout=15
+                )
+                if r.status_code != 200:
+                    continue
+                
+                results = r.json().get("results", [])
+                if not results:
+                    continue
+                
+                track = random.choice(results)
+                preview_url = track.get("previews", {}).get("preview-hq-mp3")
+                if not preview_url:
+                    continue
+                
+                dl = requests.get(preview_url, timeout=30)
+                if dl.status_code == 200 and len(dl.content) > 5000:
+                    if self._is_valid_audio(dl.content):
+                        with open(filename, "wb") as f:
+                            f.write(dl.content)
+                        print(f"[{account_key}] Ambience saved: {track.get('name', 'unknown')} ({len(dl.content)//1024}KB)")
+                        return filename
+            except Exception as e:
+                print(f"[{account_key}] Ambience error: {e}")
+        
+        print(f"[{account_key}] No ambience found (non-fatal)")
+        return None
+
     # CDN fallback URLs per-account — EVERY URL is unique, ZERO overlap between channels
     # RULE: No two channels may share the same CDN music URL
     CDN_FALLBACK = {

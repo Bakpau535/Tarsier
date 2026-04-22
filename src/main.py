@@ -274,16 +274,19 @@ class Pipeline:
             else:
                 self._log("INFO", account_key, "SKIP voiceover (has_voiceover=False)")
             
-            # 6. Generate Musik + SFX (non-fatal: video works without it)
+            # 6. Generate Musik (per channel, berbeda genre)
             music_path = self.media_gen.generate_music(account_key, topic_name)
+
+            # 6b. Generate Ambience/SFX layer (ON TOP of music)
+            ambience_path = self.media_gen.generate_ambience(account_key, topic_name)
 
             if not media_items:
                 raise ValueError("No visual media generated.")
 
-            # 7. Assemble → video clips + images + narasi + musik + TEXT OVERLAY
+            # 7. Assemble → video clips + images + narasi + musik + ambience + TEXT OVERLAY
             final_video = self.assembler.assemble_final_video(
                 account_key, topic_name, media_items, audio_path, music_path,
-                script_segments=script_segments
+                script_segments=script_segments, ambience_path=ambience_path
             )
             if not final_video:
                 raise ValueError("Video assembly failed.")

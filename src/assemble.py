@@ -130,7 +130,8 @@ class VideoAssembler:
 
     def assemble_final_video(self, account_key: str, topic: str,
                              media_items: list, voiceover_file: str,
-                             music_file: str, script_segments: list = None) -> Optional[str]:
+                             music_file: str, script_segments: list = None,
+                             ambience_path: str = None) -> Optional[str]:
         """
         Per-channel video assembly using VIDEO_PROFILES.
         Each channel gets fundamentally different:
@@ -423,6 +424,28 @@ class VideoAssembler:
                     print(f"[{account_key}] Music load failed (skipping): {e}")
 
             if audio_clips:
+                # Mix ambience layer ON TOP of music (per-channel volume)
+                if ambience_path and os.path.exists(ambience_path):
+                    try:
+                        ambience = AudioFileClip(ambience_path)
+                        # Per-channel ambience volume
+                        AMB_VOL = {
+                            "yt_documenter": 0.15, "yt_funny": 0.25, "yt_anthro": 0.12,
+                            "yt_pov": 0.35, "yt_drama": 0.20, "fb_fanspage": 0.10,
+                        }
+                        amb_vol = AMB_VOL.get(account_key, 0.15)
+                        ambience = ambience.with_volume_scaled(amb_vol)
+                        # Loop if shorter than video
+                        if ambience.duration < final_video.duration:
+                            from moviepy import concatenate_audioclips
+                            loops = int(final_video.duration / ambience.duration) + 1
+                            ambience = concatenate_audioclips([ambience] * loops)
+                        ambience = ambience.subclipped(0, final_video.duration)
+                        audio_clips.append(ambience)
+                        print(f"[{account_key}] Ambience layer added (vol: {amb_vol:.0%})")
+                    except Exception as e:
+                        print(f"[{account_key}] Ambience load failed (skipping): {e}")
+                
                 final_audio = CompositeAudioClip(audio_clips)
                 final_video = final_video.with_audio(final_audio)
 
