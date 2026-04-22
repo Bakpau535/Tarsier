@@ -52528,5 +52528,419 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-22T14:28:56.648212",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-22T14:29:01.687475",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:01.687487",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:16.884834",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:16.884845",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:16.884850",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:16.884858",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_pov → yt_anthro → yt_drama → yt_documenter → yt_funny → fb_fanspage"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:16.886796",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:18.495999",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:29:24.602028",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 14: Shadows Watch"
+    },
+    {
+        "timestamp": "2026-04-22T14:29:24.602395",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-22T14:31:57.658589",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T14:31:57.658605",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-22T14:39:11.078815",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:39:11.566324",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T14:39:11.633433",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "PREVIEW MODE: Files saved to output/yt_pov/"
+    },
+    {
+        "timestamp": "2026-04-22T14:39:11.842437",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T14:39:11.842474",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 52s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-22T14:40:03.844889",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T14:40:04.226816",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:40:10.138715",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Fear ft. Philippine Tarsier"
+    },
+    {
+        "timestamp": "2026-04-22T14:40:10.138955",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-22T14:41:30.402461",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T14:45:42.070361",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:45:42.404859",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T14:45:42.410410",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "PREVIEW MODE: Files saved to output/yt_anthro/"
+    },
+    {
+        "timestamp": "2026-04-22T14:45:42.605310",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T14:45:42.605341",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 87s before yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-22T14:47:09.607679",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T14:47:10.441584",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:47:16.516694",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Shadows of Fear"
+    },
+    {
+        "timestamp": "2026-04-22T14:47:16.516932",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-22T14:48:45.955571",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T14:56:37.041256",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:56:37.356404",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T14:56:37.391222",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "PREVIEW MODE: Files saved to output/yt_drama/"
+    },
+    {
+        "timestamp": "2026-04-22T14:56:37.569629",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T14:56:37.569661",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 51s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-22T14:57:28.572056",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T14:57:29.368367",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T14:57:35.257652",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Tarsier Folklore — Bad Luck"
+    },
+    {
+        "timestamp": "2026-04-22T14:57:35.257832",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-22T14:58:06.786529",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T15:05:17.877312",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T15:05:18.244550",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T15:05:18.262427",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "PREVIEW MODE: Files saved to output/yt_documenter/"
+    },
+    {
+        "timestamp": "2026-04-22T15:05:18.445795",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T15:05:18.445825",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 30s before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-22T15:05:48.448164",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T15:05:49.201111",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T15:05:55.196257",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Fearing Bad Luck But Tarsier"
+    },
+    {
+        "timestamp": "2026-04-22T15:05:55.196470",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-22T15:07:25.920430",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T15:07:25.920446",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-22T15:15:01.545899",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T15:15:01.826506",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T15:15:01.851192",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "PREVIEW MODE: Files saved to output/yt_funny/"
+    },
+    {
+        "timestamp": "2026-04-22T15:15:02.035398",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T15:15:02.035437",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 37s before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-22T15:15:39.037882",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Local myths and folklore x anxiety"
+    },
+    {
+        "timestamp": "2026-04-22T15:15:39.602650",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-22T15:15:45.594697",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsiers Are Disappearing Fast"
+    },
+    {
+        "timestamp": "2026-04-22T15:15:45.594772",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-22T15:19:07.650294",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-22T15:24:02.739785",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-22T15:24:03.053597",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-22T15:24:03.062969",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "PREVIEW MODE: Files saved to output/fb_fanspage/"
+    },
+    {
+        "timestamp": "2026-04-22T15:24:03.240826",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-22T15:24:03.240854",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Cleaning up temporary files..."
     }
 ]
