@@ -389,40 +389,35 @@ class PerformanceMonitor:
         # Print to console always
         print(body)
         
-        # Always attempt to send report (even if 0 videos — owner needs to know pipeline status)
-        
-        # Send email if SMTP configured
-        if self.smtp_user and self.smtp_pass:
-            msg = EmailMessage()
-            msg['Subject'] = f"Tarsier Monitoring Report — {datetime.now().strftime('%Y-%m-%d')}"
-            msg['From'] = self.smtp_user
-            msg['To'] = self.admin_email
-            msg.set_content(body)
-            
-            sent = False
-            # Attempt 1: STARTTLS (port 587)
+        # CHANNEL 1: GitHub Actions Step Summary (visible in Actions UI — no auth needed)
+        github_summary = os.environ.get("GITHUB_STEP_SUMMARY", "")
+        if github_summary:
             try:
+                with open(github_summary, 'a', encoding='utf-8') as f:
+                    f.write(f"## 📊 Tarsier Monitoring Report\n\n")
+                    f.write(f"```\n{body}\n```\n")
+                print("Report written to GitHub Actions Summary.")
+            except Exception as e:
+                print(f"Failed to write GitHub Summary: {e}")
+        
+        # CHANNEL 2: Email report (requires SMTP App Password)
+        if self.smtp_user and self.smtp_pass:
+            try:
+                msg = EmailMessage()
+                msg['Subject'] = f"Tarsier Monitoring Report — {datetime.now().strftime('%Y-%m-%d')}"
+                msg['From'] = self.smtp_user
+                msg['To'] = self.admin_email
+                msg.set_content(body)
+                
                 with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                     server.starttls()
                     server.login(self.smtp_user, self.smtp_pass)
                     server.send_message(msg)
-                print("Report email sent successfully (STARTTLS).")
-                sent = True
+                print("Report email sent successfully.")
             except Exception as e:
-                print(f"STARTTLS email failed: {e}")
-                # Attempt 2: SMTP_SSL fallback (port 465)
-                try:
-                    with smtplib.SMTP_SSL(self.smtp_host, 465) as server:
-                        server.login(self.smtp_user, self.smtp_pass)
-                        server.send_message(msg)
-                    print("Report email sent successfully (SSL fallback).")
-                    sent = True
-                except Exception as e2:
-                    print(f"SSL fallback also failed: {e2}")
-                    print(f"SMTP diag: host={self.smtp_host}, port={self.smtp_port}, user_len={len(self.smtp_user)}, pass_len={len(self.smtp_pass)}")
-                    print("Gmail requires App Password — generate at https://myaccount.google.com/apppasswords")
+                print(f"Email report failed: {e}")
         
-        # FALLBACK: Always save report to file (even if email works)
+        # CHANNEL 3: Save report to file (committed to repo for history)
         try:
             report_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "monitoring_report.txt")
             with open(report_file, 'w', encoding='utf-8') as f:
