@@ -350,11 +350,10 @@ class Pipeline:
             self._log("INFO", account_key, "Video assembled successfully.")
 
             # 8. QC Check → scoring system per bagian, minimal skor 80/100 (Bagian 4 Step 8, Bagian 5)
-            # Duration target based on channel profile clip count
-            cut_dur = profile.get("cut_duration", 6)
-            if isinstance(cut_dur, (tuple, list)):
-                cut_dur = sum(cut_dur) / len(cut_dur)  # average of range
-            target_duration = len(script_segments) * int(cut_dur)
+            # Duration target: ALL videos must be 60-75s (minimum 60s enforced by assembler)
+            # Use actual target (65s center) instead of segments×cut_dur which was buggy
+            has_vo = profile.get("has_voiceover", True)
+            target_duration = 65  # Center of 60-75s range for all channels
             if not self.qc.evaluate(final_video, metadata, target_duration, account_key):
                 raise ValueError("Quality Control failed. Score below 80/100.")
 

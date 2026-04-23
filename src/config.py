@@ -172,7 +172,7 @@ VIDEO_PROFILES = {
         "text_overlay": "data_only",    # text only for scientific data/numbers
     },
     "yt_funny": {
-        "cut_duration": (1, 3),         # fast energetic cuts
+        "cut_duration": (1.5, 3),       # fast energetic cuts, minimum 1.5s (not dizzying)
         "transition": "hard_cut",       # NO dissolve — punchy hard cuts
         "aspect_ratio": "9:16",
         "letterbox": False,
@@ -282,19 +282,22 @@ TOPIC/FACTS TO USE:
 FORMAT RULES (MANDATORY):
 - Write ENTIRELY IN ENGLISH
 - Format: each line = 1 segment/scene (separate with NEWLINE)
-- Each line MAXIMUM 12 words — short, punchy, easy to read on screen
-- Total script: 4-5 lines ONLY (NO MORE)
-- DO NOT write long paragraphs — write short sentences, one per line
+- Each line should be 12-18 words — not too short, not too long
+- Total script: EXACTLY 6 lines (no more, no less)
+- DO NOT write long paragraphs — write descriptive sentences, one per line
 - Follow the STRUCTURE from the persona brief above EXACTLY
 - Provide ONLY the narration script — NO labels, NO numbers, NO formatting
 - Every script must be UNIQUE and FOCUSED on the topic above
-- Include at least 2 SPECIFIC facts about the topic
+- Include at least 3 SPECIFIC facts about the topic
+- The voiceover will have pauses between lines — each line is one scene
 
-CORRECT OUTPUT FORMAT (4 lines, separated by newline):
-First line short sentence
-Second line short sentence
-Third line short sentence
-Fourth line short sentence
+CORRECT OUTPUT FORMAT (6 lines, separated by newline):
+First line sentence about twelve to eighteen words long
+Second line sentence about twelve to eighteen words long
+Third line sentence about twelve to eighteen words long
+Fourth line sentence about twelve to eighteen words long
+Fifth line sentence about twelve to eighteen words long
+Sixth line sentence about twelve to eighteen words long
 """
 
 METADATA_GENERATION_PROMPT = """

@@ -206,34 +206,44 @@ class VideoAssembler:
             clips = []
             last_variation = None  # Track to prevent consecutive same variations
 
-            # === SPREAD text overlays across scenes — VO-synced pacing ===
-            # V2: Phrases appear sequentially (scene 1, 2, 3...) matching VO pacing.
-            # Scene 0 is text-free (let visual breathe), then phrases flow consecutively.
-            # After all phrases shown, remaining scenes are text-free (visual outro).
+            # === SPREAD text overlays evenly across scenes — SYNCED with VO ===
+            # V3: Text+VO appear TOGETHER on specific scenes, with visual-only breathing 
+            # scenes in between. The SSML pauses in the VO fill the text-free scenes.
+            # Pattern: intro(no text) → TEXT+VO → visual → TEXT+VO → visual → ...
+            # This ensures text overlay and voiceover are always synchronized.
             overlay_map = {}
             if script_segments and len(media_items) > 0:
                 n_segments = len(script_segments)
                 n_scenes = len(media_items)
                 
-                # Start text from scene 1 (scene 0 = visual intro, no text)
-                start_scene = min(1, n_scenes - 1)
+                # Scene 0 = visual intro (no text)
+                # Remaining scenes are distributed: text scenes + breathing scenes
+                available = n_scenes - 1  # exclude scene 0
                 
-                if n_segments >= n_scenes - start_scene:
-                    # More phrases than available scenes → assign 1 per scene from start
-                    for i in range(n_scenes - start_scene):
-                        overlay_map[start_scene + i] = script_segments[i]
+                if n_segments >= available:
+                    # More segments than available scenes → assign 1 per scene (no gaps)
+                    for i in range(available):
+                        overlay_map[1 + i] = script_segments[i]
                 else:
-                    # Fewer phrases than scenes → assign consecutively from start
-                    # This creates natural pacing: text flows, then visual outro
+                    # Calculate spacing to distribute segments EVENLY with gaps
+                    # spacing=2 means: text, gap, text, gap, ...
+                    # spacing=3 means: text, gap, gap, text, gap, gap, ...
+                    spacing = max(2, available // n_segments)
+                    
                     for seg_idx in range(n_segments):
-                        scene_idx = start_scene + seg_idx
+                        scene_idx = 1 + seg_idx * spacing
                         if scene_idx < n_scenes:
                             overlay_map[scene_idx] = script_segments[seg_idx]
+                        elif seg_idx < n_scenes:
+                            # Fallback: if spacing pushes past end, fill remaining
+                            overlay_map[min(1 + seg_idx, n_scenes - 1)] = script_segments[seg_idx]
                 
                 text_scenes = len(overlay_map)
                 free_scenes = n_scenes - text_scenes
-                print(f"[{account_key}] Text overlay: {n_segments} phrases → "
-                      f"{text_scenes} scenes with text, {free_scenes} scenes text-free")
+                text_scene_ids = sorted(overlay_map.keys())
+                print(f"[{account_key}] Text overlay: {n_segments} segments → "
+                      f"{text_scenes} scenes with text (at {text_scene_ids}), "
+                      f"{free_scenes} scenes visual-only (breathing room)")
 
             for i, (media_type, media_path) in enumerate(media_items):
                 if not os.path.exists(media_path):

@@ -69,12 +69,11 @@ class QualityControl:
         return 0
 
     def check_duration(self, video_path: str, account_key: str = "",
-                       target_duration: int = 72, tolerance: int = 40) -> int:
+                       target_duration: int = 65, tolerance: int = 15) -> int:
         """
         Checks if video duration is within acceptable range.
         RULE: ALL videos must be at least 60s (shorts replaced long-form).
-        Tolerance is generous (±40s) because loop engine variations 
-        can create natural length variations.
+        Default target=65s, tolerance=15s → valid range 60-80s.
         """
         try:
             clip = VideoFileClip(video_path)

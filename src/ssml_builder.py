@@ -6,56 +6,57 @@ import re
 
 
 # Per-channel SSML configuration
-# V2: VO → JEDA → VO pattern (NOT continuous)
-# Longer pauses let visuals breathe and create emotional weight
+# V3: VO → VISUAL BREATHING → VO pattern (SYNCED with text overlay)
+# Each VO segment plays during a TEXT scene, then a LONG pause fills a text-free scene
+# sentence_break = pause between segments = should match 1 text-free scene duration (~4-6s)
 SSML_CONFIG = {
     "yt_documenter": {
         "rate": "0.88",
         "pitch": "0%",
-        "sentence_break": "2000ms",    # 2s pause between facts — let info sink in
-        "fact_break": "3000ms",        # 3s before new fact section
-        "section_break": "4000ms",     # 4s major section transition
+        "sentence_break": "4500ms",    # 4.5s = fills one text-free scene (doc pace: 5-9s/scene)
+        "fact_break": "5500ms",        # 5.5s before major fact transition
+        "section_break": "6000ms",     # 6s major section transition
         "emphasis_words": ["critically endangered", "vulnerable", "endangered",
                           "IUCN", "conservation", "species", "population"],
     },
     "yt_funny": {
         "rate": "1.05",
         "pitch": "+3%",
-        "sentence_break": "1500ms",    # 1.5s comedic timing pause
-        "fact_break": "2000ms",        # 2s before punchline
-        "section_break": "2500ms",     # 2.5s between jokes
+        "sentence_break": "3500ms",    # 3.5s comedic timing (fast channel: 1-3s/scene × ~2 scenes)
+        "fact_break": "4000ms",        # 4s before punchline
+        "section_break": "4500ms",     # 4.5s between jokes
         "emphasis_words": [],          # Comedy relies on timing not emphasis
     },
     "yt_anthro": {
         "rate": "0.92",
         "pitch": "+2%",
-        "sentence_break": "1800ms",    # 1.8s contemplative pause
-        "fact_break": "2500ms",        # 2.5s emotional beat
-        "section_break": "3500ms",     # 3.5s scene change
+        "sentence_break": "4000ms",    # 4s contemplative pause (scene: 3-5s)
+        "fact_break": "5000ms",        # 5s emotional beat
+        "section_break": "5500ms",     # 5.5s scene change
         "emphasis_words": ["Gerald", "meanwhile", "however"],
     },
     "yt_pov": {
         "rate": "0.82",
         "pitch": "-5%",
-        "sentence_break": "3500ms",    # 3.5s — LONG eerie silences (horror/tension)
-        "fact_break": "5000ms",        # 5s — uncomfortable pause
-        "section_break": "6000ms",     # 6s — pure dread
+        "sentence_break": "6000ms",    # 6s — LONG eerie silences (scene: 6-12s, tension needs space)
+        "fact_break": "7000ms",        # 7s — uncomfortable pause
+        "section_break": "8000ms",     # 8s — pure dread
         "emphasis_words": ["tonight", "someone", "something", "silence"],
     },
     "yt_drama": {
         "rate": "0.90",
         "pitch": "-3%",
-        "sentence_break": "2500ms",    # 2.5s dramatic weight
-        "fact_break": "3500ms",        # 3.5s emotional buildup
-        "section_break": "5000ms",     # 5s dramatic transition
+        "sentence_break": "5000ms",    # 5s dramatic weight (scene: 2-12s variable)
+        "fact_break": "6000ms",        # 6s emotional buildup
+        "section_break": "7000ms",     # 7s dramatic transition
         "emphasis_words": ["Satu", "Dara", "Kecil", "THE SOUND", "quiet", "gone"],
     },
     "fb_fanspage": {
         "rate": "0.95",
         "pitch": "0%",
-        "sentence_break": "1200ms",    # 1.2s quick but not rushed
-        "fact_break": "1800ms",        # 1.8s between bold facts
-        "section_break": "2500ms",     # 2.5s section change
+        "sentence_break": "3500ms",    # 3.5s quick but not rushed (scene: 3-6s)
+        "fact_break": "4000ms",        # 4s between bold facts
+        "section_break": "4500ms",     # 4.5s section change
         "emphasis_words": ["million", "billion", "percent", "endangered", "extinct"],
     },
 }
