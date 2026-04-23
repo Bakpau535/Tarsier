@@ -563,7 +563,75 @@ class Pipeline:
             self._log("WARN", "SYSTEM", "Pipeline finished with errors. Skipping cleanup for debugging.")
         
         self._save_log()
+        self._write_github_summary(batch_topic)
         self._send_summary_email(batch_topic)
+
+    def _write_github_summary(self, topic_name: str):
+        """
+        Write rich GitHub Actions Job Summary (independent of email).
+        Always runs — ensures Job Summary is visible even if email fails.
+        """
+        summary_file = os.environ.get("GITHUB_STEP_SUMMARY", "")
+        if not summary_file:
+            return
+        
+        total = len(self.upload_results)
+        success = sum(1 for r in self.upload_results if r["status"] == "SUCCESS")
+        preview = sum(1 for r in self.upload_results if "PREVIEW" in r["status"])
+        completed = success + preview
+        failed = total - completed
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        status_emoji = "✅" if failed == 0 else "⚠️"
+        status_text = "ALL SUCCESS" if failed == 0 else f"{failed} FAILED"
+        
+        try:
+            with open(summary_file, "w") as sf:
+                sf.write(f"# {status_emoji} Tarsier Pipeline Report\n\n")
+                sf.write(f"| Field | Value |\n")
+                sf.write(f"|-------|-------|\n")
+                sf.write(f"| **Topic** | {topic_name} |\n")
+                sf.write(f"| **Time** | {now} |\n")
+                sf.write(f"| **Result** | {completed}/{total} completed |\n")
+                sf.write(f"| **Status** | {status_text} |\n")
+                sf.write(f"| **Uploaded** | {success} |\n")
+                sf.write(f"| **Preview** | {preview} |\n\n")
+                
+                sf.write(f"## Per-Channel Results\n\n")
+                sf.write(f"| Channel | Account | Platform | Status | Title |\n")
+                sf.write(f"|---------|---------|----------|--------|-------|\n")
+                for r in self.upload_results:
+                    s = r['status']
+                    if s == "SUCCESS":
+                        icon = "✅"
+                    elif "PREVIEW" in s:
+                        icon = "👁️"
+                    else:
+                        icon = "❌"
+                    # Truncate long error messages for table readability
+                    status_short = s[:60] + "..." if len(s) > 60 else s
+                    title_short = r['title'][:40] + "..." if len(r['title']) > 40 else r['title']
+                    sf.write(f"| {r['channel']} | {r['account']} | {r['platform']} | {icon} {status_short} | {title_short} |\n")
+                
+                # Add video links if any
+                video_links = [r for r in self.upload_results if r.get("video_url") and r["status"] == "SUCCESS"]
+                if video_links:
+                    sf.write(f"\n## Video Links\n\n")
+                    for r in video_links:
+                        sf.write(f"- **{r['channel']}**: [{r['title']}]({r['video_url']})\n")
+                
+                # Add failure details
+                failures = [r for r in self.upload_results if "FAILED" in r['status']]
+                if failures:
+                    sf.write(f"\n## Failure Details\n\n")
+                    for r in failures:
+                        sf.write(f"<details><summary>❌ {r['channel']} ({r['account']})</summary>\n\n")
+                        sf.write(f"```\n{r['status']}\n```\n\n")
+                        sf.write(f"</details>\n\n")
+            
+            print(f"[SYSTEM] GitHub Job Summary written ({total} results)")
+        except Exception as e:
+            print(f"[SYSTEM] Failed to write GitHub summary: {e}")
 
     def _send_summary_email(self, topic_name: str):
         """
@@ -635,17 +703,6 @@ DETAIL PER AKUN:
                 server.login(smtp_user, smtp_pass)
                 server.send_message(msg)
             self._log("INFO", "SYSTEM", f"Summary email sent: {completed}/{total} completed (upload:{success} preview:{preview}).")
-            # Also log to GitHub Actions Summary for easy visibility
-            summary_file = os.environ.get("GITHUB_STEP_SUMMARY", "")
-            if summary_file:
-                try:
-                    with open(summary_file, "a") as sf:
-                        sf.write(f"\n## Pipeline Summary\n")
-                        sf.write(f"- Topic: {topic_name}\n")
-                        sf.write(f"- Completed: {completed}/{total}\n")
-                        sf.write(f"- Status: {status_icon}\n")
-                except Exception:
-                    pass
         except Exception as e:
             self._log("ERROR", "SYSTEM", f"Failed to send summary email: {e}")
 
