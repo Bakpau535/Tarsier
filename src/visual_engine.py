@@ -124,7 +124,7 @@ VISUAL_STYLES = {
         "color_tint": (15, 8, -8),     # strong warm cinematic
         "grain": 15,
         "vignette": 0.25,
-        "special": "letterbox",
+        "special": None,               # DISABLED — full vertical screen
     },
     "fb_fanspage": {
         "name": "bold_vivid",

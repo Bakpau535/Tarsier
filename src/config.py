@@ -214,7 +214,7 @@ VIDEO_PROFILES = {
         "cut_duration": (2, 12),        # variable — 2s action, 8-12s emotional moments
         "transition": "dissolve",
         "aspect_ratio": "9:16",
-        "letterbox": True,              # black bars top+bottom for cinematic 2.35:1
+        "letterbox": False,              # DISABLED — user wants full vertical screen
         "tarsier_min_pct": 65,          # lowest — intentional environment scenes
         "has_voiceover": True,
         "visual_source": "stock_plus_flux_env",  # stock tarsier + FLUX dramatic scenes
@@ -274,29 +274,27 @@ for d in [DATA_DIR, TMP_DIR, TEMPLATES_DIR]:
 # Script generation now uses persona briefs from persona_prompts.py
 # This is the wrapper prompt that includes the channel's persona brief
 SCRIPT_GENERATION_PROMPT = """
-{persona_brief}
+{persona}
 
 TOPIC/FACTS TO USE:
 {topic}
 
-IMPORTANT RULES:
+FORMAT RULES (MANDATORY):
 - Write ENTIRELY IN ENGLISH
-- Target: approximately 5-6 sentences (~45 seconds when spoken aloud at normal pace)
-- CRITICAL: Keep the script SHORT — maximum 400 characters total. TTS with SSML reads very slowly (~8 chars/sec).
-- Follow the STRUCTURE defined above EXACTLY
-- Provide ONLY the narration script — no formatting labels, no scene directions, no markdown
-- Every script must be UNIQUE — do not use generic templates
-- CRITICAL: Focus exclusively on the MAIN TOPIC specified above
-- Do NOT repeat generic tarsier overview facts — write ONLY about the specific topic
-- Each script must contain facts and angles that are DIFFERENT from any previous script
-- Include at least 3 facts that are SPECIFIC to the topic, not general tarsier information
+- Format: each line = 1 segment/scene (separate with NEWLINE)
+- Each line MAXIMUM 12 words — short, punchy, easy to read on screen
+- Total script: 4-5 lines ONLY (NO MORE)
+- DO NOT write long paragraphs — write short sentences, one per line
+- Follow the STRUCTURE from the persona brief above EXACTLY
+- Provide ONLY the narration script — NO labels, NO numbers, NO formatting
+- Every script must be UNIQUE and FOCUSED on the topic above
+- Include at least 2 SPECIFIC facts about the topic
 
-VOCABULARY RULES:
-- BANNED WORDS (never use): "equal", "equivalent", "roughly", "approximately", "incredible", "amazing", "fascinating"
-- Never repeat the same adjective or comparison word twice in one script
-- Use varied sentence structures — mix short and long sentences
-- Avoid cliche phrases like "did you know", "in fact", "it turns out"
-- Each script must sound naturally different from any other script
+CORRECT OUTPUT FORMAT (4 lines, separated by newline):
+First line short sentence
+Second line short sentence
+Third line short sentence
+Fourth line short sentence
 """
 
 METADATA_GENERATION_PROMPT = """

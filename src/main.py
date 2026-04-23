@@ -130,17 +130,25 @@ class Pipeline:
 
     def _split_script_to_segments(self, script: str) -> list:
         """
-        Splits a narration script into SHORT PHRASES for text overlay.
-        V2: 3-6 words per phrase (not full sentences) for dramatic pacing.
+        Splits a narration script into segments for text overlay.
+        V3: Newline-based splitting (blueprint format: 4-5 lines per script).
+        Falls back to phrase-splitting for legacy long-paragraph scripts.
         
         Rules:
-        1. Split at natural boundaries: periods, commas, semicolons, conjunctions
-        2. Max 6 words per phrase (sweet spot for readability)
-        3. Minimum 2 words per phrase (avoid single words)
-        4. Short sentences (<6 words) stay intact
+        1. If script has multiple non-empty lines → use those as segments
+        2. If script is single paragraph → split at natural boundaries (legacy)
+        3. Each segment = 1 scene/visual = 1 text overlay
         """
         import re
         
+        # V3: Try newline-based splitting first (new blueprint format)
+        lines = [l.strip() for l in script.strip().split('\n') if l.strip()]
+        
+        if len(lines) >= 3:
+            # New format: 3+ non-empty lines = use as-is
+            return lines
+        
+        # LEGACY FALLBACK: Single paragraph → split into phrases
         # Step 1: Split into sentences first
         sentences = re.split(r'(?<=[.!?])\s+', script.strip())
         
@@ -158,7 +166,6 @@ class Pipeline:
                 continue
             
             # Step 2: Try splitting at natural boundaries
-            # Split at: comma, semicolon, " and ", " but ", " or ", " — ", " – "
             sub_parts = re.split(r'(?:,\s+|\s*;\s+|\s+(?:and|but|or|while|because|although|however|meanwhile)\s+|\s*[—–]\s*)', sentence)
             
             for part in sub_parts:
@@ -169,16 +176,13 @@ class Pipeline:
                 part_words = part.split()
                 
                 if len(part_words) <= 6:
-                    # Short enough — keep as one phrase
                     if len(part_words) >= 2:
                         phrases.append(part)
                 elif len(part_words) <= 12:
-                    # Medium — split in half
                     mid = len(part_words) // 2
                     phrases.append(' '.join(part_words[:mid]))
                     phrases.append(' '.join(part_words[mid:]))
                 else:
-                    # Long — chunk into groups of 4-5 words
                     chunk_size = 5
                     for i in range(0, len(part_words), chunk_size):
                         chunk = ' '.join(part_words[i:i + chunk_size])

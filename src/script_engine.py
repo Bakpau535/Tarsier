@@ -146,12 +146,12 @@ class ScriptEngine:
             # Clean up any markdown formatting
             result = re.sub(r'^```[\w]*\n?', '', result, flags=re.MULTILINE)
             result = re.sub(r'\n?```$', '', result, flags=re.MULTILINE)
-            return result.strip(), False
+            return result.strip(), None
         else:
             # Fallback to template scripts
             print(f"[{account_key}] All LLMs unavailable — using FALLBACK SCRIPT TEMPLATE")
-            fallback = get_fallback_script(topic_info, account_key)
-            return fallback, True
+            fallback_script, template_id = get_fallback_script(account_key, topic_info, force_mashup=force_mashup)
+            return fallback_script, template_id
 
     def generate_with_dedup(self, topic_info: str, account_key: str, 
                            existing_scripts: dict = None, force_mashup: bool = False) -> tuple:

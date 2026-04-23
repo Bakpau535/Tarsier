@@ -1,6 +1,7 @@
 """
 Fallback Script Bank — Pre-written tarsier scripts per channel persona.
-Used when ALL Gemini API keys are exhausted (billing quota).
+V2: SHORT SEGMENT FORMAT per blueprint (4-5 short lines per script, ENGLISH).
+Used when ALL Gemini/Groq API keys are exhausted.
 RULE: Pipeline must NEVER fail due to API unavailability.
 
 Each channel has 10+ unique scripts. The system picks based on topic hash
@@ -12,145 +13,154 @@ import random
 
 
 # ========================================================
-# YT_DOCUMENTER — BBC/NatGeo documentary style
+# YT_DOCUMENTER — Hook → Fact 1 → Fact 2 → Fact 3
 # ========================================================
 DOCUMENTER_SCRIPTS = [
-    """The Philippine Tarsier, Carlito syrichta, possesses what may be the most extraordinary visual system in the primate world. Each eye is approximately 16 millimeters in diameter — roughly the same volume as its entire brain. These enormous eyes are completely fixed in their sockets. The tarsier cannot rotate them even a single degree. To compensate, evolution granted this species a remarkable adaptation: cervical vertebrae that allow the head to rotate nearly 180 degrees in each direction. This gives the tarsier an effective 360-degree field of vision without moving its body. According to the International Primate Society, this rotational ability is unmatched among all living primates. The tarsier's retina contains an unusually high density of rod cells — photoreceptors optimized for low-light conditions. Research published in the Journal of Human Evolution suggests that tarsiers can detect light levels as low as 0.001 lux, making them among the most efficient nocturnal hunters in the animal kingdom. The IUCN currently lists the Philippine Tarsier as Near Threatened, with population estimates ranging between 5,000 and 10,000 individuals in the wild. Habitat destruction and the illegal pet trade remain their primary threats. Conservation efforts in Bohol, Philippines, have established protected sanctuaries, but fragmented forest habitats continue to pose challenges for long-term species survival.""",
+    "Did you know a tarsier's eyes are as big as its brain?\nThis tiny primate hunts only in the darkness of night\nIts eyes can't move at all but its head rotates 180 degrees\nThe IUCN reports tarsier populations are declining every year",
 
-    """Deep in the forests of Southeast Asia lives a predator so silent that its prey never hears it coming. The Tarsier, belonging to the family Tarsiidae, is the only fully carnivorous primate on Earth. Unlike other primates that supplement their diet with fruits or leaves, tarsiers feed exclusively on live prey — insects, small lizards, and even birds. Their hunting technique is remarkable. A tarsier will remain motionless on a vertical branch for extended periods, using its acute hearing to locate prey in complete darkness. When a target is identified, the tarsier launches with explosive force, covering distances up to 40 times its body length in a single leap. Research by Dr. Sharon Gursky-Doyen at Texas A&M University documented that a single tarsier can consume up to 10 percent of its own body weight in insects each night. Their elongated tarsus bones — from which the species derives its name — function as biological springs, storing and releasing energy with remarkable efficiency. Current conservation data from the IUCN indicates that several tarsier species face declining population trends, with the Siau Island Tarsier classified as Critically Endangered.""",
+    "Did you know tarsiers can leap 40 times their body length?\nTheir hind legs have tarsal bones that work like springs\nIn total darkness they hunt using hearing alone\nThe Philippine tarsier population is estimated at just 5,000 to 10,000",
 
-    """The acoustic world of the tarsier remained a mystery to science until 2012, when researchers at Humboldt State University made a startling discovery. Tarsiers communicate using ultrasonic frequencies — sound waves above 20 kilohertz, beyond the range of human hearing. Using specialized recording equipment, the team documented tarsier calls reaching frequencies up to 91 kilohertz. This places them among the very few terrestrial mammals known to use pure ultrasound for communication. The evolutionary advantage is clear: by communicating at frequencies that predators cannot detect, tarsiers maintain social bonds while remaining invisible to owls, snakes, and other nocturnal hunters. Each tarsier species produces a distinct ultrasonic signature, allowing researchers to identify species boundaries through acoustic analysis alone. This discovery prompted the Philippine government to implement noise regulation policies near tarsier habitats in Bohol province. Excessive human-generated noise, even at frequencies tarsiers can hear, has been linked to elevated stress hormone levels in wild populations. The tarsier's sensitivity to sound disturbance is so extreme that documented cases exist of individuals dying from stress-induced cardiac arrest when exposed to prolonged loud noise.""",
+    "Did you know tarsiers communicate using ultrasonic sound?\nTheir calls can reach 91 kilohertz, far beyond human hearing\nThis lets them talk without alerting any predators\nScientists only discovered this ability in 2012",
 
-    """At just 85 to 160 grams, the Philippine Tarsier ranks among the smallest primates ever to have existed. Yet its evolutionary lineage stretches back approximately 55 million years, making tarsiers one of the oldest surviving primate groups on the planet. Fossil evidence from the Eocene epoch reveals that ancestral tarsiers once inhabited North America, Europe, and mainland Asia. Today, all surviving species are confined to the islands of Southeast Asia — the Philippines, Borneo, Sumatra, and Sulawesi. This dramatic range contraction tells a story of climate change and continental drift spanning tens of millions of years. The tarsier's body plan has remained remarkably stable through this entire period. Comparative skeletal analysis by Dr. Chris Beard of the Carnegie Museum of Natural History shows that modern tarsier anatomy differs very little from 45-million-year-old fossil specimens. This evolutionary conservatism suggests that the tarsier occupies a highly specialized ecological niche that has remained viable across geological timescales. The current global population of all tarsier species combined is estimated at fewer than 50,000 individuals, scattered across increasingly fragmented island habitats.""",
+    "Did you know the tarsier is the only fully carnivorous primate?\nIt eats nothing but insects, small lizards, and even birds\nA single tarsier can eat 10 percent of its body weight each night\nThe Siau Island Tarsier is now classified as Critically Endangered",
 
-    """The reproductive biology of the tarsier presents one of nature's most remarkable paradoxes. Despite being among the smallest primates, tarsiers give birth to proportionally the largest infants of any primate species. A newborn tarsier weighs approximately 25 percent of its mother's body weight. In human terms, this would be equivalent to giving birth to a 35-pound baby. Tarsier infants are born fully furred with their eyes open, capable of clinging to branches within hours of birth. This precocial development strategy contrasts sharply with most other small primates, which produce altricial young that require weeks of complete parental dependency. Research at the Philippine Tarsier Foundation documented that mothers invest approximately six months in rearing each offspring, during which time they will not reproduce again. This slow reproductive rate — combined with a maximum lifespan of 12 to 20 years in the wild — makes tarsier populations exceptionally vulnerable to habitat loss. A population decline of even 10 percent per decade could push multiple species toward extinction within a century.""",
+    "Did you know tarsiers have existed for 55 million years?\nFossils show their anatomy has barely changed since then\nAncestral tarsiers once lived across America and Europe\nToday they survive only on the islands of Southeast Asia",
+
+    "Did you know a baby tarsier weighs 25 percent of its mother?\nIn human terms that would be like giving birth to a 35-pound baby\nNewborns can grip branches from the moment they are born\nMothers can only produce one baby every six months",
+
+    "Did you know tarsiers can die from stress alone?\nLoud noises can trigger fatal cardiac arrest in these animals\nThat is why tarsier sanctuaries in Bohol enforce strict silence rules\nCapturing tarsiers for the pet trade is illegal in the Philippines",
+
+    "Did you know each tarsier eye weighs as much as its brain?\nAt 16 millimeters wide each eye is locked permanently in the skull\nTo look behind it must rotate its entire head around\nIts retina has one of the highest rod cell densities of any mammal",
+
+    "Did you know tarsiers have the longest fingers relative to body size?\nTheir third finger is as long as their entire forearm\nThese fingers are perfect for gripping thin branches in darkness\nTarsiers spend almost their entire lives in the trees above",
+
+    "Did you know the tarsier is the world's smallest primate?\nIt weighs just 85 to 160 grams, lighter than a smartphone\nYet it is one of the most efficient nocturnal hunters alive\nDeforestation and illegal trade are their biggest threats today",
 ]
 
 
 # ========================================================
-# YT_FUNNY — Meme-style comedy captions
+# YT_FUNNY — Setup → Scene → Expectation → Punchline
 # ========================================================
 FUNNY_SCRIPTS = [
-    """[VISUAL: Tarsier staring with huge eyes directly at camera]
-This tarsier has seen your browser history.
-[VISUAL: Tarsier slowly turning head 180 degrees]
-And now it's looking for the exit.
-[VISUAL: Tarsier gripping branch with tiny hands]
-POV: Monday morning and you're holding onto your sanity
-[VISUAL: Tarsier catching insect mid-air]
-When the pizza delivery person says they're outside
-[VISUAL: Tarsier sitting perfectly still]
-Me pretending to work when my boss walks by
-[VISUAL: Two tarsiers on same branch]
-When you and your bestie both failed the exam
-[VISUAL: Tarsier leaping between branches]
-My last brain cell during the meeting
-[VISUAL: Tarsier close-up with enormous eyes]
-When someone says 'we need to talk'""",
+    "Just gonna rest my eyes for 5 minutes\nThree hours later and I'm still wide awake\nTomorrow I'll definitely start being productive\nNarrator: tomorrow he said the exact same thing",
 
-    """[VISUAL: Tarsier hanging upside down]
-Me checking the fridge at 3 AM for the fourth time
-[VISUAL: Tarsier with wide eyes in darkness]
-The WiFi: disconnects for 0.3 seconds. Me:
-[VISUAL: Tarsier head rotation]
-When you hear your name in someone else's conversation
-[VISUAL: Tarsier tiny hands grasping]
-My grip on reality this week
-[VISUAL: Tarsier mid-leap]
-Me diving into bed after a 14-hour shift
-[VISUAL: Tarsier eating cricket]
-Accepting that third slice of pizza at 2 AM
-[VISUAL: Tarsier frozen still]
-When the teacher asks who wants to present first""",
+    "I said just 5 more minutes of this show\nOne more episode before bed I promise\nWoke up late for work again the next morning\nBoss: this is the third time this week",
 
-    """[VISUAL: Tarsier extreme close-up eyes]
-Google: tarsier eyes are as big as their brain. My brain:
-[VISUAL: Tarsier on thin branch bouncing]
-My bank account balance trying to survive until payday
-[VISUAL: Tarsier yawning showing tiny teeth]
-Me reacting to my own cooking
-[VISUAL: Baby tarsier clinging to mother]
-Me still depending on my parents at 25
-[VISUAL: Tarsier in tree hollow]
-My social life: existing but hidden
-[VISUAL: Tarsier catching flying bug]
-Finally catching that mosquito at 4 AM
-[VISUAL: Tarsier silent stare]
-When someone says 'I sent you an email, did you see it?'""",
+    "Starting my diet on Monday for real this time\nBy Monday lunch I already ordered a burger\nIt's just one cheat meal it doesn't count\nNarrator: this was the 47th consecutive Monday",
 
-    """[VISUAL: Tarsier perched on branch at night]
-This little guy is 55 million years old. And still can't adult.
-[VISUAL: Tarsier making ultrasonic call]
-Scientists: tarsiers communicate in frequencies humans can't hear. Me texting my crush:
-[VISUAL: Tarsier leaping dramatically]
-My motivation appearing for exactly 5 minutes on Sunday evening
-[VISUAL: Tarsier with huge eyes looking up]
-When the waiter brings food to the table next to yours
-[VISUAL: Tarsier fingers gripping bark]
-Holding on to that one compliment from 2019
-[VISUAL: Tarsier head spinning around]
-Me checking all directions before crossing an empty street""",
+    "Paycheck just hit my account this morning\nAfternoon I was just browsing online casually\nBy evening my balance was basically zero\nMy bank app: are you sure you want to continue?",
 
-    """[VISUAL: Tarsier absolutely still on branch]
-Loading... please wait... brain.exe has stopped responding
-[VISUAL: Tarsier eyes reflecting light]
-Night vision: activated. Midnight snack mission: go.
-[VISUAL: Two tarsiers staring at each other]
-Introverts at a party finding each other
-[VISUAL: Tarsier stretching tiny arms]
-Me reaching for the remote that's 2 inches too far
-[VISUAL: Tarsier hunting in slow motion]
-My WiFi speed explained in one clip
-[VISUAL: Tarsier baby face]
-Too small to be stressed. Too cute to care.""",
+    "Told my friends I'm doing totally fine\nMeanwhile I've been overthinking since 11 PM\nCreating worst case scenarios that will never happen\nMy brain needs a premium subscription to turn this off",
+
+    "You know that feeling when you wake up energized?\nYeah me neither\nSeven alarms and I can still ignore every single one\nThis pillow has its own gravitational field",
+
+    "Planned to start my assignment at 8 AM sharp\n8 AM opened laptop and 9 AM opened YouTube\nNoon panic set in with 2 hours until deadline\nResult: 3 pages written in exactly 30 minutes",
+
+    "My friend said my resting face looks terrifying\nBut I was actually in a great mood\nThis is just my default expression okay\nTarsier: finally someone who understands me",
+
+    "Set my alarm for 5 AM to go running\n5 AM turned off alarm and went back to sleep\n10 AM woke up feeling guilty about not running\nTomorrow will be different... said me every single day",
+
+    "Bought a brand new planner to get organized\nFirst week I wrote detailed plans every day\nSecond week the planner became a coffee coaster\nBest investment: collecting dust on my shelf",
 ]
 
 
 # ========================================================
-# YT_ANTHRO — Anthropomorphized sitcom style
+# YT_ANTHRO — Problem → Scene → Complaint → Resolution
 # ========================================================
 ANTHRO_SCRIPTS = [
-    """Meet Gerald. Gerald is a tarsier who has lived on the same branch for three years. Not because he likes it — because his neighbor Frank keeps taking the good branches. Every evening at precisely 6:47 PM, Gerald wakes up, stretches his impossibly long fingers, and begins the nightly ritual of pretending he doesn't see Frank. Frank, for his part, pretends not to notice Gerald pretending. Their relationship is what scientists call 'territorial tolerance.' Gerald calls it 'Tuesday.' Tonight's agenda is simple: find dinner, avoid the owl, and absolutely do not make eye contact with Margaret from the next tree over. Margaret has opinions. About everything. Last week she lectured Gerald for seventeen minutes — in ultrasound that no human could hear — about the proper way to eat a cricket. Gerald ate it wrong, apparently. There is a wrong way. Tonight Gerald catches three beetles and a moth. A productive evening. He returns to his branch, does a full 180-degree head rotation to check for predators, and settles in. Frank is watching. Gerald pretends not to notice Frank watching. Tomorrow they will do this again.""",
+    "Today was exhausting beyond words...\nWorking overtime every day but the paycheck stays the same\nSometimes I just want to quit everything\nBut here I am, setting my alarm for tomorrow morning",
 
-    """Patricia is the oldest tarsier in group seven. At fourteen years old, she has survived three typhoon seasons, a habitat survey team that tried to tag her, and an unfortunate incident involving a very confused fruit bat. Patricia does not discuss the fruit bat incident. What Patricia does discuss — at length, in frequencies only her fellow tarsiers can hear — is the declining quality of insects in the neighborhood. Back in her day, the crickets were bigger. The cicadas had more crunch. And the beetles didn't taste like someone had left them in the rain. The younger tarsiers think Patricia is exaggerating. They haven't been alive long enough to know she's completely right. Tonight, Patricia demonstrates the art of the ambush hunt for her daughter's latest offspring. The technique hasn't changed in 55 million years: sit still, listen, jump. The baby tarsier watches with eyes that take up half its face. It jumps. It misses. It falls two feet and grabs a vine. Patricia does her signature 180-degree head turn — not to check for predators, but to avoid watching.""",
+    "Tired of pretending to be strong all the time...\nEveryone thinks I'm perfectly fine\nBut inside I'm falling apart piece by piece\nWho would even want to listen anyway?",
 
-    """Derek has a problem. Derek's territory overlaps with the territory of a slightly larger male named Stanley. In the tarsier world, this means one of two things: fight or duet. Tarsier males don't actually fight very often. The energy cost is too high when you weigh 130 grams. Instead, they engage in vocal dueling — ultrasonic calls that escalate in frequency and complexity until one male concedes superiority. Derek has been practicing. He can now hit 70 kilohertz, which in human terms would be like singing a note that shatters glass made of other glass. Stanley counters with 75 kilohertz. It's impressive. More importantly, it's annoying. The females in the group judge these displays not on volume or frequency, but on consistency. A male who can maintain a clean ultrasonic call for thirty seconds demonstrates lung capacity, neural health, and determination. Derek manages twenty-two seconds. Stanley hits thirty-one. Derek returns to his branch and eats a cricket. Tomorrow he'll practice.""",
+    "Working hard but nobody even notices...\nThe one who got promoted just talks the loudest\nI want to scream but the words won't come out\nGuess this is just how life works",
+
+    "I just want some time for myself...\nFrom morning to night taking care of everyone else\nWhen I need someone, everyone disappears\nMaybe I need to learn to be selfish sometimes",
+
+    "Sometimes I feel like I'm never enough...\nNo matter what I do it always feels like less\nTired of chasing standards I didn't even set\nMaybe enough isn't about achievements at all",
+
+    "Everyone seems to know their purpose in life...\nI'm still figuring out what I even want\nGetting older but the direction is still unclear\nGuess I'll just keep walking and hope I find it",
+
+    "Want to talk but scared of being a burden...\nSo I keep it all inside until it suffocates\nSmiling outside, chaos on the inside\nWhen can I be honest without being judged?",
+
+    "Failed again today despite giving everything...\nTried my absolute hardest and it still wasn't enough\nIt feels like running on a treadmill going nowhere\nBut at least I'm still running, haven't stopped yet",
+
+    "Missing home but I have to stay here...\nFar from family just trying to make a living\nSome nights feel longer than they should\nHope all of this means something someday",
+
+    "Body is tired but my mind is even more tired...\nSleep doesn't come easy anymore\nWaking up in the morning feels impossibly heavy\nBut life keeps moving whether I want it to or not",
 ]
 
 
 # ========================================================
-# YT_POV — First-person night exploration
+# YT_POV — Normal → Scene → Tension → Reveal
 # ========================================================
 POV_SCRIPTS = [
-    """It's 2 AM in the Bohol rainforest. The canopy blocks every trace of moonlight. I switch on the infrared camera and immediately, two enormous reflective eyes appear three meters ahead. A Philippine Tarsier. It hasn't moved. I step closer, careful not to crack a single twig. The guides warned me — these animals are so sensitive to stress that sudden noise can trigger cardiac arrest. I hold my breath. The tarsier's head begins to rotate. Slowly. Impossibly slowly. Until those massive eyes are looking directly behind it without the body moving at all. One hundred and eighty degrees of pure biological engineering. My infrared picks up movement on a nearby branch. A cricket. The tarsier has already heard it. In the fraction of a second it takes me to blink, the tarsier launches. Five feet through absolute darkness, guided entirely by sound. It lands with its prey already secured in those elongated fingers. No wasted motion. Fifty-five million years of evolution compressed into a single perfect strike. I check my recording. Seventeen minutes of footage. This one encounter will define the entire expedition.""",
+    "You're alone in the forest at midnight\nSuddenly there's a strange sound right above your head\nDon't move... something is watching you\nTwo massive eyes stare at you from the darkness — a tarsier.",
 
-    """The forest sounds different at midnight. Every rustle becomes information. I'm positioned at the base of a strangler fig where our team documented a pair of Western Tarsiers last week. The female should be somewhere within a fifty-meter radius — tarsiers maintain remarkably small territories for a primate. I check the acoustic monitor. Nothing in human-audible range. But the spectrogram shows activity above 20 kilohertz. Ultrasonic calls, exactly where the research predicted they would be. I point the directional microphone upward. The calls resolve into a pattern — short bursts followed by longer sustained tones. According to Dr. Rafe Brown's acoustic catalog, this is a contact call between a mother and juvenile. Somewhere in this darkness, a tarsier the size of my fist is calling for its baby in frequencies that evolution made invisible to predators. Invisible to us, too, until the technology caught up. I wait another forty minutes before the pair moves into camera range. The juvenile is clinging to a vertical branch, eyes impossibly large for its body. It sees me long before I see it.""",
+    "The night feels wrong, the forest is too quiet\nUsually there are crickets but now there's only silence\nYou turn around and something moves in the branches\nA pair of giant eyes floating in the dark — just a tiny tarsier",
 
-    """Night three in the Tangkoko Reserve, Sulawesi. We are tracking the Spectral Tarsier, Tarsius tarsier — the species that gave the entire genus its name. The rain stopped twenty minutes ago but water still cascades through every layer of canopy. Each raindrop is noise. Each noise masks the insects that the tarsiers depend on. I find our tagged individual — TK-14, a male we've been following for eight months — pressed against the trunk of a dead tree. He's positioned himself on the leeward side, sheltered from water but exposed to the sounds of the forest floor. Smart. The insects will emerge from ground cover now that the rain has stopped. TK-14 drops headfirst down the trunk in a motion that looks like controlled falling. Two feet from the ground, he freezes. I hear nothing. He hears everything. His head tilts — those fixed eyes can't track movement, but his ears are triangulating. The strike comes from zero. One instant he is still. The next instant he has a beetle the size of his thumb. In the darkness, with rain still dripping from every leaf, this animal just demonstrated why tarsiers have survived for 55 million years.""",
+    "You wake up in your tent at 2 AM\nThere's a small shadow moving outside the fabric\nA soft scratching sound runs along the tent wall\nYou unzip it... a tiny tarsier face stares back at you",
+
+    "You're walking through the Bohol forest alone at night\nThe trees are swaying but there's absolutely no wind\nSomething leaps from branch to branch right above you\nA night hunter smaller than your hand — the tarsier",
+
+    "You hear a sound but can't figure out where it's coming from\nThe frequency is strange, not like any normal sound\nTurns out it's beyond the range of human hearing\nTarsiers communicate in ultrasonic waves you can't even detect",
+
+    "You find tiny tracks pressed into the moss of an old tree\nLong finger marks with an impossibly strong grip pattern\nBelow it are the remains of an insect's exoskeleton\nThe world's smallest predator just had its dinner right here",
+
+    "You set up an infrared camera in the forest tonight\nAt 3 AM there's a flash of movement across the screen\nSomething jumps 6 feet through pitch black air\nA tarsier catches a moth mid-flight without making a sound",
+
+    "You sit perfectly still beneath a tree in total darkness\nSomething descends slowly down the trunk beside you\nIts head rotates 180 degrees and stares directly at you\nA tarsier — its eyes reflecting moonlight straight into yours",
+
+    "You're night hiking and your flashlight suddenly dies\nThe forest goes pitch black in an instant\nA tiny sound comes from right next to your ear\nA small tarsier sits on a branch at exactly your head height",
+
+    "You enter a small cave in Sulawesi in the late afternoon\nOn the ceiling there are dozens of tiny points of light\nNot fireflies, not crystals, not reflections\nTarsier eyes reflecting your flashlight as they sleep through the day",
 ]
 
 
 # ========================================================
-# YT_DRAMA — Emotional mini-film narration
+# YT_DRAMA — Opening → Scene → Conflict → Emotion → Closing
 # ========================================================
 DRAMA_SCRIPTS = [
-    """She was born in the hollow of a fig tree during the monsoon rains. Her mother had chosen the spot carefully — sheltered from wind, hidden from owls, close enough to the canopy edge for a quick escape. At birth, she weighed twenty-three grams. Her eyes were already open. Her fingers already grasped the bark with a strength that contradicted everything about her size. In the tarsier world, there is no nursery period. No gradual introduction to danger. From her first breath, every sound in the forest was either food or threat. Her mother nursed her for sixty days. On the sixty-first day, she was alone. This is not cruelty. This is the arithmetic of survival at the smallest scale. A mother tarsier who continues nursing cannot hunt efficiently. A mother who cannot hunt will not survive the dry season. And a species that has persisted for fifty-five million years did not achieve that record through sentiment. She made her first kill that night — a moth, small and slow. She missed twice before connecting. But connection was enough. The forest would test her every night for the next twelve to twenty years. Most nights, she would pass. Tonight, she learned the only lesson that mattered: in the dark, hesitation is death.""",
+    "She has lived alone since her mother left\nEvery night she waits on the same branch\nThe forest grows smaller, the sound of machines grows closer\nBut she stays, because there is nowhere else to go\nShe is just a tiny tarsier trying to survive",
 
-    """The loggers arrived in February. They came with chainsaws and a government permit. They left with thirty-seven trees from the eastern slope of the ridge — trees that had stood for three hundred years, trees that held territories, hunting grounds, and sleeping hollows for an entire tarsier community. The tarsiers did not leave. This is important to understand. When habitat is destroyed, the popular imagination pictures animals fleeing to safety. But tarsiers are territorial. Their entire behavioral architecture is built around a specific set of branches, a specific set of prey routes, a specific acoustic landscape. Removing the trees did not displace them. It stranded them. Within six weeks, three of the seven individuals on the eastern slope had disappeared. Stress, starvation, predation — the researchers could not determine which took each one. The remaining four compressed into a space one-third the size of their original range. They hunted the same insects. They called from the same branches. But the mathematics had changed. The forest was smaller. The prey was fewer. The predators were the same. Conservation is rarely about dramatic rescues. It is usually about mathematics.""",
+    "This forest used to be vast and safe\nNow the trees fall one by one around her\nShe doesn't understand why her home is disappearing\nAll she knows is tonight feels colder than before\nTomorrow even this branch might be gone",
 
-    """He was the last male in his group. The others had dispersed — pushed out by declining territory, drawn away by female calls from distant ridges. He remained because he was old. Twelve years in tarsier terms is not ancient, but it is enough. Enough to have survived every predator the forest contains. Enough to have fathered offspring that now hunt in territories he will never visit. Enough to know that the branch he sleeps on is the right branch, and that the hollow above it provides shelter from rain but not from the monitor lizard that lives two trees to the north. He hunts with the precision of repetition. The same patrol route. The same listening posts. The same explosive launch that turns gravity into a weapon. Tonight he catches four insects and a small gecko. Tomorrow he will catch four insects and a small gecko. His body is slower than it was three years ago. His ultrasonic calls have dropped by two kilohertz — still within range, but the younger males can hear the decline. Somewhere in the forest, a younger male is practicing his call. Somewhere in the forest, this story is beginning again.""",
+    "She gave birth during the heaviest monsoon rains\nHer baby was tiny but gripped her fur immediately\nThat first night the mother did not sleep, only watched\nThe world outside doesn't care about creatures this small\nBut a mother's love doesn't need anyone's permission",
+
+    "He is the oldest one left in his group\nOne by one the others left and never came back\nNow it's just him and the silence between the trees\nStill hunting, still surviving, still completely alone\nBut his eyes aren't as sharp as they used to be",
+
+    "That night he heard a sound he had never known before\nNot a predator, not wind, not rain falling\nA bright light cut through the darkness of his forest\nHe leaped to the highest branch he could reach\nBut the light kept getting closer",
+
+    "They had been together for two full seasons\nCalling to each other at frequencies only they could hear\nUntil one night the call was not returned\nHe called again and again until the morning came\nThe forest answered him with nothing but silence",
+
+    "Her baby fell from a branch while learning to leap\nTwo meters felt like a cliff for a body that small\nThe mother dove down as fast as physics allowed\nIn the wild there is no room for a second chance\nBut tonight, failure didn't mean the end",
+
+    "His territory was taken by a younger, stronger male\nHe didn't fight back, his body isn't what it was\nHe moved to the edge of the forest to find new branches\nIn the new place no one recognizes him at all\nBut tarsiers don't know the meaning of giving up",
+
+    "The rain hasn't stopped for three straight days\nThe insects are hiding and his stomach is empty\nHe sits curled inside a hollow in an ancient tree\nThe cold reaches deep into his fragile bones\nTomorrow he must hunt, no matter what happens",
+
+    "They captured him during the day while he was sleeping\nLarge hands reached for his tiny body\nHe didn't fight back, just froze with his eyes wide open\nHis heart beat far too fast for something so small\nSome tarsiers never come back from human hands",
 ]
 
 
 # ========================================================
-# FB_FANSPAGE — Short, vivid, shareable
+# FB_FANSPAGE — Hook → Fact 1 → Fact 2 → CTA
 # ========================================================
 FB_SCRIPTS = [
-    """Did you know the Tarsier has the largest eyes relative to body size of any mammal? Each eye is approximately 16mm in diameter — as big as its entire brain! These incredible nocturnal primates can rotate their heads nearly 180 degrees because their eyes are completely fixed in their skulls. Found only in Southeast Asia, tarsiers are the world's only fully carnivorous primates, feeding exclusively on insects, lizards, and small birds. They hunt in complete darkness using their extraordinary hearing — they can even detect ultrasonic frequencies up to 91 kilohertz! Sadly, these ancient primates are threatened by habitat loss. The Philippine Tarsier is classified as Near Threatened by the IUCN. You can help by supporting conservation efforts in Bohol, Philippines. Share this to spread awareness about these amazing animals!""",
+    "This animal's eyes are heavier than its own brain!\nThe tarsier has the largest eyes relative to body size of any mammal\nIt can rotate its head nearly 360 degrees to hunt in total darkness\nShare this with a friend who doesn't know about this creature!",
 
-    """Tarsier fun facts that will blow your mind: They weigh only 85 to 160 grams — lighter than a smartphone! They can leap up to 40 times their own body length. A newborn tarsier weighs 25 percent of its mother's body weight. They communicate in ultrasound that humans can't hear. They've been around for 55 million years — older than most mammals alive today. Their fingers are so long they can wrap completely around a branch. They're the only primates that eat zero plants — 100 percent carnivorous. They can die from stress if handled by humans. Conservation status: Near Threatened. Let's protect these incredible creatures!""",
+    "This primate weighs less than your phone!\nThe tarsier weighs just 85 to 160 grams but can jump 40 times its length\nIt's the only primate on Earth that is 100% carnivorous\nTag a friend who's scared of tiny animals!",
 
-    """Meet the world's tiniest predator. The Tarsier may look cute, but it's a highly efficient nocturnal hunter with some of the most advanced biological adaptations in the animal kingdom. Those enormous eyes? They can see in almost total darkness. That rotating head? It compensates for eyes that cannot move at all. Those long fingers? Perfect for snatching insects mid-flight in the pitch black of a rainforest night. Tarsiers have survived for 55 million years across geological epochs that wiped out most other species. They outlasted the dinosaurs' successors. They adapted through ice ages and continental shifts. But they may not survive us. Deforestation, illegal pet trade, and tourism harassment threaten every remaining species. If you see a tarsier 'attraction' offering photo opportunities with captive animals — walk away. These animals literally die from the stress of human handling. Support legitimate conservation instead.""",
+    "This animal can talk but humans can't hear it!\nTarsiers communicate using ultrasonic sound up to 91 kilohertz\nThis is how they chat without predators knowing\nFollow for more incredible animal facts!",
+
+    "A tarsier can die if you shout near it!\nExtreme stress can cause cardiac arrest in these tiny primates\nThat's why sanctuaries in Bohol enforce strict whisper-only rules\nShare this so more people know about tarsier conservation!",
+
+    "This animal the size of your fist is 55 million years old!\nOlder than most mammals alive on the planet today\nFossils show its body has barely changed in all that time\nLike and share if you just learned this fact!",
+
+    "Baby tarsiers are born at 25% of their mother's weight!\nIn human terms that's like giving birth to a 35-pound baby\nNewborns can grip branches from their very first minute alive\nShare this incredible animal fact with your friends!",
+
+    "The tarsier has the sharpest night vision of any primate!\nIts retina is packed with specialized rod cells for minimal light\nIt can hunt in darkness levels as low as 0.001 lux\nFollow for amazing animal facts every day!",
+
+    "The tarsier is the most efficient predator for its size!\nIn a single night it eats 10% of its entire body weight\nIt catches prey mid-air without making any sound at all\nTag a friend who loves learning about unique animals!",
 ]
 
 
@@ -194,7 +204,7 @@ def get_fallback_script(account_key: str, topic: str, force_mashup: bool = False
     DEDUP STRATEGY:
     1. If unused templates exist → pick one, mark as used, return stable template_id
     2. If ALL templates exhausted OR force_mashup=True → create MASHUP from 2 templates
-       Mashup = sentences from template A + sentences from template B
+       Mashup = lines from template A + lines from template B
        This creates genuinely new, unique scripts that never repeat
     """
     import re
@@ -231,18 +241,14 @@ def get_fallback_script(account_key: str, topic: str, force_mashup: bool = False
         template_id = f"fb_{account_key}_{index}"
         script = scripts[index]
         
-        # Inject topic reference
-        topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
-        script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
-        
         print(f"[{account_key}] FALLBACK SCRIPT (template #{index+1}/{len(scripts)}) — "
-              f"topic: {topic_mention} ({len(script)} chars)")
+              f"({len(script)} chars)")
         return script, template_id
     
     else:
         # ========================================
         # ALL TEMPLATES EXHAUSTED → CREATE MASHUP
-        # Combine sentences from 2 different templates
+        # Combine lines from 2 different templates
         # to create a genuinely new, unique script
         # ========================================
         print(f"[{account_key}] All {len(scripts)} templates exhausted — creating MASHUP script")
@@ -256,36 +262,37 @@ def get_fallback_script(account_key: str, topic: str, force_mashup: bool = False
         script_a = scripts[idx_a]
         script_b = scripts[idx_b]
         
-        # Split both into sentences
-        sentences_a = re.split(r'(?<=[.!?])\s+', script_a.strip())
-        sentences_b = re.split(r'(?<=[.!?])\s+', script_b.strip())
+        # Split both into lines (new format: newline-separated segments)
+        lines_a = [l.strip() for l in script_a.split('\n') if l.strip()]
+        lines_b = [l.strip() for l in script_b.split('\n') if l.strip()]
         
-        # Interleave: take odd sentences from A, even from B
-        mashup_sentences = []
-        max_len = max(len(sentences_a), len(sentences_b))
-        for i in range(max_len):
-            if i % 2 == 0 and i < len(sentences_a):
-                mashup_sentences.append(sentences_a[i])
-            elif i < len(sentences_b):
-                mashup_sentences.append(sentences_b[i])
+        # Mashup: take first line from A, middle lines alternating, last from B
+        mashup_lines = []
+        if lines_a:
+            mashup_lines.append(lines_a[0])  # Hook/Setup from A
         
-        # Pick a subset based on topic hash for further variation
-        if len(mashup_sentences) > 4:
-            start = topic_hash % max(1, len(mashup_sentences) // 3)
-            end = min(len(mashup_sentences), start + max(4, len(mashup_sentences) // 2))
-            mashup_sentences = mashup_sentences[start:end]
+        # Middle lines: alternate between A and B
+        max_middle = max(len(lines_a) - 2, len(lines_b) - 2)
+        for i in range(max_middle):
+            if i % 2 == 0 and i + 1 < len(lines_b) - 1:
+                mashup_lines.append(lines_b[i + 1])
+            elif i + 1 < len(lines_a) - 1:
+                mashup_lines.append(lines_a[i + 1])
         
-        script = ' '.join(mashup_sentences)
+        if lines_b:
+            mashup_lines.append(lines_b[-1])  # Closing from B
         
-        # Inject topic reference
-        topic_mention = topic.split(",")[0].strip() if topic else "tarsier behavior"
-        script = script.replace("Tarsier", f"Tarsier ({topic_mention})", 1)
+        # Ensure we have 4-5 lines
+        mashup_lines = mashup_lines[:5]
+        if len(mashup_lines) < 3:
+            mashup_lines = lines_a  # Safety fallback
+        
+        script = '\n'.join(mashup_lines)
         
         # Unique template_id using pair + timestamp (never same)
         ts = int(_datetime.now().timestamp())
         template_id = f"fb_{account_key}_mashup_{idx_a}_{idx_b}_{ts}"
         
         print(f"[{account_key}] MASHUP SCRIPT (mix #{idx_a+1}+#{idx_b+1}) — "
-              f"topic: {topic_mention} ({len(script)} chars, {len(mashup_sentences)} sentences)")
+              f"({len(script)} chars, {len(mashup_lines)} lines)")
         return script, template_id
-

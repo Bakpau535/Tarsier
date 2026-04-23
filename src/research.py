@@ -2,8 +2,14 @@ import wikipediaapi
 import requests
 import random
 import time
+import os
+import json
 from typing import List, Dict
 from bs4 import BeautifulSoup
+
+# Path to used themes tracking file
+_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
+_USED_THEMES_FILE = os.path.join(_DATA_DIR, "used_themes.json")
 
 class ResearchEngine:
     def __init__(self, user_agent: str = "TarsierBot/1.0 (contact@example.com)"):
@@ -88,6 +94,88 @@ class ResearchEngine:
                 "can jump 40x body length", "only fully carnivorous primate",
             ],
         }
+
+    # ==========================================
+    # THEME TRACKING — Never repeat a combo
+    # ==========================================
+    
+    def _load_used_themes(self) -> list:
+        """Load list of used facet+theme combos from JSON."""
+        try:
+            with open(_USED_THEMES_FILE, "r") as f:
+                return json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return []
+    
+    def _save_used_themes(self, used: list):
+        """Save used facet+theme combos to JSON."""
+        os.makedirs(_DATA_DIR, exist_ok=True)
+        with open(_USED_THEMES_FILE, "w") as f:
+            json.dump(used, f, indent=2)
+    
+    def _mark_theme_used(self, facet: str, theme: str):
+        """Mark a facet+theme combo as used so it never repeats."""
+        used = self._load_used_themes()
+        combo_key = f"{facet} x {theme}"
+        if combo_key not in used:
+            used.append(combo_key)
+            self._save_used_themes(used)
+            print(f"[THEME] Marked as used: '{combo_key}' ({len(used)} total used)")
+    
+    def _get_all_combos(self) -> list:
+        """Generate all possible facet × theme combinations."""
+        all_combos = []
+        for facet in self.facets:
+            for category in self.theme_bank:
+                for theme in self.theme_bank[category]:
+                    all_combos.append(f"{facet} x {theme}")
+        return all_combos
+    
+    def _pick_unused_combo(self, account_key: str = None) -> tuple:
+        """Pick an unused facet+theme combo. Auto-resets when all exhausted.
+        Returns (facet, theme, theme_category)."""
+        used = set(self._load_used_themes())
+        all_combos = self._get_all_combos()
+        total = len(all_combos)
+        
+        # Build list of available (unused) combos
+        available = [c for c in all_combos if c not in used]
+        
+        if not available:
+            # ALL combos exhausted → reset tracker and start fresh
+            print(f"[THEME] All {total} combos exhausted! Resetting tracker for new cycle.")
+            self._save_used_themes([])
+            available = all_combos
+        
+        print(f"[THEME] Available: {len(available)}/{total} combos unused")
+        
+        # Filter by channel preference if account_key provided
+        if account_key and account_key in self.CHANNEL_THEMES:
+            preferred_categories = self.CHANNEL_THEMES[account_key]
+            preferred_themes = []
+            for cat in preferred_categories:
+                preferred_themes.extend(self.theme_bank.get(cat, []))
+            
+            # Try preferred combos first
+            preferred_available = [
+                c for c in available
+                if any(t in c.split(" x ", 1)[1] for t in preferred_themes)
+            ]
+            if preferred_available:
+                available = preferred_available
+        
+        # Pick random from available
+        chosen = random.choice(available)
+        facet, theme = chosen.split(" x ", 1)
+        
+        # Find theme category
+        theme_category = "emotion"  # default
+        for cat, themes in self.theme_bank.items():
+            if theme in themes:
+                theme_category = cat
+                break
+        
+        return facet, theme, theme_category
 
     def _get_cached_page(self, page_title: str):
         """Fetch a Wikipedia page with caching — each page fetched only ONCE per run."""
@@ -230,18 +318,16 @@ class ResearchEngine:
 
     def generate_random_topic(self, account_key: str = None) -> Dict[str, str]:
         """
-        V2: Creates topic by combining FACET (fact) + THEME (emotional angle).
-        Per-channel theme preference ensures each channel gets matching themes.
+        V3: Creates topic by combining FACET + THEME with DEDUP TRACKING.
+        Used combos are saved to used_themes.json — never repeated.
         35 facets × 42 themes = 1,470 unique combinations.
+        Auto-resets when all combos exhausted.
         """
-        facet = random.choice(self.facets)
+        # Pick unused combo (tracked in used_themes.json)
+        facet, theme, theme_category = self._pick_unused_combo(account_key)
         
-        # Pick theme category based on channel preference
-        if account_key and account_key in self.CHANNEL_THEMES:
-            theme_category = random.choice(self.CHANNEL_THEMES[account_key])
-        else:
-            theme_category = random.choice(list(self.theme_bank.keys()))
-        theme = random.choice(self.theme_bank[theme_category])
+        # Mark as used IMMEDIATELY so it can't be picked again
+        self._mark_theme_used(facet, theme)
         
         # Source 1: Wikipedia
         section_text = ""

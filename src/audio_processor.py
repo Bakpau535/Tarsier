@@ -72,18 +72,41 @@ def process_audio(voice_path: Optional[str], music_path: Optional[str],
         try:
             music = AudioSegment.from_file(music_path)
             
-            # Trim leading silence — Freesound previews often have silent intros
-            def _detect_leading_silence(sound, silence_threshold=-40.0, chunk_size=50):
-                """Returns ms of leading silence."""
+            # Trim leading silence + slow fade-ins — Freesound previews often
+            # have silent intros or very slow fade-ins that sound "blank"
+            def _detect_leading_silence(sound, silence_threshold=-35.0, chunk_size=50):
+                """Returns ms of leading silence (more aggressive than default)."""
                 trim_ms = 0
                 while trim_ms < len(sound) and sound[trim_ms:trim_ms+chunk_size].dBFS < silence_threshold:
                     trim_ms += chunk_size
                 return trim_ms
             
+            def _detect_slow_fadein(sound, loud_threshold=-30.0, chunk_size=100):
+                """Returns ms before first 'actually audible' chunk.
+                Catches slow fade-ins that pass silence detection but sound blank."""
+                scan_ms = 0
+                # Only scan first 10 seconds max
+                max_scan = min(len(sound), 10000)
+                while scan_ms < max_scan and sound[scan_ms:scan_ms+chunk_size].dBFS < loud_threshold:
+                    scan_ms += chunk_size
+                return scan_ms
+            
+            # Primary: trim true silence
             leading_ms = _detect_leading_silence(music)
-            if leading_ms > 200:  # More than 200ms silence = trim it
+            if leading_ms > 100:  # More than 100ms silence = trim it
                 music = music[leading_ms:]
                 print(f"[{account_key}] Trimmed {leading_ms}ms leading silence from music")
+            
+            # Secondary: trim slow fade-in (sounds blank even if not technically silent)
+            fadein_ms = _detect_slow_fadein(music)
+            if fadein_ms > 500:  # More than 500ms of inaudible fade-in
+                # Keep 200ms before the loud point for natural feel
+                trim_point = max(0, fadein_ms - 200)
+                music = music[trim_point:]
+                print(f"[{account_key}] Trimmed {trim_point}ms slow fade-in from music")
+            
+            # Add quick fade-in (50ms) to prevent click artifacts after trim
+            music = music.fade_in(50)
             
             # Apply channel-specific music volume
             music_vol = spec["music_normal"]
