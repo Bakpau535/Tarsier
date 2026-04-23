@@ -170,10 +170,10 @@ class VideoAssembler:
         else:
             # VO channels: estimate target from VO file duration + buffer
             target_dur = 70.0  # default ~70s if we can't read VO
-            if processed_voice and os.path.exists(processed_voice):
+            if voiceover_file and os.path.exists(voiceover_file):
                 try:
                     from moviepy import AudioFileClip
-                    _tmp_vo = AudioFileClip(processed_voice)
+                    _tmp_vo = AudioFileClip(voiceover_file)
                     target_dur = _tmp_vo.duration + 5.0  # +5s buffer
                     _tmp_vo.close()
                     del _tmp_vo

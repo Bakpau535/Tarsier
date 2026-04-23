@@ -181,8 +181,10 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
             # UPDATED 2026-04-23: SDXL deprecated on CF (HTTP 500), switched to FLUX
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-1-schnell"
             headers = {"Authorization": f"Bearer {api_token}"}
-            # FLUX uses simpler params (no negative_prompt support)
-            payload = {"prompt": f"{prompt}. {_BG_NEGATIVE}", "width": min(width, 1024), "height": min(height, 1024)}
+            # FLUX requires standard dimensions (multiples of 8, within model limits)
+            # Raw image dimensions (e.g. 1280x960) cause HTTP 400 or 200-JSON-error
+            # Force standard square 1024x1024 — resized to target after generation
+            payload = {"prompt": f"{prompt}. {_BG_NEGATIVE}", "width": 1024, "height": 1024}
             
             if attempt == 0:
                 print(f"[VisualEngine] {label}: {prompt[:50]}...")
@@ -195,6 +197,12 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                 bg = bg.resize((width, height), Image.LANCZOS)
                 print(f"[VisualEngine] {label} SUCCESS")
                 return bg
+            elif resp.status_code == 200:
+                # HTTP 200 but not image content-type — CF returned JSON error
+                ct = resp.headers.get('content-type', 'unknown')
+                body_preview = resp.text[:200] if hasattr(resp, 'text') else ''
+                print(f"[VisualEngine] {label} HTTP 200 but content-type={ct}: {body_preview}")
+                return None
             elif resp.status_code == 500 and attempt == 0:
                 print(f"[VisualEngine] {label} got HTTP 500, retrying in 5s...")
                 time.sleep(5)
@@ -211,8 +219,8 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
 def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
     """Try generating background via HuggingFace Inference API. Returns Image or None."""
     try:
-        # UPDATED 2026-04-23: SDXL returns 404 on HF, switched to FLUX.1-schnell
-        hf_url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
+        # UPDATED 2026-04-23: Use router endpoint (api-inference deprecated → 404)
+        hf_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
         hf_headers = {"Authorization": f"Bearer {hf_key}"}
         # FLUX.1 uses simple prompt (negative prompt embedded in text)
         hf_payload = {"inputs": f"{prompt}. {_BG_NEGATIVE}"}
