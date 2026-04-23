@@ -524,17 +524,21 @@ class Pipeline:
         # Count results
         total = len(self.upload_results)
         success = sum(1 for r in self.upload_results if r["status"] == "SUCCESS")
-        failed = total - success
+        preview = sum(1 for r in self.upload_results if "PREVIEW" in r["status"])
+        completed = success + preview  # Both count as "completed successfully"
+        failed = total - completed
         
         # Build email body
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         status_icon = "ALL SUCCESS" if failed == 0 else f"{failed} FAILED"
+        if preview > 0:
+            status_icon += f" ({preview} preview)"
         
         body = f"""TARSIER PIPELINE REPORT
 {'='*50}
 Waktu    : {now}
 Topik    : {topic_name}
-Hasil    : {success}/{total} berhasil | {status_icon}
+Hasil    : {completed}/{total} berhasil | {status_icon}
 {'='*50}
 
 DETAIL PER AKUN:
@@ -551,7 +555,7 @@ DETAIL PER AKUN:
                 body += f"  Shorts   : {r['short_url']}\n"
         
         body += f"\n{'='*50}\n"
-        body += f"Total upload berhasil: {success}/{total}\n"
+        body += f"Total berhasil: {completed}/{total} (uploaded: {success}, preview: {preview})\n"
         if failed > 0:
             body += f"\nPerlu dicek manual: {failed} akun gagal. Cek GitHub Actions log.\n"
         body += f"\n--- Tarsier Bot ---\n"
@@ -559,7 +563,7 @@ DETAIL PER AKUN:
         # Build email
         msg = EmailMessage()
         if failed == 0:
-            msg['Subject'] = f"[TARSIER] Pipeline OK - {success}/{total} uploaded - {topic_name}"
+            msg['Subject'] = f"[TARSIER] Pipeline OK - {completed}/{total} completed - {topic_name}"
         else:
             msg['Subject'] = f"[TARSIER] Pipeline WARNING - {failed}/{total} FAILED - {topic_name}"
         msg['From'] = smtp_user
@@ -573,7 +577,18 @@ DETAIL PER AKUN:
                 server.starttls()
                 server.login(smtp_user, smtp_pass)
                 server.send_message(msg)
-            self._log("INFO", "SYSTEM", f"Summary email sent: {success}/{total} success.")
+            self._log("INFO", "SYSTEM", f"Summary email sent: {completed}/{total} completed (upload:{success} preview:{preview}).")
+            # Also log to GitHub Actions Summary for easy visibility
+            summary_file = os.environ.get("GITHUB_STEP_SUMMARY", "")
+            if summary_file:
+                try:
+                    with open(summary_file, "a") as sf:
+                        sf.write(f"\n## Pipeline Summary\n")
+                        sf.write(f"- Topic: {topic_name}\n")
+                        sf.write(f"- Completed: {completed}/{total}\n")
+                        sf.write(f"- Status: {status_icon}\n")
+                except Exception:
+                    pass
         except Exception as e:
             self._log("ERROR", "SYSTEM", f"Failed to send summary email: {e}")
 

@@ -10,7 +10,7 @@ from typing import Optional
 # Per-channel volume settings (voice_vol, music_normal, music_ducked)
 # Values are in 0-100 scale representing percentage
 # Music volume raised 2026-03-14: previous values (0.06~0.12) were inaudible
-# ALSO note: assemble.py applies ANOTHER with_volume_scaled(0.5), so effective volume = music_normal * 0.5
+# NOTE: assemble.py NO LONGER applies a second volume scale — these values are the FINAL volume
 VOLUME_SPEC = {
     "yt_documenter": {"music_normal": 0.25, "music_ducked": 0.12, "duck_threshold": -30},
     "yt_funny":      {"music_normal": 0.35, "music_ducked": 0.35, "duck_threshold": -30},  # No ducking needed

@@ -157,6 +157,22 @@ class VideoAssembler:
                 for p in media_items
             ]
 
+        # === SCENE LIMITER for no-VO channels ===
+        # Prevents assembling 395s of video only to cap it to 60s later (wasting RAM + CPU)
+        MAX_NO_VO_DURATION = 60.0
+        has_vo = profile.get("has_voiceover", True)
+        if not has_vo:
+            dur_range = profile.get("cut_duration", (4, 7))
+            avg_dur = sum(dur_range) / len(dur_range) if isinstance(dur_range, (tuple, list)) else dur_range
+            max_scenes = max(4, int(MAX_NO_VO_DURATION / avg_dur) + 1)  # +1 buffer, minimum 4
+            if len(media_items) > max_scenes:
+                original_count = len(media_items)
+                # Shuffle before trimming to get variety (don't always use first N)
+                random.shuffle(media_items)
+                media_items = media_items[:max_scenes]
+                print(f"[{account_key}] Scene limiter (no-VO): {original_count} → {max_scenes} scenes "
+                      f"(target {MAX_NO_VO_DURATION:.0f}s, avg {avg_dur:.0f}s/scene)")
+
         video_count = sum(1 for t, _ in media_items if t == "video")
         image_count = sum(1 for t, _ in media_items if t == "image")
         print(f"[{account_key}] Assembly profile: cut={profile['cut_duration']}s, "
@@ -406,14 +422,10 @@ class VideoAssembler:
             if processed_music and os.path.exists(processed_music):
                 try:
                     music = AudioFileClip(processed_music)
-                    # Per-channel music volume — VO channels get lower music so voice is clear
-                    MUSIC_VOL = {
-                        "yt_documenter": 0.20,  "yt_funny": 0.40,  "yt_anthro": 0.30,
-                        "yt_pov": 0.45,  "yt_drama": 0.25,  "fb_fanspage": 0.20,
-                    }
-                    vol = MUSIC_VOL.get(account_key, 0.30)
-                    music = music.with_volume_scaled(vol)
-                    print(f"[{account_key}] Music volume: {vol:.0%}")
+                    # NOTE: Music volume is ALREADY set by audio_processor.py (per-channel + ducking)
+                    # Do NOT scale again here — previous double-scaling made music inaudible
+                    # (e.g., audio_processor 20% × assembler 45% = 9% effective)
+                    print(f"[{account_key}] Music loaded (volume pre-set by audio_processor)")
                     if music.duration < final_video.duration:
                         from moviepy import concatenate_audioclips
                         loops = int(final_video.duration / music.duration) + 1
