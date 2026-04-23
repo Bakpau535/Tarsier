@@ -232,36 +232,54 @@ class MediaGenerator:
 
     def _load_footage_log(self) -> set:
         """Load persistent set of ALL used footage IDs.
-        V2: Reset log on first run (format change — old images available again)."""
+        V2 migration: one-time reset if old format detected (no v2_marker)."""
         try:
             if os.path.exists(self.FOOTAGE_LOG_PATH):
                 with open(self.FOOTAGE_LOG_PATH, "r") as f:
                     data = self._json.load(f)
-                # V2 FORMAT CHECK: If log is old format (list of strings without v2 marker),
-                # reset it so all 667 old images become available again
-                if isinstance(data, list) and len(data) > 0:
-                    if isinstance(data[0], str) and not any(d.startswith("v2:") for d in data[:5]):
-                        print(f"[MediaGen] V2 RESET: Clearing {len(data)} v1 footage entries. Old images available again!")
-                        self._save_footage_log_data(set())
-                        return set()
-                return set(data)
+                
+                # V2 FORMAT: New format uses a dict with "_v2_marker" key
+                if isinstance(data, dict) and data.get("_v2_marker"):
+                    items = set(data.get("items", []))
+                    return items
+                
+                # V1 FORMAT: Old format is a plain list — migrate ONE TIME
+                if isinstance(data, list):
+                    if len(data) > 0:
+                        print(f"[MediaGen] V2 MIGRATION: Converting {len(data)} v1 entries to v2 format")
+                        # Keep existing entries (don't reset!) — just convert format
+                        items = set(data)
+                        self._used_footage = items
+                        self._save_footage_log()  # Save in v2 format
+                        return items
+                    return set()
+                
+                return set(data) if isinstance(data, (list, set)) else set()
         except Exception as e:
             print(f"[MediaGen] Warning: Could not load footage log: {e}")
         return set()
 
     def _save_footage_log_data(self, data: set):
-        """Save footage log data directly."""
+        """Save footage log data directly in V2 format."""
         try:
+            v2_data = {
+                "_v2_marker": True,
+                "items": sorted(list(data))
+            }
             with open(self.FOOTAGE_LOG_PATH, "w") as f:
-                self._json.dump(sorted(list(data)), f, indent=2)
+                self._json.dump(v2_data, f, indent=2)
         except Exception as e:
             print(f"[MediaGen] Warning: Could not save footage log: {e}")
 
     def _save_footage_log(self):
-        """Save updated footage log to disk."""
+        """Save updated footage log to disk in V2 format."""
         try:
+            v2_data = {
+                "_v2_marker": True,
+                "items": sorted(list(self._used_footage))
+            }
             with open(self.FOOTAGE_LOG_PATH, "w") as f:
-                self._json.dump(sorted(list(self._used_footage)), f, indent=2)
+                self._json.dump(v2_data, f, indent=2)
         except Exception as e:
             print(f"[MediaGen] Warning: Could not save footage log: {e}")
 
