@@ -49,6 +49,32 @@ jobs:
           sudo apt-get install -y -qq ffmpeg
           ffmpeg -version
 
+      - name: Install Google Fonts (Per-Channel Typography)
+        run: |
+          FONT_DIR="/usr/share/fonts/truetype/google"
+          sudo mkdir -p $FONT_DIR
+          # Creepster — Horror channel (yt_pov)
+          curl -sL "https://github.com/google/fonts/raw/main/ofl/creepster/Creepster-Regular.ttf" \
+            -o /tmp/Creepster-Regular.ttf && sudo mv /tmp/Creepster-Regular.ttf $FONT_DIR/
+          # Playfair Display — Drama/Cinematic (yt_drama)
+          curl -sL "https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay-BoldItalic.ttf" \
+            -o /tmp/PlayfairDisplay-BoldItalic.ttf && sudo mv /tmp/PlayfairDisplay-BoldItalic.ttf $FONT_DIR/
+          curl -sL "https://github.com/google/fonts/raw/main/ofl/playfairdisplay/PlayfairDisplay-Bold.ttf" \
+            -o /tmp/PlayfairDisplay-Bold.ttf && sudo mv /tmp/PlayfairDisplay-Bold.ttf $FONT_DIR/
+          # Bebas Neue — Meme/Impact style (yt_funny)
+          curl -sL "https://github.com/google/fonts/raw/main/ofl/bebasneue/BebasNeue-Regular.ttf" \
+            -o /tmp/BebasNeue-Regular.ttf && sudo mv /tmp/BebasNeue-Regular.ttf $FONT_DIR/
+          # Inter — Clean professional (yt_documenter, fb_fanspage)
+          curl -sL "https://github.com/google/fonts/raw/main/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf" \
+            -o /tmp/Inter.ttf && sudo mv /tmp/Inter.ttf $FONT_DIR/
+          # Quicksand — Warm rounded (yt_anthro)
+          curl -sL "https://github.com/google/fonts/raw/main/ofl/quicksand/Quicksand%5Bwght%5D.ttf" \
+            -o /tmp/Quicksand.ttf && sudo mv /tmp/Quicksand.ttf $FONT_DIR/
+          # Refresh font cache
+          sudo fc-cache -f
+          echo "Installed Google Fonts:"
+          ls -la $FONT_DIR/
+
       - name: Restore YouTube OAuth Tokens
         env:
           TK1: ${{ secrets.YT_SCIENTIFIC_TOKEN }}

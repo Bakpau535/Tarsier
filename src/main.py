@@ -130,12 +130,65 @@ class Pipeline:
 
     def _split_script_to_segments(self, script: str) -> list:
         """
-        Splits a narration script into segments for individual clip generation.
-        Each sentence/phrase becomes a prompt for one scene.
+        Splits a narration script into SHORT PHRASES for text overlay.
+        V2: 3-6 words per phrase (not full sentences) for dramatic pacing.
+        
+        Rules:
+        1. Split at natural boundaries: periods, commas, semicolons, conjunctions
+        2. Max 6 words per phrase (sweet spot for readability)
+        3. Minimum 2 words per phrase (avoid single words)
+        4. Short sentences (<6 words) stay intact
         """
         import re
+        
+        # Step 1: Split into sentences first
         sentences = re.split(r'(?<=[.!?])\s+', script.strip())
-        return [s.strip() for s in sentences if s.strip()]
+        
+        phrases = []
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+            
+            words = sentence.split()
+            
+            # Short sentence → keep as-is
+            if len(words) <= 6:
+                phrases.append(sentence)
+                continue
+            
+            # Step 2: Try splitting at natural boundaries
+            # Split at: comma, semicolon, " and ", " but ", " or ", " — ", " – "
+            sub_parts = re.split(r'(?:,\s+|\s*;\s+|\s+(?:and|but|or|while|because|although|however|meanwhile)\s+|\s*[—–]\s*)', sentence)
+            
+            for part in sub_parts:
+                part = part.strip().rstrip(',;')
+                if not part:
+                    continue
+                
+                part_words = part.split()
+                
+                if len(part_words) <= 6:
+                    # Short enough — keep as one phrase
+                    if len(part_words) >= 2:
+                        phrases.append(part)
+                elif len(part_words) <= 12:
+                    # Medium — split in half
+                    mid = len(part_words) // 2
+                    phrases.append(' '.join(part_words[:mid]))
+                    phrases.append(' '.join(part_words[mid:]))
+                else:
+                    # Long — chunk into groups of 4-5 words
+                    chunk_size = 5
+                    for i in range(0, len(part_words), chunk_size):
+                        chunk = ' '.join(part_words[i:i + chunk_size])
+                        if len(chunk.split()) >= 2:
+                            phrases.append(chunk)
+        
+        # Filter out empty/too-short phrases
+        phrases = [p.strip() for p in phrases if p.strip() and len(p.strip()) > 3]
+        
+        return phrases if phrases else [script.strip()]
 
     def _download_shared_images(self, topic_name: str, num_images: int = 6) -> list:
         """Download shared image batch — 1 image per channel distributed.

@@ -203,22 +203,34 @@ class VideoAssembler:
             clips = []
             last_variation = None  # Track to prevent consecutive same variations
 
-            # === SPREAD text overlays across ALL scenes (not just first N) ===
-            # Creates a map: scene_index → segment_text
+            # === SPREAD text overlays across scenes — VO-synced pacing ===
+            # V2: Phrases appear sequentially (scene 1, 2, 3...) matching VO pacing.
+            # Scene 0 is text-free (let visual breathe), then phrases flow consecutively.
+            # After all phrases shown, remaining scenes are text-free (visual outro).
             overlay_map = {}
             if script_segments and len(media_items) > 0:
                 n_segments = len(script_segments)
                 n_scenes = len(media_items)
-                if n_segments >= n_scenes:
-                    # More segments than scenes → assign 1 per scene
-                    overlay_map = {i: script_segments[i] for i in range(n_scenes)}
+                
+                # Start text from scene 1 (scene 0 = visual intro, no text)
+                start_scene = min(1, n_scenes - 1)
+                
+                if n_segments >= n_scenes - start_scene:
+                    # More phrases than available scenes → assign 1 per scene from start
+                    for i in range(n_scenes - start_scene):
+                        overlay_map[start_scene + i] = script_segments[i]
                 else:
-                    # Fewer segments than scenes → spread evenly with gaps
-                    step = max(1, n_scenes // (n_segments + 1))  # +1 to avoid last scene
+                    # Fewer phrases than scenes → assign consecutively from start
+                    # This creates natural pacing: text flows, then visual outro
                     for seg_idx in range(n_segments):
-                        scene_idx = min((seg_idx + 1) * step - 1, n_scenes - 1)
-                        overlay_map[scene_idx] = script_segments[seg_idx]
-                print(f"[{account_key}] Text overlay spread: {n_segments} segments across {n_scenes} scenes")
+                        scene_idx = start_scene + seg_idx
+                        if scene_idx < n_scenes:
+                            overlay_map[scene_idx] = script_segments[seg_idx]
+                
+                text_scenes = len(overlay_map)
+                free_scenes = n_scenes - text_scenes
+                print(f"[{account_key}] Text overlay: {n_segments} phrases → "
+                      f"{text_scenes} scenes with text, {free_scenes} scenes text-free")
 
             for i, (media_type, media_path) in enumerate(media_items):
                 if not os.path.exists(media_path):
