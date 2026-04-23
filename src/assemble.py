@@ -157,21 +157,37 @@ class VideoAssembler:
                 for p in media_items
             ]
 
-        # === SCENE LIMITER for no-VO channels ===
-        # Prevents assembling 395s of video only to cap it to 60s later (wasting RAM + CPU)
+        # === SCENE LIMITER ===
+        # Prevents assembling 300s+ of video only to trim/cap later (wasting RAM + CPU)
         MAX_NO_VO_DURATION = 60.0
         has_vo = profile.get("has_voiceover", True)
+        dur_range = profile.get("cut_duration", (4, 7))
+        avg_dur = sum(dur_range) / len(dur_range) if isinstance(dur_range, (tuple, list)) else dur_range
+
         if not has_vo:
-            dur_range = profile.get("cut_duration", (4, 7))
-            avg_dur = sum(dur_range) / len(dur_range) if isinstance(dur_range, (tuple, list)) else dur_range
-            max_scenes = max(4, int(MAX_NO_VO_DURATION / avg_dur) + 1)  # +1 buffer, minimum 4
-            if len(media_items) > max_scenes:
-                original_count = len(media_items)
-                # Shuffle before trimming to get variety (don't always use first N)
-                random.shuffle(media_items)
-                media_items = media_items[:max_scenes]
-                print(f"[{account_key}] Scene limiter (no-VO): {original_count} → {max_scenes} scenes "
-                      f"(target {MAX_NO_VO_DURATION:.0f}s, avg {avg_dur:.0f}s/scene)")
+            # No-VO: cap to 60s
+            target_dur = MAX_NO_VO_DURATION
+        else:
+            # VO channels: estimate target from VO file duration + buffer
+            target_dur = 70.0  # default ~70s if we can't read VO
+            if processed_voice and os.path.exists(processed_voice):
+                try:
+                    from moviepy import AudioFileClip
+                    _tmp_vo = AudioFileClip(processed_voice)
+                    target_dur = _tmp_vo.duration + 5.0  # +5s buffer
+                    _tmp_vo.close()
+                    del _tmp_vo
+                except Exception:
+                    target_dur = 70.0
+
+        max_scenes = max(6, int(target_dur / avg_dur) + 2)  # +2 buffer, minimum 6
+        if len(media_items) > max_scenes:
+            original_count = len(media_items)
+            random.shuffle(media_items)
+            media_items = media_items[:max_scenes]
+            label = "no-VO" if not has_vo else "VO-matched"
+            print(f"[{account_key}] Scene limiter ({label}): {original_count} → {max_scenes} scenes "
+                  f"(target {target_dur:.0f}s, avg {avg_dur:.0f}s/scene)")
 
         video_count = sum(1 for t, _ in media_items if t == "video")
         image_count = sum(1 for t, _ in media_items if t == "image")

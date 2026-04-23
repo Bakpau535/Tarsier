@@ -178,9 +178,11 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
     import time
     for attempt in range(2):  # Max 2 attempts
         try:
-            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0"
+            # UPDATED 2026-04-23: SDXL deprecated on CF (HTTP 500), switched to FLUX
+            url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-1-schnell"
             headers = {"Authorization": f"Bearer {api_token}"}
-            payload = {"prompt": prompt, "negative_prompt": _BG_NEGATIVE, "width": min(width, 1024), "height": min(height, 1024)}
+            # FLUX uses simpler params (no negative_prompt support)
+            payload = {"prompt": f"{prompt}. {_BG_NEGATIVE}", "width": min(width, 1024), "height": min(height, 1024)}
             
             if attempt == 0:
                 print(f"[VisualEngine] {label}: {prompt[:50]}...")
@@ -209,10 +211,11 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
 def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
     """Try generating background via HuggingFace Inference API. Returns Image or None."""
     try:
-        # Updated endpoint — old router.huggingface.co returns 410 Gone
-        hf_url = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
+        # UPDATED 2026-04-23: SDXL returns 404 on HF, switched to FLUX.1-schnell
+        hf_url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
         hf_headers = {"Authorization": f"Bearer {hf_key}"}
-        hf_payload = {"inputs": prompt, "parameters": {"negative_prompt": _BG_NEGATIVE}}
+        # FLUX.1 uses simple prompt (negative prompt embedded in text)
+        hf_payload = {"inputs": f"{prompt}. {_BG_NEGATIVE}"}
         
         print(f"[VisualEngine] {label}...")
         resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
