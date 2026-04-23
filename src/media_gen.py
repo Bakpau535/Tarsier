@@ -1261,14 +1261,14 @@ class MediaGenerator:
         "fb_fanspage": ["gentle piano music calm", "positive acoustic guitar music", "soft background music instrumental"],
     }
 
-    # Per-channel music volume — lower for VO channels so voice is clear
+    # Per-channel music volume (REFERENCE ONLY — actual control in audio_processor.py VOLUME_SPEC)
     MUSIC_VOLUME = {
-        "yt_documenter": 0.20,   # VO ON → music very low
-        "yt_funny": 0.40,       # VO OFF → music medium
-        "yt_anthro": 0.30,      # VO optional → music low-medium
-        "yt_pov": 0.45,         # VO OFF → music for immersion
-        "yt_drama": 0.25,       # VO ON → music low for drama feel
-        "fb_fanspage": 0.20,    # VO ON → music very low
+        "yt_documenter": 0.25,   # VO ON → music very low
+        "yt_funny": 0.40,       # VO OFF → music loud, ceria
+        "yt_anthro": 0.28,      # VO ON → music low-medium
+        "yt_pov": 0.40,         # VO OFF → WAJIB immersion, loud
+        "yt_drama": 0.30,       # VO ON → music low for drama feel
+        "fb_fanspage": 0.28,    # VO ON → music low-medium
     }
 
     # Per-channel AMBIENCE search — additional sound layer ON TOP of music

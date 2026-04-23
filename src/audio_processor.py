@@ -13,9 +13,9 @@ from typing import Optional
 # NOTE: assemble.py NO LONGER applies a second volume scale — these values are the FINAL volume
 VOLUME_SPEC = {
     "yt_documenter": {"music_normal": 0.25, "music_ducked": 0.12, "duck_threshold": -30},
-    "yt_funny":      {"music_normal": 0.35, "music_ducked": 0.35, "duck_threshold": -30},  # No ducking needed
+    "yt_funny":      {"music_normal": 0.40, "music_ducked": 0.40, "duck_threshold": -30},  # No VO → music louder, ceria
     "yt_anthro":     {"music_normal": 0.28, "music_ducked": 0.14, "duck_threshold": -28},
-    "yt_pov":        {"music_normal": 0.20, "music_ducked": 0.08, "duck_threshold": -32},
+    "yt_pov":        {"music_normal": 0.40, "music_ducked": 0.40, "duck_threshold": -32},  # No VO → WAJIB immersion, louder
     "yt_drama":      {"music_normal": 0.30, "music_ducked": 0.12, "duck_threshold": -28},
     "fb_fanspage":   {"music_normal": 0.28, "music_ducked": 0.28, "duck_threshold": -30},
 }
