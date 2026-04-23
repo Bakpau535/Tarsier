@@ -72,6 +72,7 @@ class QualityControl:
                        target_duration: int = 72, tolerance: int = 40) -> int:
         """
         Checks if video duration is within acceptable range.
+        RULE: ALL videos must be at least 60s (shorts replaced long-form).
         Tolerance is generous (±40s) because loop engine variations 
         can create natural length variations.
         """
@@ -80,14 +81,19 @@ class QualityControl:
             duration = clip.duration
             clip.close()
             
-            min_dur = max(target_duration - tolerance, 20)  # At least 20s
+            # MINIMUM 60s — shorts now replace long videos, must be at least 1 minute
+            ABSOLUTE_MIN_DURATION = 60
+            min_dur = max(target_duration - tolerance, ABSOLUTE_MIN_DURATION)
             max_dur = target_duration + tolerance
             
             if min_dur <= duration <= max_dur:
-                print(f"QC Duration: {duration:.1f}s (target: {target_duration}s ±{tolerance}s) — PASS")
+                print(f"QC Duration: {duration:.1f}s (target: {target_duration}s, range: {min_dur}-{max_dur}s) — PASS")
                 return self.criteria["duration"]
             
-            print(f"QC Duration: {duration:.1f}s — FAIL (need {min_dur}-{max_dur}s)")
+            if duration < ABSOLUTE_MIN_DURATION:
+                print(f"QC Duration: {duration:.1f}s — FAIL (below absolute minimum {ABSOLUTE_MIN_DURATION}s)")
+            else:
+                print(f"QC Duration: {duration:.1f}s — FAIL (need {min_dur}-{max_dur}s)")
             return 0
         except Exception as e:
             print(f"QC Duration check error: {e}")

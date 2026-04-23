@@ -159,26 +159,29 @@ class VideoAssembler:
 
         # === SCENE LIMITER ===
         # Prevents assembling 300s+ of video only to trim/cap later (wasting RAM + CPU)
-        MAX_NO_VO_DURATION = 60.0
+        # RULE: ALL videos must be at least 60s (shorts replaced long-form)
+        MIN_VIDEO_DURATION = 60.0
+        MAX_NO_VO_DURATION = 70.0  # No-VO cap at 70s
         has_vo = profile.get("has_voiceover", True)
         dur_range = profile.get("cut_duration", (4, 7))
         avg_dur = sum(dur_range) / len(dur_range) if isinstance(dur_range, (tuple, list)) else dur_range
 
         if not has_vo:
-            # No-VO: cap to 60s
+            # No-VO: target 65s (buffer for transitions, min 60s result)
             target_dur = MAX_NO_VO_DURATION
         else:
-            # VO channels: estimate target from VO file duration + buffer
-            target_dur = 70.0  # default ~70s if we can't read VO
+            # VO channels: estimate target from VO file duration + buffer, minimum 60s
+            target_dur = MIN_VIDEO_DURATION + 5.0  # default ~65s if we can't read VO
             if voiceover_file and os.path.exists(voiceover_file):
                 try:
                     from moviepy import AudioFileClip
                     _tmp_vo = AudioFileClip(voiceover_file)
-                    target_dur = _tmp_vo.duration + 5.0  # +5s buffer
+                    # Target = max(VO + buffer, 60s minimum)
+                    target_dur = max(_tmp_vo.duration + 5.0, MIN_VIDEO_DURATION + 5.0)
                     _tmp_vo.close()
                     del _tmp_vo
                 except Exception:
-                    target_dur = 70.0
+                    target_dur = MIN_VIDEO_DURATION + 5.0
 
         max_scenes = max(6, int(target_dur / avg_dur) + 2)  # +2 buffer, minimum 6
         if len(media_items) > max_scenes:
@@ -389,11 +392,14 @@ class VideoAssembler:
                     voice = AudioFileClip(processed_voice)
                     print(f"[{account_key}] VO duration: {voice.duration:.1f}s | Video duration: {final_video.duration:.1f}s")
                     
+                    # ABSOLUTE MINIMUM: 60s for ALL videos (shorts replaced long-form)
+                    MIN_VIDEO_DURATION = 60.0
+                    
                     if voice.duration > final_video.duration + 0.5:
-                        # VO longer than video → EXTEND video
+                        # VO longer than video → EXTEND video to match VO
                         # RULE: VO is NEVER trimmed — it must always play completely
-                        # RULE: NO identical clip repetition — filler uses reversed/different segments
-                        target_dur = voice.duration + 1.0  # +1s buffer
+                        # RULE: Minimum video duration is 60s even if VO is shorter
+                        target_dur = max(voice.duration + 1.0, MIN_VIDEO_DURATION)
                         print(f"[{account_key}] Extending video from {final_video.duration:.1f}s to {target_dur:.1f}s to match VO...")
                         if clips:
                             filler_clips = []
@@ -406,17 +412,14 @@ class VideoAssembler:
                                 use_dur = min(src_clip.duration, remaining)
                                 
                                 # ANTI-REPEAT: alternate between normal and time-reversed
-                                # So clip 0 plays normal, clip 0 (2nd time) plays reversed
-                                cycle = clip_idx // len(clips)  # How many times we've looped
+                                cycle = clip_idx // len(clips)
                                 if cycle > 0 and cycle % 2 == 1:
-                                    # Reverse the clip (plays backwards = looks different)
                                     try:
                                         filler = src_clip.time_transform(
                                             lambda t, d=src_clip.duration: d - t - 1/24,
                                             apply_to=['mask', 'audio']
                                         ).subclipped(0, use_dur)
                                     except Exception:
-                                        # Fallback: use different start point
                                         offset = min(src_clip.duration * 0.3, src_clip.duration - use_dur)
                                         filler = src_clip.subclipped(offset, offset + use_dur)
                                 else:
@@ -432,20 +435,71 @@ class VideoAssembler:
                                 print(f"[{account_key}] Video extended to {final_video.duration:.1f}s ({len(filler_clips)} filler clips, {cycles_used} cycles)")
                     
                     elif voice.duration < final_video.duration - 2.0:
-                        # VO shorter than video → trim video to match VO + 1.5s buffer
-                        target_dur = voice.duration + 1.5
-                        final_video = final_video.subclipped(0, min(target_dur, final_video.duration))
-                        print(f"[{account_key}] Trimmed video to match VO ({target_dur:.1f}s)")
+                        # VO shorter than video → trim video BUT never below 60s
+                        target_dur = max(voice.duration + 1.5, MIN_VIDEO_DURATION)
+                        if target_dur < final_video.duration:
+                            final_video = final_video.subclipped(0, min(target_dur, final_video.duration))
+                            print(f"[{account_key}] Trimmed video to {target_dur:.1f}s (VO={voice.duration:.1f}s, min={MIN_VIDEO_DURATION:.0f}s)")
+                        else:
+                            print(f"[{account_key}] Video {final_video.duration:.1f}s already within range for VO {voice.duration:.1f}s")
+                    
+                    # If video is STILL below 60s after VO sync, extend with filler
+                    if final_video.duration < MIN_VIDEO_DURATION and clips:
+                        gap = MIN_VIDEO_DURATION - final_video.duration
+                        print(f"[{account_key}] Video {final_video.duration:.1f}s below minimum {MIN_VIDEO_DURATION:.0f}s, extending by {gap:.1f}s...")
+                        filler_clips = []
+                        filler_dur = 0
+                        clip_idx = 0
+                        while filler_dur < gap:
+                            src_clip = clips[clip_idx % len(clips)]
+                            remaining = gap - filler_dur
+                            use_dur = min(src_clip.duration, remaining)
+                            cycle = clip_idx // len(clips)
+                            if cycle > 0 and cycle % 2 == 1:
+                                try:
+                                    filler = src_clip.time_transform(
+                                        lambda t, d=src_clip.duration: d - t - 1/24,
+                                        apply_to=['mask', 'audio']
+                                    ).subclipped(0, use_dur)
+                                except Exception:
+                                    filler = src_clip.subclipped(0, use_dur)
+                            else:
+                                filler = src_clip.subclipped(0, use_dur)
+                            filler_clips.append(filler)
+                            filler_dur += use_dur
+                            clip_idx += 1
+                        if filler_clips:
+                            final_video = concatenate_videoclips([final_video] + filler_clips, method="compose")
+                            print(f"[{account_key}] Extended to {final_video.duration:.1f}s (minimum enforced)")
                     
                     audio_clips.append(voice)
                 except Exception as e:
                     print(f"[{account_key}] Voiceover load failed (skipping): {e}")
             else:
-                # NO VOICEOVER — cap video to max 60s for shorts format
-                MAX_NO_VO_DURATION = 60.0
-                if final_video.duration > MAX_NO_VO_DURATION:
-                    final_video = final_video.subclipped(0, MAX_NO_VO_DURATION)
-                    print(f"[{account_key}] No VO: capped video to {MAX_NO_VO_DURATION:.0f}s")
+                # NO VOICEOVER — ensure video is at least 60s (extend if shorter)
+                MIN_VIDEO_DURATION = 60.0
+                if final_video.duration > MIN_VIDEO_DURATION + 10:
+                    # Cap at 70s max for no-VO channels
+                    final_video = final_video.subclipped(0, MIN_VIDEO_DURATION + 10)
+                    print(f"[{account_key}] No VO: capped video to {MIN_VIDEO_DURATION + 10:.0f}s")
+                elif final_video.duration < MIN_VIDEO_DURATION and clips:
+                    # Extend to minimum 60s
+                    gap = MIN_VIDEO_DURATION - final_video.duration
+                    print(f"[{account_key}] No VO: extending from {final_video.duration:.1f}s to {MIN_VIDEO_DURATION:.0f}s...")
+                    filler_clips = []
+                    filler_dur = 0
+                    clip_idx = 0
+                    while filler_dur < gap:
+                        src_clip = clips[clip_idx % len(clips)]
+                        remaining = gap - filler_dur
+                        use_dur = min(src_clip.duration, remaining)
+                        filler = src_clip.subclipped(0, use_dur)
+                        filler_clips.append(filler)
+                        filler_dur += use_dur
+                        clip_idx += 1
+                    if filler_clips:
+                        final_video = concatenate_videoclips([final_video] + filler_clips, method="compose")
+                        print(f"[{account_key}] No VO: extended to {final_video.duration:.1f}s")
 
             if processed_music and os.path.exists(processed_music):
                 try:

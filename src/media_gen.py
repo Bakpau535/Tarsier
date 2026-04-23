@@ -762,7 +762,9 @@ class MediaGenerator:
         return pool
     
     def _generate_cf_image(self, account_key: str, prompt: str, model: str = None) -> Optional[bytes]:
-        """Generate image via Cloudflare Workers AI. Returns raw image bytes or None."""
+        """Generate image via Cloudflare Workers AI. Returns raw image bytes or None.
+        Supports both raw binary image AND JSON-wrapped base64 response formats."""
+        import base64 as _b64
         if model is None:
             model = self.cf_channel_models.get(account_key, "@cf/black-forest-labs/flux-1-schnell")
         
@@ -789,13 +791,51 @@ class MediaGenerator:
                     response = requests.post(url, headers=headers, json=payload, timeout=120)
                     
                     if response.status_code == 200:
-                        # CF returns raw image bytes for image models
+                        ct = response.headers.get("content-type", "")
+                        
+                        # FORMAT 1: Raw binary image (old CF behavior)
+                        if ct.startswith("image"):
+                            content = response.content
+                            if len(content) > 5000:
+                                return content
+                            else:
+                                print(f"[{account_key}] {key_type} returned small image ({len(content)}B)")
+                                continue
+                        
+                        # FORMAT 2: JSON-wrapped base64 image (new CF behavior 2026+)
+                        if "json" in ct:
+                            try:
+                                data = response.json()
+                                img_b64 = ""
+                                if isinstance(data, dict):
+                                    result = data.get("result", data)
+                                    if isinstance(result, dict):
+                                        img_b64 = result.get("image", "")
+                                    elif isinstance(result, str):
+                                        img_b64 = result
+                                
+                                if img_b64 and len(img_b64) > 1000:
+                                    img_bytes = _b64.b64decode(img_b64)
+                                    if len(img_bytes) > 5000:
+                                        return img_bytes
+                                    else:
+                                        print(f"[{account_key}] {key_type} base64 decoded too small ({len(img_bytes)}B)")
+                                        continue
+                                else:
+                                    print(f"[{account_key}] {key_type} JSON but no image data")
+                                    continue
+                            except Exception as e:
+                                print(f"[{account_key}] {key_type} JSON parse error: {e}")
+                                continue
+                        
+                        # FORMAT 3: Unknown content-type — try raw content
                         content = response.content
                         if len(content) > 5000:
                             return content
                         else:
-                            print(f"[{account_key}] {key_type} returned small response ({len(content)}B)")
+                            print(f"[{account_key}] {key_type} returned small response ({len(content)}B, ct={ct})")
                             continue
+                            
                     elif response.status_code == 429:
                         # Rate limited — wait and retry
                         print(f"[{account_key}] {key_type} rate limited (429), waiting 10s...")

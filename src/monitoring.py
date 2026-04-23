@@ -389,18 +389,7 @@ class PerformanceMonitor:
         # Print to console always
         print(body)
         
-        # CHANNEL 1: GitHub Actions Step Summary (visible in Actions UI — no auth needed)
-        github_summary = os.environ.get("GITHUB_STEP_SUMMARY", "")
-        if github_summary:
-            try:
-                with open(github_summary, 'a', encoding='utf-8') as f:
-                    f.write(f"## 📊 Tarsier Monitoring Report\n\n")
-                    f.write(f"```\n{body}\n```\n")
-                print("Report written to GitHub Actions Summary.")
-            except Exception as e:
-                print(f"Failed to write GitHub Summary: {e}")
-        
-        # CHANNEL 2: Email report (requires SMTP App Password)
+        # Email report (requires SMTP App Password)
         if self.smtp_user and self.smtp_pass:
             try:
                 msg = EmailMessage()

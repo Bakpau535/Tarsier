@@ -174,15 +174,15 @@ def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
 
 def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
     """Try generating background via Cloudflare Workers AI. Returns Image or None.
+    Supports both raw binary image AND JSON-wrapped base64 response formats.
     Retries once on HTTP 500 (transient server error)."""
     import time
+    import base64
     for attempt in range(2):  # Max 2 attempts
         try:
-            # UPDATED 2026-04-23: SDXL deprecated on CF (HTTP 500), switched to FLUX
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-1-schnell"
             headers = {"Authorization": f"Bearer {api_token}"}
             # FLUX requires standard dimensions (multiples of 8, within model limits)
-            # Raw image dimensions (e.g. 1280x960) cause HTTP 400 or 200-JSON-error
             # Force standard square 1024x1024 — resized to target after generation
             payload = {"prompt": f"{prompt}. {_BG_NEGATIVE}", "width": 1024, "height": 1024}
             
@@ -192,17 +192,58 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                 print(f"[VisualEngine] {label}: retry after 500...")
             resp = requests.post(url, headers=headers, json=payload, timeout=60)
             
-            if resp.status_code == 200 and resp.headers.get("content-type", "").startswith("image"):
-                bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-                bg = bg.resize((width, height), Image.LANCZOS)
-                print(f"[VisualEngine] {label} SUCCESS")
-                return bg
-            elif resp.status_code == 200:
-                # HTTP 200 but not image content-type — CF returned JSON error
-                ct = resp.headers.get('content-type', 'unknown')
-                body_preview = resp.text[:200] if hasattr(resp, 'text') else ''
-                print(f"[VisualEngine] {label} HTTP 200 but content-type={ct}: {body_preview}")
+            if resp.status_code == 200:
+                ct = resp.headers.get("content-type", "")
+                
+                # FORMAT 1: Raw binary image (old CF behavior)
+                if ct.startswith("image"):
+                    bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+                    bg = bg.resize((width, height), Image.LANCZOS)
+                    print(f"[VisualEngine] {label} SUCCESS (raw image)")
+                    return bg
+                
+                # FORMAT 2: JSON-wrapped base64 image (new CF behavior 2026+)
+                # Response: {"result":{"image":"/9j/4AAQSkZJRg..."}}
+                if "json" in ct:
+                    try:
+                        data = resp.json()
+                        img_b64 = ""
+                        # Try nested format: {"result":{"image":"..."}}
+                        if isinstance(data, dict):
+                            result = data.get("result", data)
+                            if isinstance(result, dict):
+                                img_b64 = result.get("image", "")
+                            elif isinstance(result, str):
+                                img_b64 = result
+                        
+                        if img_b64 and len(img_b64) > 1000:
+                            img_bytes = base64.b64decode(img_b64)
+                            bg = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+                            bg = bg.resize((width, height), Image.LANCZOS)
+                            print(f"[VisualEngine] {label} SUCCESS (base64 JSON)")
+                            return bg
+                        else:
+                            # JSON but no valid image data — real error
+                            body_preview = resp.text[:200]
+                            print(f"[VisualEngine] {label} JSON response but no image data: {body_preview}")
+                            return None
+                    except Exception as e:
+                        print(f"[VisualEngine] {label} JSON parse error: {e}")
+                        return None
+                
+                # FORMAT 3: Unknown content-type with large body — try as raw image
+                if len(resp.content) > 5000:
+                    try:
+                        bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+                        bg = bg.resize((width, height), Image.LANCZOS)
+                        print(f"[VisualEngine] {label} SUCCESS (raw content)")
+                        return bg
+                    except Exception:
+                        pass
+                
+                print(f"[VisualEngine] {label} HTTP 200 but unrecognized format (ct={ct}, size={len(resp.content)})")
                 return None
+                
             elif resp.status_code == 500 and attempt == 0:
                 print(f"[VisualEngine] {label} got HTTP 500, retrying in 5s...")
                 time.sleep(5)
@@ -217,7 +258,9 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
 
 
 def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
-    """Try generating background via HuggingFace Inference API. Returns Image or None."""
+    """Try generating background via HuggingFace Inference API. Returns Image or None.
+    Supports both raw binary image AND JSON-wrapped base64 response formats."""
+    import base64
     try:
         # UPDATED 2026-04-23: Use router endpoint (api-inference deprecated → 404)
         hf_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
@@ -228,11 +271,49 @@ def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: s
         print(f"[VisualEngine] {label}...")
         resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
         
-        if resp.status_code == 200 and len(resp.content) > 5000:
-            bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-            bg = bg.resize((width, height), Image.LANCZOS)
-            print(f"[VisualEngine] {label} SUCCESS")
-            return bg
+        if resp.status_code == 200:
+            ct = resp.headers.get("content-type", "")
+            
+            # FORMAT 1: Raw binary image (typical HF behavior)
+            if ct.startswith("image") or (len(resp.content) > 5000 and "json" not in ct):
+                try:
+                    bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
+                    bg = bg.resize((width, height), Image.LANCZOS)
+                    print(f"[VisualEngine] {label} SUCCESS (raw image)")
+                    return bg
+                except Exception:
+                    pass
+            
+            # FORMAT 2: JSON-wrapped base64 (if HF changes format like CF did)
+            if "json" in ct or resp.content[:1] == b'{':
+                try:
+                    data = resp.json()
+                    img_b64 = ""
+                    if isinstance(data, dict):
+                        # Try common JSON structures
+                        for key in ["image", "generated_image", "output"]:
+                            if key in data and isinstance(data[key], str) and len(data[key]) > 1000:
+                                img_b64 = data[key]
+                                break
+                        if not img_b64:
+                            result = data.get("result", data)
+                            if isinstance(result, dict):
+                                img_b64 = result.get("image", "")
+                    elif isinstance(data, list) and data:
+                        img_b64 = data[0].get("image", "") if isinstance(data[0], dict) else ""
+                    
+                    if img_b64 and len(img_b64) > 1000:
+                        img_bytes = base64.b64decode(img_b64)
+                        bg = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+                        bg = bg.resize((width, height), Image.LANCZOS)
+                        print(f"[VisualEngine] {label} SUCCESS (base64 JSON)")
+                        return bg
+                except Exception as e:
+                    print(f"[VisualEngine] {label} JSON parse failed: {e}")
+            
+            print(f"[VisualEngine] {label} HTTP 200 but no valid image (ct={ct}, size={len(resp.content)})")
+        elif resp.status_code == 402:
+            print(f"[VisualEngine] {label} DEPLETED (402)")
         else:
             print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
     except Exception as e:
