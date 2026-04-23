@@ -53356,5 +53356,731 @@
         "level": "INFO",
         "account": "SYSTEM",
         "message": "Cleaning up temporary files..."
+    },
+    {
+        "timestamp": "2026-04-23T07:51:37.865242",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Starting Tarsier Pipeline V2 (Batch Mode)..."
+    },
+    {
+        "timestamp": "2026-04-23T07:51:42.953807",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Selected batch topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:42.953824",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Downloading 6 shared images for topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:50.056428",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Stock photos (validated): 6/6"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:50.056439",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared batch: 6 images (stock:6 AI:0)"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:50.056443",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Shared pool: 6 images for 6 channels"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:50.056450",
+        "level": "INFO",
+        "account": "BATCH",
+        "message": "Channel order (shuffled): yt_drama → fb_fanspage → yt_documenter → yt_pov → yt_anthro → yt_funny"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:50.058970",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:51.429211",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T07:51:57.519340",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Moonlit Strife"
+    },
+    {
+        "timestamp": "2026-04-23T07:51:57.519397",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-23T07:53:25.447504",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T07:53:36.690764",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T07:53:36.692185",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-23T07:53:41.693918",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:53:42.064273",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T07:53:48.035127",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Nocturnal Strain"
+    },
+    {
+        "timestamp": "2026-04-23T07:53:48.035181",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-23T07:54:31.144425",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T07:54:42.301365",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T07:54:42.302635",
+        "level": "WARN",
+        "account": "yt_drama",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-23T07:54:47.304371",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:54:47.680256",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T07:54:53.604904",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Metadata generated: Episode 1: Midnight Stalkers"
+    },
+    {
+        "timestamp": "2026-04-23T07:54:53.604956",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styling 6 shared images for yt_drama..."
+    },
+    {
+        "timestamp": "2026-04-23T07:55:36.347700",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T07:55:47.203967",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T07:55:47.205219",
+        "level": "ERROR",
+        "account": "yt_drama",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-23T07:55:48.754814",
+        "level": "INFO",
+        "account": "yt_drama",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-23T07:55:48.754920",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 40s before fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-23T07:56:28.756861",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:56:29.111093",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T07:56:35.158163",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tiniest Nocturnal Hunter"
+    },
+    {
+        "timestamp": "2026-04-23T07:56:35.158216",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-23T07:57:12.933499",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T07:57:24.172975",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T07:57:24.174308",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-23T07:57:29.176077",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:57:29.510639",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T07:57:35.508732",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: Tarsiers Sleep 20 Hours"
+    },
+    {
+        "timestamp": "2026-04-23T07:57:35.508810",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-23T07:58:16.707725",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T07:58:27.541143",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T07:58:27.542495",
+        "level": "WARN",
+        "account": "fb_fanspage",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-23T07:58:32.544283",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T07:58:33.022712",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T07:58:39.121469",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Metadata generated: These Nocturnal Creatures Have Giant Peepers"
+    },
+    {
+        "timestamp": "2026-04-23T07:58:39.121520",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styling 6 shared images for fb_fanspage..."
+    },
+    {
+        "timestamp": "2026-04-23T07:59:19.059736",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T07:59:29.274718",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T07:59:29.276048",
+        "level": "ERROR",
+        "account": "fb_fanspage",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-23T07:59:30.773875",
+        "level": "INFO",
+        "account": "fb_fanspage",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-23T07:59:30.773910",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 40s before yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-23T08:00:10.775929",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:00:11.672604",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:00:17.603187",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Nocturnal Adaptation — Huge Eyes"
+    },
+    {
+        "timestamp": "2026-04-23T08:00:17.603239",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-23T08:00:39.937946",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:00:53.361207",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T08:00:53.362596",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-23T08:00:58.364393",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:00:58.672862",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:01:04.650676",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Huge Eyes Combat — Nightly Exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:01:04.650733",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-23T08:01:27.027673",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:01:37.304789",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T08:01:37.306124",
+        "level": "WARN",
+        "account": "yt_documenter",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-23T08:01:42.307903",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:01:42.774678",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:01:48.774179",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Metadata generated: Nocturnal Hunters — Huge Eyes"
+    },
+    {
+        "timestamp": "2026-04-23T08:01:48.774228",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styling 6 shared images for yt_documenter..."
+    },
+    {
+        "timestamp": "2026-04-23T08:02:11.219823",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:02:22.574941",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T08:02:22.576290",
+        "level": "ERROR",
+        "account": "yt_documenter",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-23T08:02:24.421323",
+        "level": "INFO",
+        "account": "yt_documenter",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-23T08:02:24.421363",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 48s before yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-23T08:03:12.423376",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:03:13.092910",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:03:19.204263",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Metadata generated: Day 1: Eyes Stare Back"
+    },
+    {
+        "timestamp": "2026-04-23T08:03:19.204310",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styling 6 shared images for yt_pov..."
+    },
+    {
+        "timestamp": "2026-04-23T08:04:02.700198",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:04:02.700217",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-23T08:11:29.215059",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:11:29.525200",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-23T08:11:29.562935",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "PREVIEW MODE: Files saved to output/yt_pov/"
+    },
+    {
+        "timestamp": "2026-04-23T08:11:29.747936",
+        "level": "INFO",
+        "account": "yt_pov",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-23T08:11:29.747967",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 43s before yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-23T08:12:12.750006",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:12:13.270458",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:12:19.484464",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Night Shift ft. Philippine Tarsier"
+    },
+    {
+        "timestamp": "2026-04-23T08:12:19.484514",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-23T08:12:54.814092",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:13:05.992919",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T08:13:05.994302",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 2/3..."
+    },
+    {
+        "timestamp": "2026-04-23T08:13:10.996145",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:13:11.436887",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:13:17.430076",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Burnout ft. Tarsy"
+    },
+    {
+        "timestamp": "2026-04-23T08:13:17.430125",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-23T08:13:53.779562",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:14:09.150760",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T08:14:09.152192",
+        "level": "WARN",
+        "account": "yt_anthro",
+        "message": "Retry 3/3..."
+    },
+    {
+        "timestamp": "2026-04-23T08:14:14.154041",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:14:14.620181",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:14:20.562164",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Metadata generated: Night Shift ft. Tiko"
+    },
+    {
+        "timestamp": "2026-04-23T08:14:20.562211",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styling 6 shared images for yt_anthro..."
+    },
+    {
+        "timestamp": "2026-04-23T08:14:56.412201",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:15:07.570686",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Pipeline Error: cannot access local variable 'processed_voice' where it is not associated with a value"
+    },
+    {
+        "timestamp": "2026-04-23T08:15:07.572135",
+        "level": "ERROR",
+        "account": "yt_anthro",
+        "message": "Failed after 3 attempts."
+    },
+    {
+        "timestamp": "2026-04-23T08:15:09.018636",
+        "level": "INFO",
+        "account": "yt_anthro",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-23T08:15:09.018673",
+        "level": "INFO",
+        "account": "SYSTEM",
+        "message": "Anti-bot delay: 43s before yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-23T08:15:52.020685",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Processing topic: Tarsier Nocturnal adaptations x exhaustion"
+    },
+    {
+        "timestamp": "2026-04-23T08:15:52.305696",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Script generated successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:15:58.552532",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Metadata generated: Pulling All-Nighters Like Tarsiers"
+    },
+    {
+        "timestamp": "2026-04-23T08:15:58.552580",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styling 6 shared images for yt_funny..."
+    },
+    {
+        "timestamp": "2026-04-23T08:16:34.413080",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Styled scenes: 48"
+    },
+    {
+        "timestamp": "2026-04-23T08:16:34.413097",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "SKIP voiceover (has_voiceover=False)"
+    },
+    {
+        "timestamp": "2026-04-23T08:23:39.013693",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Video assembled successfully."
+    },
+    {
+        "timestamp": "2026-04-23T08:23:39.322079",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Thumbnail generated."
+    },
+    {
+        "timestamp": "2026-04-23T08:23:39.342148",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "PREVIEW MODE: Files saved to output/yt_funny/"
+    },
+    {
+        "timestamp": "2026-04-23T08:23:39.526208",
+        "level": "INFO",
+        "account": "yt_funny",
+        "message": "Memory cleanup done (gc.collect)"
+    },
+    {
+        "timestamp": "2026-04-23T08:23:39.526228",
+        "level": "WARN",
+        "account": "SYSTEM",
+        "message": "Pipeline finished with errors. Skipping cleanup for debugging."
     }
 ]
