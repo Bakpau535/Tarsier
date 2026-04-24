@@ -145,10 +145,14 @@ def _remove_background(img: Image.Image) -> Image.Image:
     Returns RGBA image with transparent background.
     Falls back to elliptical mask if rembg unavailable."""
     try:
+        # Resize image before passing to rembg to save CPU time drastically
+        img_copy = img.copy()
+        img_copy.thumbnail((512, 512))
+        
         from rembg import remove
         # Convert to bytes for rembg
         buf = io.BytesIO()
-        img.save(buf, format="PNG")
+        img_copy.save(buf, format="PNG")
         buf.seek(0)
         result = remove(buf.read())
         return Image.open(io.BytesIO(result)).convert("RGBA")
@@ -175,10 +179,10 @@ def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
 def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
     """Try generating background via Cloudflare Workers AI. Returns Image or None.
     Supports both raw binary image AND JSON-wrapped base64 response formats.
-    Retries once on HTTP 500 (transient server error)."""
+    Retries on HTTP 429 or 500."""
     import time
     import base64
-    for attempt in range(2):  # Max 2 attempts
+    for attempt in range(4):  # Max 4 attempts with exponential backoff
         try:
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-1-schnell"
             headers = {"Authorization": f"Bearer {api_token}"}
@@ -189,7 +193,8 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
             if attempt == 0:
                 print(f"[VisualEngine] {label}: {prompt[:50]}...")
             else:
-                print(f"[VisualEngine] {label}: retry after 500...")
+                print(f"[VisualEngine] {label}: retry attempt {attempt}...")
+            
             resp = requests.post(url, headers=headers, json=payload, timeout=60)
             
             if resp.status_code == 200:
@@ -244,15 +249,20 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                 print(f"[VisualEngine] {label} HTTP 200 but unrecognized format (ct={ct}, size={len(resp.content)})")
                 return None
                 
-            elif resp.status_code == 500 and attempt == 0:
-                print(f"[VisualEngine] {label} got HTTP 500, retrying in 5s...")
-                time.sleep(5)
+            elif resp.status_code in [429, 500, 502, 503, 504]:
+                wait_time = 15 if resp.status_code == 429 else 5
+                wait_time = wait_time * (attempt + 1)
+                print(f"[VisualEngine] {label} got HTTP {resp.status_code}. Retrying in {wait_time}s...")
+                time.sleep(wait_time)
                 continue
             else:
                 print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
                 return None
         except Exception as e:
             print(f"[VisualEngine] {label} error: {e}")
+            if attempt < 3:
+                time.sleep(5)
+                continue
             return None
     return None
 
@@ -261,63 +271,82 @@ def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: s
     """Try generating background via HuggingFace Inference API. Returns Image or None.
     Supports both raw binary image AND JSON-wrapped base64 response formats."""
     import base64
-    try:
-        # UPDATED 2026-04-23: Use router endpoint (api-inference deprecated → 404)
-        hf_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
-        hf_headers = {"Authorization": f"Bearer {hf_key}"}
-        # FLUX.1 uses simple prompt (negative prompt embedded in text)
-        hf_payload = {"inputs": f"{prompt}. {_BG_NEGATIVE}"}
-        
-        print(f"[VisualEngine] {label}...")
-        resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
-        
-        if resp.status_code == 200:
-            ct = resp.headers.get("content-type", "")
+    import time
+    for attempt in range(4):
+        try:
+            # UPDATED 2026-04-23: Use router endpoint (api-inference deprecated → 404)
+            hf_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
+            hf_headers = {"Authorization": f"Bearer {hf_key}"}
+            # FLUX.1 uses simple prompt (negative prompt embedded in text)
+            hf_payload = {"inputs": f"{prompt}. {_BG_NEGATIVE}"}
             
-            # FORMAT 1: Raw binary image (typical HF behavior)
-            if ct.startswith("image") or (len(resp.content) > 5000 and "json" not in ct):
-                try:
-                    bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
-                    bg = bg.resize((width, height), Image.LANCZOS)
-                    print(f"[VisualEngine] {label} SUCCESS (raw image)")
-                    return bg
-                except Exception:
-                    pass
+            if attempt == 0:
+                print(f"[VisualEngine] {label}...")
+            else:
+                print(f"[VisualEngine] {label}: retry attempt {attempt}...")
+                
+            resp = requests.post(hf_url, headers=hf_headers, json=hf_payload, timeout=120)
             
-            # FORMAT 2: JSON-wrapped base64 (if HF changes format like CF did)
-            if "json" in ct or resp.content[:1] == b'{':
-                try:
-                    data = resp.json()
-                    img_b64 = ""
-                    if isinstance(data, dict):
-                        # Try common JSON structures
-                        for key in ["image", "generated_image", "output"]:
-                            if key in data and isinstance(data[key], str) and len(data[key]) > 1000:
-                                img_b64 = data[key]
-                                break
-                        if not img_b64:
-                            result = data.get("result", data)
-                            if isinstance(result, dict):
-                                img_b64 = result.get("image", "")
-                    elif isinstance(data, list) and data:
-                        img_b64 = data[0].get("image", "") if isinstance(data[0], dict) else ""
-                    
-                    if img_b64 and len(img_b64) > 1000:
-                        img_bytes = base64.b64decode(img_b64)
-                        bg = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+            if resp.status_code == 200:
+                ct = resp.headers.get("content-type", "")
+                
+                # FORMAT 1: Raw binary image (typical HF behavior)
+                if ct.startswith("image") or (len(resp.content) > 5000 and "json" not in ct):
+                    try:
+                        bg = Image.open(io.BytesIO(resp.content)).convert("RGB")
                         bg = bg.resize((width, height), Image.LANCZOS)
-                        print(f"[VisualEngine] {label} SUCCESS (base64 JSON)")
+                        print(f"[VisualEngine] {label} SUCCESS (raw image)")
                         return bg
-                except Exception as e:
-                    print(f"[VisualEngine] {label} JSON parse failed: {e}")
-            
-            print(f"[VisualEngine] {label} HTTP 200 but no valid image (ct={ct}, size={len(resp.content)})")
-        elif resp.status_code == 402:
-            print(f"[VisualEngine] {label} DEPLETED (402)")
-        else:
-            print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
-    except Exception as e:
-        print(f"[VisualEngine] {label} error: {e}")
+                    except Exception:
+                        pass
+                
+                # FORMAT 2: JSON-wrapped base64 (if HF changes format like CF did)
+                if "json" in ct or resp.content[:1] == b'{':
+                    try:
+                        data = resp.json()
+                        img_b64 = ""
+                        if isinstance(data, dict):
+                            # Try common JSON structures
+                            for key in ["image", "generated_image", "output"]:
+                                if key in data and isinstance(data[key], str) and len(data[key]) > 1000:
+                                    img_b64 = data[key]
+                                    break
+                            if not img_b64:
+                                result = data.get("result", data)
+                                if isinstance(result, dict):
+                                    img_b64 = result.get("image", "")
+                        elif isinstance(data, list) and data:
+                            img_b64 = data[0].get("image", "") if isinstance(data[0], dict) else ""
+                        
+                        if img_b64 and len(img_b64) > 1000:
+                            img_bytes = base64.b64decode(img_b64)
+                            bg = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+                            bg = bg.resize((width, height), Image.LANCZOS)
+                            print(f"[VisualEngine] {label} SUCCESS (base64 JSON)")
+                            return bg
+                    except Exception as e:
+                        print(f"[VisualEngine] {label} JSON parse failed: {e}")
+                
+                print(f"[VisualEngine] {label} HTTP 200 but no valid image (ct={ct}, size={len(resp.content)})")
+                return None
+            elif resp.status_code in [429, 500, 502, 503, 504]:
+                wait_time = 15 if resp.status_code == 429 else 5
+                wait_time = wait_time * (attempt + 1)
+                print(f"[VisualEngine] {label} got HTTP {resp.status_code}. Retrying in {wait_time}s...")
+                time.sleep(wait_time)
+                continue
+            elif resp.status_code == 402:
+                print(f"[VisualEngine] {label} DEPLETED (402)")
+                return None
+            else:
+                print(f"[VisualEngine] {label} failed (HTTP {resp.status_code})")
+                return None
+        except Exception as e:
+            print(f"[VisualEngine] {label} error: {e}")
+            if attempt < 3:
+                time.sleep(5)
+                continue
+            return None
     return None
 
 
@@ -722,6 +751,11 @@ def style_batch_for_channel(raw_images: List[str], account_key: str,
         # Step 1: Apply channel visual style (V3: rembg + themed BG + color filter)
         styled_path = os.path.join(output_dir, f"{account_key}_styled_{i}.png")
         apply_channel_style(raw_path, account_key, styled_path, image_index=i)
+        
+        # Gentle delay to prevent rate limit spikes
+        if account_key != "yt_documenter":
+            import time
+            time.sleep(3)
         
         # Step 2: Generate 8 scene variations from styled image
         scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=8)

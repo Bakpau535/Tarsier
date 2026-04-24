@@ -64,9 +64,9 @@ class ScriptEngine:
                         return ""
                 except Exception as e:
                     error_msg = str(e)
-                    if "403" in error_msg or "PERMISSION_DENIED" in error_msg:
+                    if "403" in error_msg or "PERMISSION_DENIED" in error_msg or "400" in error_msg or "API key not valid" in error_msg:
                         self._gemini_blocked = True
-                        print(f"[{account_key}] Gemini BLOCKED (403) — switching to Groq backup")
+                        print(f"[{account_key}] Gemini API Key invalid or blocked — switching to backup")
                         return ""
                     elif "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
                         print(f"[{account_key}] Gemini rate limited, waiting 10s...")
