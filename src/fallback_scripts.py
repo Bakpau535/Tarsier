@@ -287,9 +287,9 @@ def get_fallback_script(account_key: str, topic: str, force_mashup: bool = False
         if lines_b:
             mashup_lines.append(lines_b[-1])  # Closing from B
         
-        # Ensure we have 4-5 lines
-        mashup_lines = mashup_lines[:5]
-        if len(mashup_lines) < 3:
+        # Ensure we have exactly 6 lines
+        mashup_lines = mashup_lines[:6]
+        if len(mashup_lines) < 4:
             mashup_lines = lines_a  # Safety fallback
         
         script = '\n'.join(mashup_lines)
