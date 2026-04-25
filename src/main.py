@@ -323,11 +323,21 @@ class Pipeline:
                 # FALLBACK: Old per-channel image sourcing
                 media_items = self.media_gen.generate_all_clips(script_segments, account_key, topic_name)
             
-            # 5. Generate Narasi Suara — V2: VO with PAUSES (not continuous)
+            # 5. Generate Narasi Suara — V5: SEGMENTED VO (per-line, not continuous)
+            # Each script line becomes a separate MP3 file
+            # Assembly places each at its corresponding scene with silence gaps between
+            # Pattern: VO line 1 → DIAM (musik+visual) → VO line 2 → DIAM → ...
             profile = VIDEO_PROFILES.get(account_key, {})
             audio_path = None
+            vo_segments = []
             if profile.get("has_voiceover", True):
-                audio_path = self.media_gen.generate_voiceover(script, account_key, topic_name)
+                vo_segments = self.media_gen.generate_voiceover_segments(script, account_key, topic_name)
+                if vo_segments:
+                    audio_path = vo_segments[0]  # First segment as legacy reference
+                    self._log("INFO", account_key, f"VO segments: {len(vo_segments)} files generated")
+                else:
+                    self._log("WARN", account_key, "VO segment generation failed, trying single VO...")
+                    audio_path = self.media_gen.generate_voiceover(script, account_key, topic_name)
             else:
                 self._log("INFO", account_key, "SKIP voiceover (has_voiceover=False)")
             
@@ -340,10 +350,11 @@ class Pipeline:
             if not media_items:
                 raise ValueError("No visual media generated.")
 
-            # 7. Assemble → video clips + images + narasi + musik + ambience + TEXT OVERLAY
+            # 7. Assemble → video clips + images + narasi SEGMENTS + musik + ambience + TEXT OVERLAY
             final_video = self.assembler.assemble_final_video(
                 account_key, topic_name, media_items, audio_path, music_path,
-                script_segments=script_segments, ambience_path=ambience_path
+                script_segments=script_segments, ambience_path=ambience_path,
+                vo_segments=vo_segments
             )
             if not final_video:
                 raise ValueError("Video assembly failed.")

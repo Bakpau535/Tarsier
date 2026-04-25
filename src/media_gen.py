@@ -1290,6 +1290,93 @@ class MediaGenerator:
                 print(f"[{account_key}] gTTS fallback also failed: {e2}")
         return None
 
+    def generate_voiceover_segments(self, script: str, account_key: str, topic: str) -> list:
+        """Generate SEPARATE VO audio files per script line.
+        
+        Instead of one continuous audio file, this produces:
+          segment_0.mp3 = VO for line 1
+          segment_1.mp3 = VO for line 2
+          ... etc
+        
+        Assembly then places each segment on its corresponding scene
+        with REAL silence gaps (music+ambience only) in between.
+        Pattern: VO → DIAM (2-5s) → VO → DIAM → VO → ...
+        
+        Returns: list of file paths (one per segment), empty list on failure.
+        """
+        # Split script into individual lines (each line = 1 segment)
+        lines = [l.strip() for l in script.strip().split('\n') if l.strip()]
+        if not lines:
+            print(f"[{account_key}] No script lines found for segmented VO")
+            return []
+        
+        print(f"[{account_key}] Generating {len(lines)} separate VO segments...")
+        
+        # Get per-channel voice settings
+        voice_settings = self.VOICE_SETTINGS.get(account_key, self.VOICE_SETTINGS["fb_fanspage"])
+        voice = voice_settings["voice"]
+        rate = voice_settings["rate"]
+        pitch = voice_settings["pitch"]
+        
+        safe = self._safe_topic(topic)
+        segments = []
+        
+        try:
+            import asyncio
+            import edge_tts
+            
+            async def _gen_segment(line_text: str, seg_idx: int) -> Optional[str]:
+                """Generate one VO segment MP3."""
+                filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_vo_seg{seg_idx}.mp3")
+                try:
+                    tts = edge_tts.Communicate(
+                        text=line_text,
+                        voice=voice,
+                        rate=rate,
+                        pitch=pitch
+                    )
+                    await tts.save(filename)
+                    if os.path.exists(filename) and os.path.getsize(filename) > 500:
+                        return filename
+                except Exception as e:
+                    print(f"[{account_key}] Segment {seg_idx} edge-tts error: {e}")
+                return None
+            
+            async def _gen_all():
+                results = []
+                for idx, line in enumerate(lines):
+                    result = await _gen_segment(line, idx)
+                    if result:
+                        results.append(result)
+                        print(f"[{account_key}] VO segment {idx+1}/{len(lines)}: \"{line[:50]}...\" OK")
+                    else:
+                        print(f"[{account_key}] VO segment {idx+1}/{len(lines)}: FAILED")
+                return results
+            
+            # Run async in sync context
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    import concurrent.futures
+                    with concurrent.futures.ThreadPoolExecutor() as pool:
+                        segments = pool.submit(asyncio.run, _gen_all()).result()
+                else:
+                    segments = loop.run_until_complete(_gen_all())
+            except RuntimeError:
+                segments = asyncio.run(_gen_all())
+            
+            print(f"[{account_key}] VO segments: {len(segments)}/{len(lines)} generated successfully")
+            
+        except Exception as e:
+            print(f"[{account_key}] Segmented VO generation failed: {e}")
+            # Fallback: generate single continuous VO file (old behavior)
+            print(f"[{account_key}] Falling back to continuous VO...")
+            single = self.generate_voiceover(script, account_key, topic)
+            if single:
+                return [single]  # Return as single-element list
+        
+        return segments
+
     # Per-account music search keywords for Freesound API
     # ALL channels use music, tipe sesuai tema masing-masing channel
     MUSIC_SEARCH = {

@@ -131,7 +131,8 @@ class VideoAssembler:
     def assemble_final_video(self, account_key: str, topic: str,
                              media_items: list, voiceover_file: str,
                              music_file: str, script_segments: list = None,
-                             ambience_path: str = None) -> Optional[str]:
+                             ambience_path: str = None,
+                             vo_segments: list = None) -> Optional[str]:
         """
         Per-channel video assembly using VIDEO_PROFILES.
         Each channel gets fundamentally different:
@@ -390,112 +391,160 @@ class VideoAssembler:
             print(f"[{account_key}] Video assembled: {final_video.duration:.1f}s total "
                   f"(transition={transition_type})")
 
+            # === CALCULATE SCENE START TIMES (needed for segmented VO placement) ===
+            scene_starts = []
+            cumulative_time = 0.0
+            for c in clips:
+                scene_starts.append(cumulative_time)
+                cumulative_time += c.duration
+
             # Add Audio (Voiceover + Music) — with per-channel processing
             from src.audio_processor import process_audio
-            processed_voice, processed_music = process_audio(
-                voiceover_file, music_file, account_key, TMP_DIR
+            
+            # For segmented VO, we don't process the entire VO file — we process each segment
+            # For music, we still process normally
+            _, processed_music = process_audio(
+                None, music_file, account_key, TMP_DIR
             )
             audio_clips = []
+            
+            MIN_VIDEO_DURATION = 60.0
+            has_vo = profile.get("has_voiceover", True)
 
-            if processed_voice and os.path.exists(processed_voice):
-                try:
-                    voice = AudioFileClip(processed_voice)
-                    print(f"[{account_key}] VO duration: {voice.duration:.1f}s | Video duration: {final_video.duration:.1f}s")
+            # ======================================================
+            # SEGMENTED VO: Place each VO segment at its text scene
+            # Pattern: VO line 1 → DIAM (musik+visual) → VO line 2 → DIAM → ...
+            # ======================================================
+            if vo_segments and len(vo_segments) > 1 and has_vo:
+                text_scene_indices = sorted(overlay_map.keys())
+                total_vo_dur = 0.0
+                vo_placed = 0
+                
+                for seg_idx, seg_path in enumerate(vo_segments):
+                    if seg_idx >= len(text_scene_indices):
+                        break
+                    scene_idx = text_scene_indices[seg_idx]
+                    if scene_idx >= len(scene_starts):
+                        break
                     
-                    # ABSOLUTE MINIMUM: 60s for ALL videos (shorts replaced long-form)
-                    MIN_VIDEO_DURATION = 60.0
+                    if not os.path.exists(seg_path):
+                        continue
                     
-                    if voice.duration > final_video.duration + 0.5:
-                        # VO longer than video → EXTEND video to match VO
-                        # RULE: VO is NEVER trimmed — it must always play completely
-                        # RULE: Minimum video duration is 60s even if VO is shorter
-                        target_dur = max(voice.duration + 1.0, MIN_VIDEO_DURATION)
-                        print(f"[{account_key}] Extending video from {final_video.duration:.1f}s to {target_dur:.1f}s to match VO...")
-                        if clips:
+                    try:
+                        seg_audio = AudioFileClip(seg_path)
+                        # Place this VO segment at the START of its corresponding text scene
+                        start_time = scene_starts[scene_idx]
+                        seg_audio = seg_audio.with_start(start_time)
+                        audio_clips.append(seg_audio)
+                        total_vo_dur += seg_audio.duration
+                        vo_placed += 1
+                        print(f"[{account_key}] VO seg {seg_idx+1} placed at {start_time:.1f}s ({seg_audio.duration:.1f}s)")
+                    except Exception as e:
+                        print(f"[{account_key}] VO segment {seg_idx+1} load failed: {e}")
+                
+                # Calculate last VO end time for duration enforcement
+                last_vo_end = 0.0
+                for ac in audio_clips:
+                    end = ac.start + ac.duration
+                    if end > last_vo_end:
+                        last_vo_end = end
+                
+                print(f"[{account_key}] Segmented VO: {vo_placed}/{len(vo_segments)} placed, "
+                      f"total VO: {total_vo_dur:.1f}s, last ends at: {last_vo_end:.1f}s")
+                
+                # Ensure video is long enough to contain all VO segments
+                target_dur = max(last_vo_end + 2.0, MIN_VIDEO_DURATION)
+                if final_video.duration < target_dur and clips:
+                    gap = target_dur - final_video.duration
+                    print(f"[{account_key}] Extending video from {final_video.duration:.1f}s to {target_dur:.1f}s for VO coverage...")
+                    filler_clips = []
+                    filler_dur = 0
+                    clip_idx = 0
+                    while filler_dur < gap:
+                        src_clip = clips[clip_idx % len(clips)]
+                        remaining = gap - filler_dur
+                        use_dur = min(src_clip.duration, remaining)
+                        filler = src_clip.subclipped(0, use_dur)
+                        filler_clips.append(filler)
+                        filler_dur += use_dur
+                        clip_idx += 1
+                    if filler_clips:
+                        final_video = concatenate_videoclips([final_video] + filler_clips, method="compose")
+                        print(f"[{account_key}] Video extended to {final_video.duration:.1f}s")
+
+            elif has_vo:
+                # ======================================================
+                # FALLBACK: Single continuous VO file (old behavior)
+                # Used when vo_segments has only 1 file or is empty
+                # ======================================================
+                single_vo = None
+                if vo_segments and len(vo_segments) == 1:
+                    single_vo = vo_segments[0]
+                elif voiceover_file:
+                    # Legacy: process single VO file through audio processor
+                    processed_voice, _ = process_audio(voiceover_file, None, account_key, TMP_DIR)
+                    single_vo = processed_voice
+                
+                if single_vo and os.path.exists(single_vo):
+                    try:
+                        voice = AudioFileClip(single_vo)
+                        print(f"[{account_key}] Single VO: {voice.duration:.1f}s | Video: {final_video.duration:.1f}s")
+                        
+                        if voice.duration > final_video.duration + 0.5:
+                            target_dur = max(voice.duration + 1.0, MIN_VIDEO_DURATION)
+                            print(f"[{account_key}] Extending video to {target_dur:.1f}s for VO...")
+                            if clips:
+                                filler_clips = []
+                                filler_dur = 0
+                                gap = target_dur - final_video.duration
+                                clip_idx = 0
+                                while filler_dur < gap:
+                                    src_clip = clips[clip_idx % len(clips)]
+                                    remaining = gap - filler_dur
+                                    use_dur = min(src_clip.duration, remaining)
+                                    filler = src_clip.subclipped(0, use_dur)
+                                    filler_clips.append(filler)
+                                    filler_dur += use_dur
+                                    clip_idx += 1
+                                if filler_clips:
+                                    final_video = concatenate_videoclips([final_video] + filler_clips, method="compose")
+                                    print(f"[{account_key}] Extended to {final_video.duration:.1f}s")
+                        
+                        elif voice.duration < final_video.duration - 2.0:
+                            target_dur = max(voice.duration + 1.5, MIN_VIDEO_DURATION)
+                            if target_dur < final_video.duration:
+                                final_video = final_video.subclipped(0, min(target_dur, final_video.duration))
+                                print(f"[{account_key}] Trimmed to {target_dur:.1f}s")
+                        
+                        # Enforce minimum
+                        if final_video.duration < MIN_VIDEO_DURATION and clips:
+                            gap = MIN_VIDEO_DURATION - final_video.duration
                             filler_clips = []
                             filler_dur = 0
-                            gap = target_dur - final_video.duration
                             clip_idx = 0
                             while filler_dur < gap:
                                 src_clip = clips[clip_idx % len(clips)]
                                 remaining = gap - filler_dur
                                 use_dur = min(src_clip.duration, remaining)
-                                
-                                # ANTI-REPEAT: alternate between normal and time-reversed
-                                cycle = clip_idx // len(clips)
-                                if cycle > 0 and cycle % 2 == 1:
-                                    try:
-                                        filler = src_clip.time_transform(
-                                            lambda t, d=src_clip.duration: d - t - 1/24,
-                                            apply_to=['mask', 'audio']
-                                        ).subclipped(0, use_dur)
-                                    except Exception:
-                                        offset = min(src_clip.duration * 0.3, src_clip.duration - use_dur)
-                                        filler = src_clip.subclipped(offset, offset + use_dur)
-                                else:
-                                    filler = src_clip.subclipped(0, use_dur)
-                                
+                                filler = src_clip.subclipped(0, use_dur)
                                 filler_clips.append(filler)
                                 filler_dur += use_dur
                                 clip_idx += 1
                             if filler_clips:
-                                extended = concatenate_videoclips([final_video] + filler_clips, method="compose")
-                                final_video = extended
-                                cycles_used = clip_idx // max(len(clips), 1)
-                                print(f"[{account_key}] Video extended to {final_video.duration:.1f}s ({len(filler_clips)} filler clips, {cycles_used} cycles)")
-                    
-                    elif voice.duration < final_video.duration - 2.0:
-                        # VO shorter than video → trim video BUT never below 60s
-                        target_dur = max(voice.duration + 1.5, MIN_VIDEO_DURATION)
-                        if target_dur < final_video.duration:
-                            final_video = final_video.subclipped(0, min(target_dur, final_video.duration))
-                            print(f"[{account_key}] Trimmed video to {target_dur:.1f}s (VO={voice.duration:.1f}s, min={MIN_VIDEO_DURATION:.0f}s)")
-                        else:
-                            print(f"[{account_key}] Video {final_video.duration:.1f}s already within range for VO {voice.duration:.1f}s")
-                    
-                    # If video is STILL below 60s after VO sync, extend with filler
-                    if final_video.duration < MIN_VIDEO_DURATION and clips:
-                        gap = MIN_VIDEO_DURATION - final_video.duration
-                        print(f"[{account_key}] Video {final_video.duration:.1f}s below minimum {MIN_VIDEO_DURATION:.0f}s, extending by {gap:.1f}s...")
-                        filler_clips = []
-                        filler_dur = 0
-                        clip_idx = 0
-                        while filler_dur < gap:
-                            src_clip = clips[clip_idx % len(clips)]
-                            remaining = gap - filler_dur
-                            use_dur = min(src_clip.duration, remaining)
-                            cycle = clip_idx // len(clips)
-                            if cycle > 0 and cycle % 2 == 1:
-                                try:
-                                    filler = src_clip.time_transform(
-                                        lambda t, d=src_clip.duration: d - t - 1/24,
-                                        apply_to=['mask', 'audio']
-                                    ).subclipped(0, use_dur)
-                                except Exception:
-                                    filler = src_clip.subclipped(0, use_dur)
-                            else:
-                                filler = src_clip.subclipped(0, use_dur)
-                            filler_clips.append(filler)
-                            filler_dur += use_dur
-                            clip_idx += 1
-                        if filler_clips:
-                            final_video = concatenate_videoclips([final_video] + filler_clips, method="compose")
-                            print(f"[{account_key}] Extended to {final_video.duration:.1f}s (minimum enforced)")
-                    
-                    audio_clips.append(voice)
-                except Exception as e:
-                    print(f"[{account_key}] Voiceover load failed (skipping): {e}")
+                                final_video = concatenate_videoclips([final_video] + filler_clips, method="compose")
+                                print(f"[{account_key}] Extended to {final_video.duration:.1f}s (minimum)")
+                        
+                        audio_clips.append(voice)
+                    except Exception as e:
+                        print(f"[{account_key}] VO load failed: {e}")
             else:
-                # NO VOICEOVER — ensure video is at least 60s (extend if shorter)
-                MIN_VIDEO_DURATION = 60.0
+                # NO VOICEOVER — ensure video is at least 60s
                 if final_video.duration > MIN_VIDEO_DURATION + 10:
-                    # Cap at 70s max for no-VO channels
                     final_video = final_video.subclipped(0, MIN_VIDEO_DURATION + 10)
-                    print(f"[{account_key}] No VO: capped video to {MIN_VIDEO_DURATION + 10:.0f}s")
+                    print(f"[{account_key}] No VO: capped to {MIN_VIDEO_DURATION + 10:.0f}s")
                 elif final_video.duration < MIN_VIDEO_DURATION and clips:
-                    # Extend to minimum 60s
                     gap = MIN_VIDEO_DURATION - final_video.duration
-                    print(f"[{account_key}] No VO: extending from {final_video.duration:.1f}s to {MIN_VIDEO_DURATION:.0f}s...")
+                    print(f"[{account_key}] No VO: extending to {MIN_VIDEO_DURATION:.0f}s...")
                     filler_clips = []
                     filler_dur = 0
                     clip_idx = 0
