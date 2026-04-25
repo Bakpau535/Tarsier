@@ -270,11 +270,12 @@ TOPICS_FILE = os.path.join(DATA_DIR, "topics.json")
 for d in [DATA_DIR, TMP_DIR, TEMPLATES_DIR]:
     os.makedirs(d, exist_ok=True)
 
-# --- Prompts ---
-# Script generation now uses persona briefs from persona_prompts.py
-# This is the wrapper prompt that includes the channel's persona brief
-SCRIPT_GENERATION_PROMPT = """
-{persona}
+# --- Per-Channel Script Prompts ---
+# V5: Each channel gets its OWN prompt template.
+# FACTUAL channels (documenter, fb) → use topic facts directly
+# CREATIVE channels (funny, anthro, pov, drama) → use topic as INSPIRATION only
+SCRIPT_PROMPTS = {
+    "yt_documenter": """{persona}
 
 TOPIC/FACTS TO USE:
 {topic}
@@ -287,18 +288,106 @@ FORMAT RULES (MANDATORY):
 - DO NOT write long paragraphs — write descriptive sentences, one per line
 - Follow the STRUCTURE from the persona brief above EXACTLY
 - Provide ONLY the narration script — NO labels, NO numbers, NO formatting
-- Every script must be UNIQUE and FOCUSED on the topic above
 - Include at least 3 SPECIFIC facts about the topic
 - The voiceover will have pauses between lines — each line is one scene
+""",
 
-CORRECT OUTPUT FORMAT (6 lines, separated by newline):
-First line sentence about twelve to eighteen words long
-Second line sentence about twelve to eighteen words long
-Third line sentence about twelve to eighteen words long
-Fourth line sentence about twelve to eighteen words long
-Fifth line sentence about twelve to eighteen words long
-Sixth line sentence about twelve to eighteen words long
-"""
+    "yt_funny": """{persona}
+
+TOPIC INSPIRATION (use as background context, NOT as main content):
+{topic}
+
+FORMAT RULES (MANDATORY):
+- Write ENTIRELY IN ENGLISH
+- Format: each line = 1 segment/scene (separate with NEWLINE)
+- Each line should be 12-18 words
+- Total script: EXACTLY 6 lines (no more, no less)
+- Follow the STRUCTURE from the persona brief above EXACTLY
+- Provide ONLY the script — NO labels, NO numbers, NO formatting
+- DO NOT write about tarsier biology or facts directly
+- Write a RELATABLE everyday situation (school, work, sleep, diet, phone, etc.)
+- The tarsier is a METAPHOR or punchline — NOT the main subject
+- Think: viral TikTok caption, meme energy, internet humor
+- The voiceover will have pauses between lines — each line is one scene
+""",
+
+    "yt_anthro": """{persona}
+
+TOPIC INSPIRATION (use as emotional context only):
+{topic}
+
+FORMAT RULES (MANDATORY):
+- Write ENTIRELY IN ENGLISH
+- Format: each line = 1 segment/scene (separate with NEWLINE)
+- Each line should be 12-18 words
+- Total script: EXACTLY 6 lines (no more, no less)
+- Follow the STRUCTURE from the persona brief above EXACTLY
+- Provide ONLY the monologue — NO labels, NO numbers, NO formatting
+- Write an EMOTIONAL MONOLOGUE about a real human struggle
+- Topics: exhaustion, loneliness, burnout, self-doubt, overthinking, relationships
+- DO NOT list tarsier facts — the tarsier experiences HUMAN emotions
+- Think: raw 2am tweet, honest venting, relatable pain
+- The voiceover will have pauses between lines — each line is one scene
+""",
+
+    "yt_pov": """{persona}
+
+ATMOSPHERE SETTING (weave into the horror/mystery atmosphere):
+{topic}
+
+FORMAT RULES (MANDATORY):
+- Write ENTIRELY IN ENGLISH using second-person ("you")
+- Format: each line = 1 segment/scene (separate with NEWLINE)
+- Each line should be 12-18 words
+- Total script: EXACTLY 6 lines (no more, no less)
+- Follow the STRUCTURE from the persona brief above EXACTLY
+- Provide ONLY the narration — NO labels, NO numbers, NO formatting
+- Set the scene in a DARK FOREST at night — build tension and fear
+- Start normal, escalate to suspense, reveal the tarsier at the end
+- DO NOT list tarsier facts — create an IMMERSIVE sensory experience
+- Think: creepypasta with a cute twist, found footage horror
+- The voiceover will have pauses between lines — each line is one scene
+""",
+
+    "yt_drama": """{persona}
+
+STORY CONTEXT (weave into the emotional narrative):
+{topic}
+
+FORMAT RULES (MANDATORY):
+- Write ENTIRELY IN ENGLISH
+- Format: each line = 1 segment/scene (separate with NEWLINE)
+- Each line should be 12-18 words
+- Total script: EXACTLY 6 lines (no more, no less)
+- Follow the STRUCTURE from the persona brief above EXACTLY
+- Provide ONLY the narration — NO labels, NO numbers, NO formatting
+- Tell an EMOTIONAL STORY about a tarsier's life, survival, or loss
+- Include conflict: deforestation, loneliness, predators, capture, separation
+- DO NOT list facts — make the audience FEEL something
+- Think: short film narration, poetic and heartbreaking
+- The voiceover will have pauses between lines — each line is one scene
+""",
+
+    "fb_fanspage": """{persona}
+
+TOPIC/FACTS TO USE:
+{topic}
+
+FORMAT RULES (MANDATORY):
+- Write ENTIRELY IN ENGLISH
+- Format: each line = 1 segment/scene (separate with NEWLINE)
+- Each line should be 12-18 words — not too short, not too long
+- Total script: EXACTLY 6 lines (no more, no less)
+- Follow the STRUCTURE from the persona brief above EXACTLY
+- Provide ONLY the script — NO labels, NO numbers, NO formatting
+- Include at least 3 SPECIFIC facts with numbers/data
+- Make it SHAREABLE — shock value, curiosity gaps, emotional hooks
+- The voiceover will have pauses between lines — each line is one scene
+""",
+}
+
+# Legacy single prompt (used as fallback if channel not in SCRIPT_PROMPTS)
+SCRIPT_GENERATION_PROMPT = SCRIPT_PROMPTS.get("yt_documenter", "")
 
 METADATA_GENERATION_PROMPT = """
 Based on the following narration script:

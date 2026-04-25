@@ -8,7 +8,7 @@ import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import (GROQ_API_KEY, GROQ_MODEL, GROQ_BASE_URL,
                          GEMINI_API_KEY, ACCOUNTS, SCRIPT_GENERATION_PROMPT, MAX_RETRIES,
-                         CF_ACCOUNTS)
+                         CF_ACCOUNTS, SCRIPT_PROMPTS)
 from src.persona_prompts import PERSONA_BRIEFS
 from src.similarity_checker import check_script_similarity, get_most_similar_channel
 from src.fallback_scripts import get_fallback_script
@@ -204,7 +204,9 @@ class ScriptEngine:
         Returns (script_text, was_fallback: bool)
         """
         persona = PERSONA_BRIEFS.get(account_key, "")
-        full_prompt = SCRIPT_GENERATION_PROMPT.replace("{topic}", topic_info).replace("{persona}", persona)
+        # V5: Per-channel prompt template — each channel gets fundamentally different instructions
+        prompt_template = SCRIPT_PROMPTS.get(account_key, SCRIPT_GENERATION_PROMPT)
+        full_prompt = prompt_template.replace("{topic}", topic_info).replace("{persona}", persona)
         
         if force_mashup:
             print(f"[{account_key}] Force mashup requested — generating unique mashup script")
