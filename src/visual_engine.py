@@ -14,6 +14,7 @@ Channels:
 import os
 import io
 import random
+import time
 import requests
 import numpy as np
 from PIL import Image, ImageFilter, ImageEnhance, ImageOps, ImageDraw
@@ -22,6 +23,14 @@ from typing import List, Tuple, Optional
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.config import ACCOUNTS, TMP_DIR, CF_ACCOUNTS, CF_ACCOUNTS_BACKUP, HF_API_KEYS, HF_API_KEYS_BACKUP
+
+# ========================================
+# GLOBAL RATE LIMIT TRACKER
+# When CF-1 returns 429, skip it for 5 minutes instead of
+# wasting 150s on retries that will all fail.
+# ========================================
+_CF1_COOLDOWN = {}  # {account_key: timestamp_when_cooldown_expires}
+_CF1_COOLDOWN_SECONDS = 300  # 5 minutes
 
 
 # ========================================
@@ -176,18 +185,16 @@ def _elliptical_mask_fallback(img: Image.Image) -> Image.Image:
     return rgba
 
 
-def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, height: int, label: str) -> Optional[Image.Image]:
+def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, height: int, label: str, max_attempts: int = 2) -> Optional[Image.Image]:
     """Try generating background via Cloudflare Workers AI. Returns Image or None.
     Supports both raw binary image AND JSON-wrapped base64 response formats.
-    Retries on HTTP 429 or 500."""
-    import time
+    V4: FAST FAIL — max 2 attempts (1 retry) with short 5s wait.
+    Returns (image, was_rate_limited) tuple behavior via _try_cf_generate_ex."""
     import base64
-    for attempt in range(4):  # Max 4 attempts with exponential backoff
+    for attempt in range(max_attempts):
         try:
             url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/black-forest-labs/flux-1-schnell"
             headers = {"Authorization": f"Bearer {api_token}"}
-            # FLUX requires standard dimensions (multiples of 8, within model limits)
-            # Force standard square 1024x1024 — resized to target after generation
             payload = {"prompt": f"{prompt}. {_BG_NEGATIVE}", "width": 1024, "height": 1024}
             
             if attempt == 0:
@@ -208,12 +215,10 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                     return bg
                 
                 # FORMAT 2: JSON-wrapped base64 image (new CF behavior 2026+)
-                # Response: {"result":{"image":"/9j/4AAQSkZJRg..."}}
                 if "json" in ct:
                     try:
                         data = resp.json()
                         img_b64 = ""
-                        # Try nested format: {"result":{"image":"..."}}
                         if isinstance(data, dict):
                             result = data.get("result", data)
                             if isinstance(result, dict):
@@ -228,7 +233,6 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                             print(f"[VisualEngine] {label} SUCCESS (base64 JSON)")
                             return bg
                         else:
-                            # JSON but no valid image data — real error
                             body_preview = resp.text[:200]
                             print(f"[VisualEngine] {label} JSON response but no image data: {body_preview}")
                             return None
@@ -249,9 +253,15 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                 print(f"[VisualEngine] {label} HTTP 200 but unrecognized format (ct={ct}, size={len(resp.content)})")
                 return None
                 
-            elif resp.status_code in [429, 500, 502, 503, 504]:
-                wait_time = 15 if resp.status_code == 429 else 5
-                wait_time = wait_time * (attempt + 1)
+            elif resp.status_code == 429:
+                # FAST FAIL: Only 1 short retry for 429, then give up immediately
+                print(f"[VisualEngine] {label} got HTTP 429 (rate limited). {'Skipping.' if attempt > 0 else 'One retry in 5s...'}")
+                if attempt == 0:
+                    time.sleep(5)
+                    continue
+                return None  # Don't waste more time — let caller try CF-2
+            elif resp.status_code in [500, 502, 503, 504]:
+                wait_time = 5 * (attempt + 1)
                 print(f"[VisualEngine] {label} got HTTP {resp.status_code}. Retrying in {wait_time}s...")
                 time.sleep(wait_time)
                 continue
@@ -260,7 +270,7 @@ def _try_cf_generate(account_id: str, api_token: str, prompt: str, width: int, h
                 return None
         except Exception as e:
             print(f"[VisualEngine] {label} error: {e}")
-            if attempt < 3:
+            if attempt < max_attempts - 1:
                 time.sleep(5)
                 continue
             return None
@@ -353,19 +363,30 @@ def _try_hf_generate(hf_key: str, prompt: str, width: int, height: int, label: s
 def _generate_themed_background(account_key: str, width: int, height: int, index: int = 0) -> Image.Image:
     """Generate a themed background.
     Full 4-layer fallback: CF Primary → CF Backup → HF Primary → HF Backup → gradient.
+    V4: SMART FAILOVER — skips CF-1 entirely when recently rate-limited.
     Each channel has 2 CF accounts + 2 HF keys = 4 chances before gradient."""
     prompts = THEMED_BG_PROMPTS.get(account_key, [])
     if not prompts:
         return _gradient_fallback(account_key, width, height)
     
     prompt = prompts[index % len(prompts)]
+    now = time.time()
     
-    # === LAYER 1: CF Primary ===
+    # === LAYER 1: CF Primary (SKIP if recently rate-limited) ===
+    cf1_cooldown_until = _CF1_COOLDOWN.get(account_key, 0)
     cf1 = CF_ACCOUNTS.get(account_key, {})
     if cf1.get("account_id") and cf1.get("api_token"):
-        result = _try_cf_generate(cf1["account_id"], cf1["api_token"], prompt, width, height, f"CF-1 {account_key}")
-        if result:
-            return result
+        if now < cf1_cooldown_until:
+            # CF-1 is in cooldown — skip directly to CF-2
+            remaining = int(cf1_cooldown_until - now)
+            print(f"[VisualEngine] CF-1 {account_key}: SKIPPED (rate-limited, cooldown {remaining}s remaining)")
+        else:
+            result = _try_cf_generate(cf1["account_id"], cf1["api_token"], prompt, width, height, f"CF-1 {account_key}")
+            if result:
+                return result
+            # CF-1 failed (likely 429) — put it on cooldown so next images skip it
+            _CF1_COOLDOWN[account_key] = now + _CF1_COOLDOWN_SECONDS
+            print(f"[VisualEngine] CF-1 {account_key}: cooldown activated for {_CF1_COOLDOWN_SECONDS}s")
     
     # === LAYER 2: CF Backup ===
     cf2 = CF_ACCOUNTS_BACKUP.get(account_key, {})
@@ -754,8 +775,7 @@ def style_batch_for_channel(raw_images: List[str], account_key: str,
         
         # Gentle delay to prevent rate limit spikes
         if account_key != "yt_documenter":
-            import time
-            time.sleep(3)
+            time.sleep(1)
         
         # Step 2: Generate 8 scene variations from styled image
         scenes = generate_scene_variations(styled_path, account_key, output_dir, num_scenes=8)
