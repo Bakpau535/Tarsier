@@ -230,6 +230,94 @@ class MediaGenerator:
             print(f"[MediaGen] Image validation failed: {e}")
             return False
 
+    def _validate_tarsier_content(self, filepath: str) -> bool:
+        """LOCAL tarsier content validation — NO external API needed.
+        Uses PIL color analysis to detect non-tarsier images (gorilla/monkey/ape).
+        
+        Tarsier image characteristics:
+        - DARK overall (nocturnal animal, night forest, dark fur)
+        - Small bright spots (huge glowing eyes)
+        - Dark brown/green color palette (forest + fur)
+        
+        NON-tarsier red flags (gorilla/monkey):
+        - TOO BRIGHT overall (daytime scene, large bright animal)
+        - Too much uniform MID-GREY (gorilla body fills the frame)
+        - Subject too large and bright (gorilla/orangutan)
+        
+        Returns True if image passes validation, False if it looks like wrong animal.
+        """
+        try:
+            from PIL import Image
+            import numpy as np
+            
+            img = Image.open(filepath).convert("RGB")
+            # Resize to small for fast analysis
+            img_small = img.resize((128, 128), Image.LANCZOS)
+            pixels = np.array(img_small, dtype=np.float32)
+            
+            # === CHECK 1: Overall brightness ===
+            # Tarsier scenes are nocturnal → average brightness should be LOW
+            avg_brightness = pixels.mean()
+            
+            # === CHECK 2: Grey uniformity (gorilla detector) ===
+            # Gorillas have large uniform grey/silver body → low color variance
+            # Tarsier scenes have high contrast (dark forest + bright eyes)
+            r, g, b = pixels[:,:,0], pixels[:,:,1], pixels[:,:,2]
+            
+            # Calculate color saturation — grey images have R≈G≈B
+            max_rgb = np.maximum(np.maximum(r, g), b)
+            min_rgb = np.minimum(np.minimum(r, g), b)
+            saturation = (max_rgb - min_rgb)  # per pixel
+            avg_saturation = saturation.mean()
+            
+            # Mid-grey pixel ratio: pixels where R,G,B are all between 100-180 and similar
+            mid_grey_mask = (
+                (r > 90) & (r < 190) & 
+                (g > 90) & (g < 190) & 
+                (b > 90) & (b < 190) & 
+                (saturation < 30)  # low saturation = grey
+            )
+            grey_ratio = mid_grey_mask.sum() / mid_grey_mask.size
+            
+            # === CHECK 3: Bright area ratio ===
+            # If > 60% of image is bright, it's likely a daytime large animal photo
+            bright_mask = (avg_brightness > 140)
+            bright_pixel_mask = ((r + g + b) / 3 > 160)
+            bright_ratio = bright_pixel_mask.sum() / bright_pixel_mask.size
+            
+            # === DECISION ===
+            rejected = False
+            reason = ""
+            
+            # Rule 1: Image too bright AND too grey → likely gorilla/ape
+            if avg_brightness > 145 and grey_ratio > 0.30:
+                rejected = True
+                reason = f"TOO BRIGHT + GREY (brightness={avg_brightness:.0f}, grey={grey_ratio:.1%}) — likely gorilla/ape"
+            
+            # Rule 2: Overwhelmingly grey → large grey primate (gorilla/elephant)
+            if grey_ratio > 0.50:
+                rejected = True
+                reason = f"OVERWHELMINGLY GREY ({grey_ratio:.1%}) — likely large grey animal"
+            
+            # Rule 3: Very bright and low saturation → washed out/wrong subject
+            if avg_brightness > 170 and avg_saturation < 25:
+                rejected = True
+                reason = f"VERY BRIGHT + DESATURATED (brightness={avg_brightness:.0f}, sat={avg_saturation:.0f}) — wrong subject"
+            
+            if rejected:
+                print(f"[TARSIER-CHECK] ❌ REJECTED: {reason}")
+                print(f"[TARSIER-CHECK]    File: {os.path.basename(filepath)}")
+                print(f"[TARSIER-CHECK]    Stats: brightness={avg_brightness:.0f} grey_ratio={grey_ratio:.1%} saturation={avg_saturation:.0f} bright_ratio={bright_ratio:.1%}")
+                return False
+            else:
+                print(f"[TARSIER-CHECK] ✅ PASSED: brightness={avg_brightness:.0f} grey={grey_ratio:.1%} sat={avg_saturation:.0f}")
+                return True
+                
+        except Exception as e:
+            # If validation fails for any reason, PASS the image (don't block pipeline)
+            print(f"[TARSIER-CHECK] ⚠️ Validation error (passing image): {e}")
+            return True
+
     # ==========================================
     # FOOTAGE DEDUPLICATION — ALL footage NEVER reused:
     # Tarsier clips, support clips, photos, music
@@ -350,6 +438,25 @@ class MediaGenerator:
                     # ALL clips must be unique — no reuse within or across channels
                     if self._is_footage_used(vid_id):
                         continue
+                    
+                    # TARSIER VALIDATION: reject non-tarsier animal videos
+                    video_url = video.get("url", "").lower()
+                    video_user = (video.get("user", {}).get("name", "") or "").lower()
+                    video_tags = " ".join(str(t) for t in video.get("tags", [])).lower() if video.get("tags") else ""
+                    video_meta = f"{video_url} {video_tags} {video_user}"
+                    
+                    # REJECT: other primates/animals in metadata
+                    NON_TARSIER = ["gorilla", "monkey", "chimpanzee", "orangutan", "baboon",
+                                   "macaque", "lemur", "gibbon", "marmoset", "ape", "chimp"]
+                    has_wrong_animal = False
+                    for bad in NON_TARSIER:
+                        if bad in video_meta:
+                            print(f"[{account_key}] REJECTED Pexels clip {vid_id}: contains '{bad}' (not tarsier)")
+                            has_wrong_animal = True
+                            break
+                    if has_wrong_animal:
+                        continue
+                    
                     best_file = None
                     for vf in video.get("video_files", []):
                         if vf.get("width", 0) >= 720 and vf.get("file_type") == "video/mp4":
@@ -398,6 +505,21 @@ class MediaGenerator:
                         break
                     # ALL clips must be unique — no reuse within or across channels
                     if self._is_footage_used(vid_id):
+                        continue
+                    
+                    # TARSIER VALIDATION: reject non-tarsier animal videos
+                    vid_tags = (video.get("tags", "") or "").lower()
+                    vid_url_str = str(video.get("pageURL", "")).lower()
+                    vid_meta = f"{vid_tags} {vid_url_str}"
+                    NON_TARSIER = ["gorilla", "monkey", "chimpanzee", "orangutan", "baboon",
+                                   "macaque", "lemur", "gibbon", "marmoset", "ape", "chimp"]
+                    has_wrong_animal = False
+                    for bad in NON_TARSIER:
+                        if bad in vid_meta:
+                            print(f"[{account_key}] REJECTED Pixabay clip {vid_id}: contains '{bad}'")
+                            has_wrong_animal = True
+                            break
+                    if has_wrong_animal:
                         continue
                     vid_url = None
                     for q in ["medium", "large", "small"]:
@@ -882,39 +1004,70 @@ class MediaGenerator:
         70% chance = tarsier image (dominant)
         30% chance = environment/support image
         force_tarsier=True always generates tarsier.
+        
+        V7: LOCAL TARSIER VALIDATION — after generation, checks image color profile
+        to detect gorilla/monkey/ape. If detected, retries with different prompt.
+        Max 2 retries before accepting.
         """
         import time as _time
         
         # 70% tarsier, 30% support (unless forced)
         use_tarsier = force_tarsier or (random.random() < 0.7)
-        
-        if use_tarsier:
-            base_prompt = self.tarsier_prompts[index % len(self.tarsier_prompts)]
-            img_type = "tarsier"
-        else:
-            support = self.support_prompts.get(account_key, self.support_prompts["fb_fanspage"])
-            base_prompt = support[index % len(support)]
-            img_type = "environment"
-        
-        # Make each prompt unique with topic + timestamp + seed
-        seed = random.randint(1000, 9999)
-        timestamp = int(_time.time())
-        # V6: Append negative exclusion for tarsier images to prevent gorilla/monkey confusion
-        neg = f". {self.tarsier_negative}" if use_tarsier else ""
-        prompt = f"{base_prompt}, about {topic}{neg}, unique:{timestamp}_{seed}"
-        
-        print(f"[{account_key}] AI {img_type} image {index}: {base_prompt[:60]}... (seed:{seed})")
+        img_type = "tarsier" if use_tarsier else "environment"
         
         safe = self._safe_topic(topic)
         filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_ai_{index}.png")
+        
+        # Retry loop: up to 3 attempts with different prompts
+        max_attempts = 3 if use_tarsier else 1
+        
+        for attempt in range(max_attempts):
+            # Pick prompt — use different index on each retry
+            prompt_index = (index + attempt) % len(self.tarsier_prompts)
+            
+            if use_tarsier:
+                base_prompt = self.tarsier_prompts[prompt_index]
+            else:
+                support = self.support_prompts.get(account_key, self.support_prompts["fb_fanspage"])
+                base_prompt = support[index % len(support)]
+            
+            # Make prompt unique
+            seed = random.randint(1000, 9999)
+            timestamp = int(_time.time())
+            neg = f". {self.tarsier_negative}" if use_tarsier else ""
+            prompt = f"{base_prompt}, about {topic}{neg}, unique:{timestamp}_{seed}"
+            
+            attempt_label = f" (retry #{attempt})" if attempt > 0 else ""
+            print(f"[{account_key}] AI {img_type} image {index}{attempt_label}: {base_prompt[:60]}... (seed:{seed})")
+            
+            # === TRY CLOUDFLARE ===
+            result_file = self._try_generate_and_validate(
+                account_key, prompt, filename, img_type, index, use_tarsier, attempt
+            )
+            if result_file:
+                return result_file
+        
+        # All attempts exhausted — return None
+        if max_attempts > 1:
+            print(f"[{account_key}] AI tarsier image {index}: ALL {max_attempts} attempts failed validation")
+        return None
+    
+    def _try_generate_and_validate(self, account_key: str, prompt: str, filename: str,
+                                    img_type: str, index: int, use_tarsier: bool,
+                                    attempt: int) -> Optional[str]:
+        """Generate image via CF/HF and validate tarsier content. Returns filepath or None."""
         
         # === PRIORITY 1: Cloudflare Workers AI ===
         cf_content = self._generate_cf_image(account_key, prompt)
         if cf_content:
             with open(filename, "wb") as f:
                 f.write(cf_content)
-            # Validate saved file is a real image
             if self._validate_image_file(filename):
+                # TARSIER CONTENT CHECK (only for tarsier images)
+                if use_tarsier and not self._validate_tarsier_content(filename):
+                    print(f"[{account_key}] CF image REJECTED by tarsier-check (attempt {attempt+1})")
+                    os.remove(filename)
+                    return None  # Will retry with different prompt
                 print(f"[{account_key}] AI {img_type} image {index} saved via CLOUDFLARE.")
                 return filename
             else:
@@ -938,8 +1091,12 @@ class MediaGenerator:
             if content:
                 with open(filename, "wb") as f:
                     f.write(content)
-                # Validate saved file is a real image
                 if self._validate_image_file(filename):
+                    # TARSIER CONTENT CHECK (only for tarsier images)
+                    if use_tarsier and not self._validate_tarsier_content(filename):
+                        print(f"[{account_key}] HF image REJECTED by tarsier-check (attempt {attempt+1})")
+                        os.remove(filename)
+                        return None  # Will retry with different prompt
                     which_key = "HF-own" if key == HF_API_KEYS.get(account_key) else "HF-backup"
                     print(f"[{account_key}] AI {img_type} image {index} saved via {which_key}.")
                     return filename
