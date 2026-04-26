@@ -6,6 +6,7 @@ from datetime import datetime
 class DatabaseManager:
     def __init__(self, topics_file: str):
         self.topics_file = topics_file
+        self._data_cache = None  # In-memory cache to avoid repeated disk reads
         self.ensure_file()
 
     def ensure_file(self):
@@ -15,17 +16,21 @@ class DatabaseManager:
                 json.dump([], f, indent=4)
 
     def load_data(self) -> List[Dict]:
-        """Loads data from the JSON file."""
+        """Loads data from the JSON file (cached in memory after first read)."""
+        if self._data_cache is not None:
+            return self._data_cache
         try:
             with open(self.topics_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                self._data_cache = json.load(f)
+                return self._data_cache
         except (json.JSONDecodeError, FileNotFoundError, UnicodeDecodeError):
             # Auto-reset corrupted files (e.g. UTF-16 BOM from PowerShell)
             self.save_data([])
             return []
 
     def save_data(self, data: List[Dict]):
-        """Saves data back to the JSON file."""
+        """Saves data back to the JSON file and invalidates cache."""
+        self._data_cache = None  # Invalidate cache on write
         with open(self.topics_file, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
 

@@ -62,7 +62,9 @@ class Pipeline:
         print(f"[{level}] [{account}] {message}")
 
     def _save_log(self):
-        """Saves the activity log to JSON file (Bagian 15 - Log System)."""
+        """Saves the activity log to JSON file (Bagian 15 - Log System).
+        LOG ROTATION: Keeps only last 500 entries to prevent unbounded growth."""
+        MAX_LOG_ENTRIES = 500
         try:
             existing = []
             if os.path.exists(self.log_file):
@@ -72,6 +74,9 @@ class Pipeline:
                 except (json.JSONDecodeError, UnicodeDecodeError):
                     existing = []  # Auto-reset corrupted log
             existing.extend(self.activity_log)
+            # LOG ROTATION: trim to last 500 entries to prevent file bloat
+            if len(existing) > MAX_LOG_ENTRIES:
+                existing = existing[-MAX_LOG_ENTRIES:]
             with open(self.log_file, 'w', encoding='utf-8') as f:
                 json.dump(existing, f, indent=4, ensure_ascii=False)
         except Exception as e:

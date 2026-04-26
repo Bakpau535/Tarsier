@@ -989,12 +989,20 @@ class MediaGenerator:
                     break
         
         # Try fallback models if primary channel model failed
-        for fb_model in self.cf_fallback_chain:
-            if fb_model != model:
-                cf_pool_retry = self._get_cf_pool(account_key)
-                if cf_pool_retry:
-                    print(f"[{account_key}] Trying CF fallback model: {fb_model}")
-                    return self._generate_cf_image(account_key, prompt, model=fb_model)
+        # GUARD: Only try fallback if this is NOT already a fallback call
+        if not getattr(self, '_cf_fallback_active', False):
+            self._cf_fallback_active = True
+            try:
+                for fb_model in self.cf_fallback_chain:
+                    if fb_model != model:
+                        cf_pool_retry = self._get_cf_pool(account_key)
+                        if cf_pool_retry:
+                            print(f"[{account_key}] Trying CF fallback model: {fb_model}")
+                            result = self._generate_cf_image(account_key, prompt, model=fb_model)
+                            if result:
+                                return result
+            finally:
+                self._cf_fallback_active = False
         
         return None
     
@@ -1491,16 +1499,27 @@ class MediaGenerator:
             import edge_tts
             
             async def _gen_segment(line_text: str, seg_idx: int) -> Optional[str]:
-                """Generate one VO segment MP3."""
+                """Generate one VO segment MP3 with SSML for better intonation."""
                 filename = os.path.join(TMP_DIR, f"{account_key}_{safe}_vo_seg{seg_idx}.mp3")
                 try:
-                    tts = edge_tts.Communicate(
-                        text=line_text,
-                        voice=voice,
-                        rate=rate,
-                        pitch=pitch
-                    )
-                    await tts.save(filename)
+                    # Use SSML for better intonation (matching single-VO quality)
+                    from src.ssml_builder import build_ssml
+                    ssml_text = build_ssml(line_text, account_key)
+                    try:
+                        tts = edge_tts.Communicate(
+                            text=ssml_text,
+                            voice=voice,
+                        )
+                        await tts.save(filename)
+                    except Exception:
+                        # Fallback: plain text if SSML fails
+                        tts = edge_tts.Communicate(
+                            text=line_text,
+                            voice=voice,
+                            rate=rate,
+                            pitch=pitch
+                        )
+                        await tts.save(filename)
                     if os.path.exists(filename) and os.path.getsize(filename) > 500:
                         return filename
                 except Exception as e:

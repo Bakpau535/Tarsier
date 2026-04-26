@@ -187,7 +187,8 @@ class VideoAssembler:
         max_scenes = max(6, int(target_dur / avg_dur) + 2)  # +2 buffer, minimum 6
         if len(media_items) > max_scenes:
             original_count = len(media_items)
-            random.shuffle(media_items)
+            # FIXED: Do NOT shuffle — preserve the interleaved T-S-T-S pattern
+            # from generate_all_clips(). Just trim excess from the end.
             media_items = media_items[:max_scenes]
             label = "no-VO" if not has_vo else "VO-matched"
             print(f"[{account_key}] Scene limiter ({label}): {original_count} → {max_scenes} scenes "
