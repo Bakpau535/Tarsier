@@ -314,9 +314,9 @@ class MediaGenerator:
                 return True
                 
         except Exception as e:
-            # If validation fails for any reason, PASS the image (don't block pipeline)
-            print(f"[TARSIER-CHECK] ⚠️ Validation error (passing image): {e}")
-            return True
+            # FAIL-CLOSED: if validation crashes, REJECT the image — better no image than wrong animal
+            print(f"[TARSIER-CHECK] ❌ Validation error (REJECTING image): {e}")
+            return False
 
     # ==========================================
     # FOOTAGE DEDUPLICATION — ALL footage NEVER reused:
