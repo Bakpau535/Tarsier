@@ -7,17 +7,17 @@ import os
 from typing import Optional
 
 
-# Per-channel volume settings (voice_vol, music_normal, music_ducked)
-# Values are in 0-100 scale representing percentage
-# Music volume raised 2026-03-14: previous values (0.06~0.12) were inaudible
+# Per-channel volume settings
+# Formula: final_dBFS = -20 + 20*log10(music_vol)
+# VO channels: music ~10dB below VO | No-VO channels: music = main audio
 # NOTE: assemble.py NO LONGER applies a second volume scale — these values are the FINAL volume
 VOLUME_SPEC = {
-    "yt_documenter": {"music_normal": 0.25, "music_ducked": 0.12, "duck_threshold": -30},
-    "yt_funny":      {"music_normal": 0.40, "music_ducked": 0.40, "duck_threshold": -30},  # No VO → music louder, ceria
-    "yt_anthro":     {"music_normal": 0.28, "music_ducked": 0.14, "duck_threshold": -28},
-    "yt_pov":        {"music_normal": 0.40, "music_ducked": 0.40, "duck_threshold": -32},  # No VO → WAJIB immersion, louder
-    "yt_drama":      {"music_normal": 0.30, "music_ducked": 0.12, "duck_threshold": -28},
-    "fb_fanspage":   {"music_normal": 0.28, "music_ducked": 0.28, "duck_threshold": -30},
+    "yt_documenter": {"music_normal": 0.50, "music_ducked": 0.25, "duck_threshold": -30},  # normal=-26dB, ducked=-32dB, VO=-16dB
+    "yt_funny":      {"music_normal": 1.25, "music_ducked": 1.25, "duck_threshold": -30},  # No VO → music=-18dB (main audio)
+    "yt_anthro":     {"music_normal": 0.50, "music_ducked": 0.25, "duck_threshold": -28},  # normal=-26dB, ducked=-32dB, VO=-16dB
+    "yt_pov":        {"music_normal": 1.25, "music_ducked": 1.25, "duck_threshold": -32},  # No VO → music=-18dB (main audio)
+    "yt_drama":      {"music_normal": 0.63, "music_ducked": 0.30, "duck_threshold": -28},  # normal=-24dB, ducked=-30dB, VO=-16dB
+    "fb_fanspage":   {"music_normal": 0.55, "music_ducked": 0.28, "duck_threshold": -30},  # normal=-25dB, ducked=-31dB, VO=-14dB
 }
 
 
@@ -119,9 +119,11 @@ def process_audio(voice_path: Optional[str], music_path: Optional[str],
             else:
                 vol_db = -60
             
-            # Normalize music first, then apply target volume
+            # Normalize music to -20 dBFS, then apply channel volume reduction
             change_in_dbfs = -20.0 - music.dBFS  # Normalize to -20 dBFS first
-            music = music.apply_gain(change_in_dbfs + vol_db + 20)  # Then apply channel volume
+            music = music.apply_gain(change_in_dbfs + vol_db)  # Then apply channel volume
+            final_dbfs = -20.0 + vol_db
+            print(f"[{account_key}] Music final level: {final_dbfs:.1f} dBFS (vol_db: {vol_db:.1f})")
             
             # Step 3: Apply ducking if voiceover exists
             if processed_voice and os.path.exists(processed_voice) and spec["music_ducked"] < spec["music_normal"]:
